@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Dashboard</h1>
+<ul>
+    <li><a href="{% url 'create_food' %}">Create Food</a></li>
+    <li><a href="{% url 'food_list' %}">View Food List</a></li>
+    <li><a href="{% url 'upload_food_csv' %}">Upload Food CSV</a></li>
+    <li><a href="{% url 'create_diet' %}">Create Diet</a></li>
+</ul>
+{% endblock %}

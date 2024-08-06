@@ -1,0 +1,42 @@
+Vale, pues vamos a empezar por una de las partes principales de la aplicacion, la aplicacion movil, quiero que tenga unas cuantas funciones. (Hay partes de nutricion pero eso ya lo veremos mas tarde, solo lo digo para que entiendas la idea)
+
+1. Una pantalla principal en la que aparezca tu DailyDiet de ese dia y si tienes un Training, una parte con el nombre del Training, en esta pantalla si le das a la DailyDiet pasarias a ver sus comidas, etc... Si le das a un boton que fuera como "Ver Calendario" verias un calendario con dias marcados en los que hay Dieta y si pulsas te enseña su DailyDiet, tambien si hay Trainings te lleva a ese dia. Ahora para la parte 2 vamos a que pasa si le das a Training desde la pantalla principal.
+
+2. Si pulsas en Training te lleva a una pantalla con los Detalles del Training, te enseña todos los exercise por los que esta compuesto, con sus repeticiones y sus series (si tiene peso o time tambien como extra) y un boton de empezar entrenamiento. Cuando se pulse a ese boton el entrenamiento empieza y aparece un apartado para poner descanso entre ejercicios, entre series y si activar sonidos (que suene un sonido simple para cuando se acabara tiempo de ejercicios de tiempo, fin de descansos, etc), luego boton de cancelar o empezar. Si le das a cancelar, vuelves a la pantalla inicial, si le das a empezar aparece el primer ejercicio en su primera serie con las repeticiones indicadas, su imagen, etc, cuando termines le das a siguiente y empeiza el tiempo de descanso, luego pasa a la siguiente serie, cuando se terminen las series, pasa al siguiente ejercicio. Asi hasta el final del entrenamiento. Cuando se termine aparece un apartado para dejar notas sobre el entrenamiento, pero ya aparte.
+
+Me quiero centrar primero en un boceto de la pantalla principal dejando de lado la nutricion y sobre todo centrarme en la parte de poder ver y seguir el entrenamiento.
+
+ESTRUCTURA:
+
+Pantalla Principal
+La pantalla principal servirá como el punto de entrada a las distintas funciones de la aplicación. Esta pantalla presentará dos secciones principales: DailyDiet y Training del día. La funcionalidad del calendario y la navegación hacia los detalles del entrenamiento se integrarán de forma intuitiva.
+
+Estructura y Elementos
+Encabezado: Mostrará la fecha actual y posiblemente el nombre del usuario o un saludo personalizado.
+
+Sección DailyDiet (a ser elaborada más adelante):
+
+Un resumen visual de la dieta diaria.
+Un botón o enlace para ver detalles y comidas específicas.
+Sección Training:
+
+Nombre del entrenamiento del día (si existe).
+Un breve resumen del entrenamiento, como el número total de ejercicios.
+Botones o enlaces para:
+Ver Detalles del Entrenamiento: Lleva al usuario a una pantalla con detalles completos del entrenamiento.
+Ver Calendario: Muestra un calendario con días marcados para dietas y entrenamientos. Al seleccionar un día, se muestra la DailyDiet o los detalles del entrenamiento para ese día.
+Pie de página o Menú de Navegación: Accesos directos a funciones principales como Home, Calendario, Nutrición (para futuras implementaciones), y Entrenamientos.
+
+Pantalla de Detalles del Entrenamiento
+Al seleccionar un entrenamiento, el usuario es llevado a una pantalla que detalla el entrenamiento seleccionado. Esta pantalla incluirá:
+
+Nombre del Entrenamiento: Claramente visible en la parte superior.
+Lista de Ejercicios: Cada uno con detalles como repeticiones, series, peso (si aplica), y tiempo (si aplica).
+Funcionalidad para Iniciar el Entrenamiento: Incluye opciones para configurar descansos entre ejercicios y series, activar sonidos para indicadores de tiempo, y botones para cancelar o comenzar el entrenamiento.
+Flujo del Entrenamiento
+Una vez que el usuario comienza el entrenamiento, la aplicación guiará al usuario a través de cada ejercicio, mostrando detalles relevantes y permitiendo al usuario avanzar a través de las series y ejercicios. Al final del entrenamiento, se ofrecerá la opción de dejar notas o comentarios sobre el entrenamiento.
+
+Diseño y Navegación
+Intuitiva y Amigable: La navegación entre pantallas debe ser intuitiva, permitiendo al usuario moverse fácilmente de la visión general a los detalles específicos y la ejecución del entrenamiento.
+Visualmente Atractiva: Utilizar imágenes o iconos representativos para ejercicios específicos, y mantener una paleta de colores coherente que sea agradable a la vista.
+Responsive: Asegurarse de que la aplicación sea usable y se vea bien en diferentes tamaños de pantalla y orientaciones.

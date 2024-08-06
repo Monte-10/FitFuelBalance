@@ -1,0 +1,39 @@
+.create-diet-container {
+    background: rgba(43, 43, 43, 0.9); /* Fondo gris oscuro con transparencia */
+    padding: 20px;
+    border-radius: 10px;
+    color: #f0f0f0;
+  }
+  
+  .create-diet-container h2, 
+  .create-diet-container label {
+    color: #f0f0f0; /* Texto claro */
+  }
+  
+  .create-diet-container .form-control, 
+  .create-diet-container .form-select {
+    background-color: #1e1e1e; /* Fondo gris oscuro */
+    border: 1px solid #444;
+    color: #f0f0f0; /* Texto claro */
+  }
+  
+  .create-diet-container .form-control::placeholder {
+    color: #f0f0f0; /* Color del placeholder */
+    opacity: 0.7; /* Opacidad del placeholder */
+  }
+  
+  .create-diet-container .form-control:focus, 
+  .create-diet-container .form-select:focus {
+    background-color: #3b3b3b; /* Fondo un poco más claro al enfocar */
+    color: #f0f0f0; /* Texto claro */
+  }
+  
+  .create-diet-container .btn-primary {
+    background-color: #28a745; /* Fondo verde */
+    border: none;
+  }
+  
+  .create-diet-container .btn-primary:hover {
+    background-color: #218838; /* Fondo verde oscuro al pasar el ratón */
+  }
+  

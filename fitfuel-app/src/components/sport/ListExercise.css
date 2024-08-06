@@ -1,0 +1,87 @@
+.container-list-exercise {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(43, 43, 43, 1); /* Fondo gris oscuro con transparencia */
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    color: #f0f0f0; /* Texto claro */
+}
+
+.container-list-exercise h1 {
+    color: #f0f0f0; /* Texto claro */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.table th, .table td {
+    padding: 1rem;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table thead th {
+    background-color: #343a40;
+    color: #fff;
+}
+
+.table tbody tr {
+    transition: background-color 0.3s;
+}
+
+.table tbody tr:hover {
+    background-color: #3b3b3b; /* Fondo un poco más claro al enfocar */
+}
+
+.table tbody td {
+    background-color: #1e1e1e; /* Fondo gris oscuro */
+    color: #f0f0f0; /* Texto claro */
+    border-top: 1px solid #444;
+}
+
+.btn {
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #f0f0f0; /* Texto claro */
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+    transform: scale(1.05);
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #f0f0f0; /* Texto claro */
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+    transform: scale(1.05);
+}
+
+.alert-info {
+    margin-top: 20px;
+    background-color: #343a40;
+    color: #f0f0f0; /* Texto claro */
+}

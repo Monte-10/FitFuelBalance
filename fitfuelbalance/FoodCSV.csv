@@ -1,0 +1,279 @@
+name,unit_weight,calories,protein,carbohydrates,sugar,fiber,fat,saturated_fat,gluten_free,lactose_free,pescetarian,vegetarian,vegan,contains_meat,contains_vegetables,contains_fish_shellfish_canned_preserved,cereal,pasta_or_rice,dairy_yogurt_cheese,fruit,nuts,legume,sauce_or_condiment,deli_meat,bread_or_toast,egg,special_drink_or_supplement,tuber,other
+Pechuga de pollo,100,130.0,19.6,0.0,0.0,0.0,5.6,1.8,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+Filete de pavo,100,112.0,25.0,0.0,0.0,0.0,1.3,0.5,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+Lomo de cerdo,100,152.0,18.0,0.0,0.0,0.0,8.9,3.3,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+Ternera,100,124.0,23.0,0.0,0.0,0.0,3.5,1.5,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+Conejo,100,109.0,20.8,0.0,0.0,0.0,2.1,0.8,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+Perdiz,100,106,23,0,0,0,1.6,0,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+Contramuslo de pollo (sin piel),100,127.0,19.0,1.6,0.0,0.0,4.9,1.9,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+Alitas de pollo,100,120.0,20.5,0.5,0.5,0.0,4.0,1.3,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+Hamburguesa de pollo (tipo Meatprotein),1,124.0,21.6,2.9,0.8,0.0,2.7,0.8,False,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+Hamburguesa de ternera (tipo Meatprotein),1,122.0,22.2,2.1,0.0,0.0,2.7,0.8,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+"CarpaccioTernera (hacendado, sin salsa)",1,160.0,22.6,1.8,0.45,0.0,6.9,4.45,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+Chuletas de cordero (pierna),100,386.0,14.7,0.0,0.0,0.0,36.3,20,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+Higado de pollo,100,114.0,19.0,0.7,0.6,0.0,3.9,1.6,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+Higado de ternera ,100,133.0,21.0,1.9,1.7,0.0,4.5,1.7,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+Mollejas,100,80.0,15.4,0.5,0.5,0.0,2.0,0.8,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+Alitas de pollo,100,155.0,19.0,0.6,0.0,0.0,8.5,2.7,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+Bacon,100,393.0,13.0,2.0,1.5,0.0,37.0,13,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+Tomate seco,100,225.0,9.1,39.8,22.2,8.2,1.3,0.1,True,True,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False
+Pescado azul a elegir,100,224.0,20.0,0.0,0.0,0.0,16.0,3,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False
+Pescado blanco a elegir,100,83.0,18.0,0.0,0.0,0.0,1.2,0.3,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False
+Sepia / Calamar / Pulpo,100,78.0,18.0,0.0,0.0,0.0,0.5,0.2,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False
+Gambas (ya peladas),100,94.0,20.0,0.5,0.0,0.0,1.0,0.3,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False
+Mejillon al natural (lata),1,70.0,10.2,1.8,0.0,0.0,2.34,1.1,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False
+Mejillon en escabeche (lata),1,142.0,18.0,3.2,0.0,0.0,6.4,0,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False
+Berberechos (lata),1,59.0,10.4,0.7,0.0,0.0,0.6,0,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False
+Atun en lata al natural,1,64.0,14.4,0.4,0.0,0.0,0.56,0.16,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False
+Caballa en conserva con tomate,1,78.0,14.4,0.5,0.0,0.0,2.0,0.4,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False
+Sardinas en conserva con tomate,1,178.0,16.2,0.18,0.18,0.0,12.5,2.83,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False
+Almejones (en lats),1,87.0,13.7,1.89,0.0,0.0,2.7,0.63,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False
+Boqueron en vinagre (escurrido),1,61.0,11.4,0.6,0.0,0.0,1.26,0.96,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False
+Anchoa en AOVE (escurrido),1,68.0,7.41,0.0,0.0,0.0,3.76,0.6,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False
+Merluza en lata,1,75.0,12.6,0.5,0.0,0.0,2.5,0.7,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False
+Corn flakes,100,378.0,6.3,84.0,5.0,15.0,1.1,0.4,True,True,True,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False
+Copos de espelta,100,364.0,14.6,66.0,1.9,8.8,2.7,0.2,False,True,True,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False
+Harina de avena (sabores),100,381.0,11.3,62.5,0.3,11.8,6.9,0.7,False,True,True,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False
+Copos de avena,100,375.0,14.0,59.0,0.7,10.0,7.0,1.3,False,True,True,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False
+Miel pops,100,357.0,5.6,80.0,30.0,0.0,1.2,0.3,False,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False
+Smacks,100,388.0,9.1,79.0,50.0,5.6,2.7,0.5,False,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False
+Muesli con frutos secos,100,458.0,8.0,63.0,22.0,6.0,18.0,2,False,True,True,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False
+Muesli crujiente,100,444.0,7.0,69.0,22.0,5.6,14.0,1.4,False,True,True,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False
+Arroz inflado con chocolate,100,395.0,5.5,85.0,32.0,2.5,2.5,1.3,False,True,True,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False
+Arroz inflado,100,387.0,7.0,87.0,7.9,2.0,1.2,0.4,True,True,True,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False
+Crema de arroz,100,388.0,8.0,85.0,0.5,0.0,1.0,0.2,True,True,True,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False
+Papilla multicereales,100,379.0,12.0,75.0,1.0,0.0,2.2,0.4,False,True,True,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False
+Crereales crujeintes de avena,100,390.0,13.0,66.0,4.6,11.0,5.8,1,False,True,True,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False
+Cherios (nestle),100,380.0,7.0,79.2,20.0,4.7,3.3,1,False,True,True,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False
+Miel nut corn flakes (hacendado),100,409.0,8.5,81.0,25.0,2.3,5.1,0.9,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False
+Galleta marbu centeno (artiach),100,441.0,6.2,61.0,18.0,14.0,16.0,1.5,False,True,True,True,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False
+Arroz basmati,100,355.0,9.0,78.0,0.5,0.0,0.6,0.2,True,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Arroz blanco,100,344.0,8.2,75.0,0.5,0.0,1.0,0.2,True,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Noodles de arroz,100,343.0,6.4,77.0,2.0,0.0,0.6,0.2,True,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Semola de arroz,100,346.0,8.4,77.0,0.5,0.0,0.5,0.2,True,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Spaguetti integral,100,343.0,13.0,65.0,4.3,7.0,1.0,0.6,False,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Fideo integrales,100,349.0,13.0,65.0,4.0,7.0,2.6,0.4,False,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Estrellitas,100,358.0,14.0,72.0,3.5,4.0,1.5,0.3,False,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Tiburones,100,357.0,11.0,72.0,3.5,4.0,1.5,0.3,False,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Hélices vegetales,100,358.0,12.0,72.0,3.0,4.0,1.5,0.3,False,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Helices de lenteja,100,334.0,26.0,50.0,1.2,7.6,1.7,0.4,True,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Pasta de garbanzo,100,370.0,21.0,52.0,3.1,0.0,6.5,0.9,True,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Pasta de guisante,100,354.0,18.0,60.0,3.4,9.3,2.6,0.4,True,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Cous cous,100,346.0,12.0,69.0,2.5,3.9,1.6,0.8,False,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Taboule Oriental (ya cocinado),100,185.0,4.7,25.0,4.3,4.7,6.8,0.8,False,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Vasito de arroz basmati,1,230.0,5.1,43.8,0.0,1.1,3.6,0.3,True,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Vasito de arroz blanco,1,209.0,5.0,43.0,1.3,2.4,1.3,0,True,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Vasito de arroz con quinoa,1,220.0,7.75,35.0,1.5,7.75,5.4,0.75,False,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Vasito de quinoa blanca y roja,1,156.0,5.6,24.5,0.88,5.1,2.75,0.3,True,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Vasito bulgur,1,186.0,6.6,32.5,0.5,6.125,1.87,0,False,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+"Macarrones de Lentejas y zanahoria (Legumio, carrefour)",100,340.0,22.0,55.6,2.4,8.2,1.5,0.3,True,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Pasta integral espelta (carrefour),100,351.0,13.0,63.0,2.0,11.0,2.8,0.6,True,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+Pasta de trigo sarracenao,100,347.0,11.0,67.0,0.9,4.5,2.9,0.7,True,True,True,True,True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False
+"Yogur ""+ proteina""",1,69.0,10.0,7.0,6.4,0.0,0.1,0,True,False,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+"Batido ""+ proteina"" (NO refrigerado)",1,152.0,26.0,7.6,7.3,0.0,2.0,1.7,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+"Batido ""+ proteina"" (refrigerado)",1,181.0,25.0,17.0,16.0,0.0,1.4,0.3,True,False,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Flan proteico (carrefour),1,104.0,13.0,13.0,6.7,0.0,0.0,0,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+"Natilla ""+ proteina""",1,92.0,12.0,7.0,4.3,0.0,1.8,1.2,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+"Mousse ""+ proteina""",1,152.0,20.0,10.0,8.0,2.0,3.2,2.2,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+"Leche ""+ proteina""",100,44.0,6.0,4.6,4.6,0.0,0.2,0.1,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Leche desnatada,100,34.0,3.1,4.7,4.7,0.0,0.3,0.2,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Leche entera,100,63.0,3.1,4.6,4.6,0.0,3.6,2.4,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Leche de arroz (alpro),100,49.0,0.1,9.8,6.7,0.0,1.0,0.1,True,True,True,True,True,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Leche de avena ZERO (Milbona),100,36.0,0.9,4.8,0.0,1.2,1.3,0.2,True,True,True,True,True,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Leche de soja ZERO (Hacendado),100,31.0,3.1,0.6,0.6,0.4,1.7,0.3,True,True,True,True,True,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Leche de almendras ZERO (Hacendado),100,17.0,0.5,0.3,0.1,0.0,1.5,0.3,True,True,True,True,True,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Queso fresco batido 0%,100,47.0,8.0,3.5,3.5,0.0,0.1,0,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Queso quark light,100,54.0,8.3,4.8,4.8,0.0,0.2,0.1,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Queso quark,100,102.0,11.0,4.3,4.3,0.0,4.5,3,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Kefir natural,100,74.0,3.9,5.1,2.3,0.0,4.2,2.9,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Kefir ZERO,100,39.0,3.9,4.8,2.4,0.0,0.5,0.1,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Yogur natural 0%,1,45.0,5.4,5.6,5.6,0.0,0.1,0,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Yogur griego,1,128.0,3.9,3.9,3.9,0.0,10.8,6.7,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Yogur griego light,100,60.0,5.8,4.7,4.7,0.0,2.0,1.4,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Queso de rulo de cabra,100,335.0,17.0,1.1,0.5,0.0,29.2,21.1,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Queso curado de cuña (mezcla),100,431.0,25.0,1.8,0.6,0.0,36.0,25,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Queso rallado mozzarella (hacendado),100,202.0,17.0,2.0,0.9,0.0,14.0,8.5,True,False,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Queso rallado light proteico (carrefour),100,229.0,33.0,1.9,0.5,0.0,9.8,6.5,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Queso havarti light,100,252.0,27.0,2.2,0.5,0.0,15.0,9,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Queso fresco tipo burgos (tarrina pequeña),1,103.0,6.8,2.6,2.6,0.0,7.2,5.1,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Queso fresco light burgos (tarrina pequea),1,43.0,7.7,2.8,2.8,0.0,0.1,0,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Queso fetta,100,277.0,16.0,1.0,0.0,0.0,23.2,16.4,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Mozzarella light ,100,153.0,17.0,1.0,0.8,0.0,9.0,6,True,False,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Mozzarella,100,202.0,17.0,2.0,0.9,0.0,14.0,8.5,True,False,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Parmesano,100,398.0,33.0,0.0,0.0,0.0,20.0,18,True,False,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Burrata,100,243.0,14.0,1.7,1.7,0.0,20.0,13,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Queso cottage,100,98.0,11.5,2.8,2.8,0.0,4.5,3,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Queso cottage light,100,77.0,11.0,2.8,2.8,0.0,2.4,1.6,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Philadelphia proteica,100,113.0,7.7,4.3,4.3,0.0,7.0,4.7,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Queso de untar Eat Lean,100,138.0,17.0,4.0,1.9,0.0,5.8,3.1,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Philadelphia light,100,154.0,5.9,4.1,4.0,0.4,12.0,8.1,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Yogur de soja sin azucar (hacendado),1,43.0,4.6,0.0,0.0,0.0,2.7,0.4,True,True,True,True,True,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Arroz con leche,1,165.0,3.6,27.8,17.1,0.0,4.3,2.8,True,True,True,True,True,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Yogur savia natural (Danone),1,62.0,5.2,2.9,0.3,0.0,2.4,0.4,True,True,True,True,True,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Yogur alpro de coco,100,84.0,0.6,6.0,0.6,0.0,6.1,5.7,True,True,True,True,True,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Mantequilla light,100,394.0,0.2,6.1,1.9,0.0,41.0,25.7,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Yogur bebido 0%,100,31.0,3.2,4.2,4.1,0.0,0.1,0,True,False,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Horchata S/A añadidos,100,39.0,0.6,3.5,2.1,0.3,2.5,0.8,True,True,True,True,True,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Horchata,100,84.0,0.6,14.7,13.7,0.4,2.5,0.7,True,True,True,True,True,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Skyr natural (LIDL),1,93.0,16.5,6.0,6.0,0.0,0.3,0.15,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Skyr de sabores (LIDL),1,84.0,13.3,6.9,6.0,0.0,0.3,0.15,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+"Cheesecake (Granja Rinya, 180g)",1,323.0,12.6,52.0,43.0,0.0,7.2,4.1,True,False,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Batido de chocolate (90% leche),100,81.0,3.0,12.0,12.0,0.0,2.3,1.6,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Batido de fresa,100,65.0,3.1,11.0,11.0,0.0,1.0,0.6,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Yogur natural de oveja,1,106.0,5.4,5.9,5.8,0.0,6.8,3.6,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Yogur lindahls stracciatella,1,97.0,17.0,5.1,4.8,0.0,0.9,0.3,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Pudding proteico (Ehrmann),1,162.0,20.0,12.0,9.0,0.0,3.8,2.6,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Pudding proteico (Valio),1,146.0,19.8,10.5,7.0,0.0,2.7,1.8,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Nata de cocina light,100,163.0,2.0,5.0,3.0,0.0,15.0,10,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Nata vegana,100,141.0,1.8,6.3,3.8,0.2,12.0,1.6,True,True,True,True,True,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Cuajada (hacendado),1,112.0,6.1,7.9,7.9,0.0,6.3,4.1,True,False,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False
+Platano (M),1,100.0,1.3,22.5,10.0,2.6,0.5,0.1,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Naranja (L),1,93.0,1.7,21.0,17.2,4.4,0.2,0,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Mandarina (S),1,42.0,0.6,9.2,4.5,1.4,0.2,0,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Caqui (L),1,180.0,2.0,42.3,42.3,10.8,0.0,0,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Pera (L),1,104.0,1.0,25.0,1.0,2.0,0.0,0,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Pera (S),1,46.0,0.3,11.0,9.7,2.5,0.1,0,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Manzana,1,82.0,0.3,19.6,14.3,3.3,0.25,0,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Mango,100,52.0,0.5,12.0,10.0,1.0,0.3,0.1,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Uva,100,77.0,0.7,18.1,15.4,0.9,0.18,0,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Frutos rojos,100,59.0,1.2,12.0,4.5,6.5,0.65,0,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Sandia,100,34.0,0.6,7.5,6.2,0.4,0.15,0,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Melon,100,38.0,0.8,8.15,6.0,2.0,0.2,0,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Melocoton (L),1,69.0,1.43,15.0,13.7,2.4,0.4,0,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Kiwi,1,85.0,1.42,18.32,11.2,3.8,0.65,0,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Piña,100,46.0,0.5,10.2,9.8,1.2,0.1,9,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Dátil,100,30.0,0.2,6.5,4.0,4.0,0.4,0.01,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Orejones,100,262.0,3.7,60.0,36.0,6.3,0.8,0.2,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Potito pure de frutas (hacendado),1,187.0,1.8,43.0,33.0,2.8,0.3,0,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Pavia,1,72.0,1.5,18.0,10.0,5.0,0.0,0,True,True,True,True,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+Mixbeans,100,420.0,42.2,8.3,5.8,18.6,20.1,3,True,True,True,True,True,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False
+Coco rallado ,100,676.0,7.9,8.9,6.8,15.0,64.0,61,True,True,True,True,True,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False
+Cacahuetes / Peanut butter (100%),100,618.0,30.0,7.0,3.6,9.9,50.0,6.8,True,True,True,True,True,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False
+Almendras / Almond butter (100%),100,603.0,25.0,5.4,5.4,11.0,51.0,3.9,True,True,True,True,True,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False
+Anacardos / Cashew butter (100%),100,604.0,21.9,19.0,7.7,3.6,48.2,8.2,True,True,True,True,True,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False
+Crema de pistacho (carrefour),100,581.0,25.1,20.3,5.6,4.9,43.3,10.4,True,True,True,True,True,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False
+Nueces,100,716.0,17.0,2.2,1.7,6.2,70.0,6,True,True,True,True,True,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False
+Nueces de macadamia,100,758.0,8.6,5.8,3.5,6.3,77.0,13,True,True,True,True,True,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False
+Pistachos,100,617.0,25.0,10.0,8.3,8.9,51.0,6.4,True,True,True,True,True,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False
+Avellanas,100,710.0,18.0,3.0,3.0,9.4,68.0,5.4,True,True,True,True,True,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False
+Semillas de calabaza,100,583.0,35.0,3.0,1.6,5.5,48.0,8,True,True,True,True,True,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False
+Piñones,100,720.0,14.0,13.0,3.7,3.6,68.0,10,True,True,True,True,True,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False
+Nueces de brasil,100,674.0,17.0,5.1,1.6,3.0,63.0,15,True,True,True,True,True,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False
+Nueces pecan,100,715.0,11.4,4.0,3.2,10.0,72.2,6.6,True,True,True,True,True,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False
+Tahini (100%),100,710.0,24.9,3.2,1.4,3.4,65.6,10.1,True,True,True,True,True,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False
+Garbanzo tostado,100,321.0,19.9,46.5,0.0,5.0,5.0,0.7,True,True,True,True,True,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False
+Guisantes (congelados),100,83.0,6.0,11.3,2.8,5.0,0.4,0.2,True,True,True,True,True,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False
+Garbanzos (jardinera / verduras),1,304.0,15.2,36.0,2.0,10.0,8.4,1.6,True,True,True,True,True,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False
+Garbanzos (ya cocidos),100,101.0,5.4,13.8,1.7,4.2,1.8,0.1,True,True,True,True,True,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False
+Lentejas (jardinera / verduras),1,313.0,15.8,33.2,6.2,15.0,10.4,1.7,True,True,True,True,True,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False
+Lentejas (ya cocidas),100,89.0,8.2,10.7,0.5,5.0,0.4,0.1,True,True,True,True,True,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False
+Alubiras (jardinera  / verduras),1,336.0,14.0,44.0,1.2,10.0,10.0,1.6,True,True,True,True,True,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False
+Alubias (ya cocidas),100,83.0,5.8,10.7,0.8,4.0,0.4,0.1,True,True,True,True,True,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False
+Baked Beans (Heinz),1,316.0,18.8,51.6,20.0,14.8,0.8,0.4,True,True,True,True,True,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False
+Edamame (con vaina),100,130.0,11.0,10.0,2.2,5.2,4.0,0.6,True,True,True,True,True,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False
+Aguacate / Guacamole,100,203.0,1.8,10.6,1.9,10.7,17.1,3,True,True,True,True,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Hummus de trufa (Taste Shukran),100,198.0,7.6,11.0,0.5,3.7,12.9,2,True,True,True,True,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Hummus (Taste Shukran),100,198.0,7.6,11.0,0.5,3.7,12.9,2,True,True,True,True,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Mutabal (Taste  Shukran),100,134.0,6.7,0.8,0.5,3.7,10.7,1.7,True,True,True,True,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Hummus de aguacate,100,255.0,5.4,4.3,2.97,8.4,22.2,4.9,True,True,True,True,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Mayonesa light,100,308.0,0.7,6.5,3.5,0.0,31.0,4.8,True,True,True,True,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Mayonesa vegana,100,620.0,0.5,3.7,2.5,0.0,67.0,5,True,True,True,True,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Ajoaceite,100,823.0,0.1,2.8,1.6,0.0,90.1,10.4,True,True,True,True,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Ajoaceite vegano,100,614.0,0.3,5.8,3.7,0.3,65.0,7.9,True,True,True,True,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Salsa de soja Hacendado  (sin gluten),100,57.0,10.0,2.0,0.1,0.0,0.1,0.1,True,True,True,True,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Aceite de oliva,100,822.0,0.0,0.0,0.0,0.0,91.0,13,True,True,True,True,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Leche condensada light,100,281.0,8.9,60.8,60.8,0.0,0.2,0.1,True,True,True,True,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Sirope de caramelo,100,339.0,0.0,84.0,66.0,0.0,0.0,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Sirope de fresa,100,294.0,0.0,72.0,66.0,0.0,0.0,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Salsa mexicana picante,100,38.0,1.4,6.8,4.1,0.0,0.1,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Tomate triturado natural,100,29.0,0.8,5.8,4.7,0.0,0.1,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Salsa de tomate y oregano (carrefour),100,46.0,1.6,9.9,2.0,0.8,0.0,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Mermelada light,100,40.0,0.6,9.5,5.7,1.6,0.0,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Mermelada,100,210.0,0.5,52.0,50.0,0.0,0.0,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Mermelada de tomate,100,194.0,0.5,48.0,44.0,0.0,0.0,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Miel,100,333.0,0.4,82.8,79.3,0.0,0.1,0.1,True,True,True,True,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False
+Lomo de pavo,100,215.0,40.0,0.7,0.7,0.0,5.8,2.8,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False
+Lomo embuchado,100,199.0,38.0,0.5,0.5,0.0,5.0,1.9,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False
+Pechuga de pavo (95%),100,100.0,20.0,1.0,1.0,0.0,1.5,0.6,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False
+Jamon serrano (sin grasa),100,248.0,33.5,1.0,0.5,0.0,12.2,4.6,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False
+Cecina,100,173.0,29.0,0.8,0.8,0.0,5.9,2.3,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False
+Pechuga de pollo (Deli cato),100,106.0,21.0,1.0,1.0,0.0,2.0,0.6,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False
+Tiras de heura,100,136.0,19.7,1.8,0.0,6.4,3.0,0.5,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False
+Tiras de pollo,100,107.0,23.4,0.6,0.6,0.0,1.2,0.4,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False
+Pechuga de pollo en lata,1,71.0,16.0,0.0,0.0,0.0,0.8,0.3,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False
+Jamon york 90% (hacendado),100,102.0,19.0,0.9,0.9,0.0,2.5,0.9,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False
+Fuet,100,419.0,28.0,2.4,1.7,0.2,33.0,11,True,False,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False
+Lacon cortado a mano (Noel),100,315.0,10.0,0.9,0.9,0.0,3.9,1.2,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False
+Longaniza Pavo Imperial Extra (hacendado) ,100,307.0,31.0,5.2,5.2,0.0,18.0,6.8,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False
+Pan de espelta de masa madre,1,75.0,2.8,13.0,1.0,1.9,1.1,0.27,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Pan integral,100,272.0,9.7,55.0,2.6,10.0,1.3,0.4,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Pan de molde integral,1,67.0,2.9,11.0,1.2,1.7,0.8,0.1,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+pan blanco,100,258.0,8.9,54.0,2.7,2.9,1.3,0.2,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Pan de molde blanco,1,72.0,2.6,14.0,1.1,0.9,0.6,0.1,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Fajitas integrales,100,310.0,8.0,50.0,7.5,4.4,7.8,3.8,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Tortas de maiz,100,366.0,7.0,80.0,1.0,2.0,1.8,0.4,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Tortas de arroz,100,363.0,8.5,75.0,1.0,1.7,2.8,0.6,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Crakers de espelta (bachman),1,87.0,2.8,11.0,0.7,2.8,2.7,0.3,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Pan de fibra y sésamo,1,38.0,1.2,5.8,0.3,2.3,0.7,0.1,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Pan de semillas y pipas de calabaza,1,125.0,5.3,15.0,1.9,2.5,4.6,0.7,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Pan de avena 30%,1,102.0,4.2,15.0,1.1,2.3,2.4,0.4,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Pan de centeno 82%,1,111.0,3.0,20.9,1.9,4.4,0.7,0.2,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Pan de centeno 52%,1,135.0,5.1,18.0,1.1,3.8,4.0,0.5,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Pizza vegana (hacendado),1,724.0,26.0,102.0,7.6,10.0,21.0,7.2,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Pan de hamburguesa 100% int,1,215.0,9.1,33.0,2.6,5.0,4.0,0.9,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Base de pizza tradicional,1,396.0,9.1,74.8,2.7,3.4,6.2,1.1,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Churros congelados (carrefour),100,145.0,3.9,30.0,4.9,1.8,0.7,0.3,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Pan wasa vitalite,1,64.0,2.1,11.1,0.2,1.8,0.9,0.2,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+"Tostadas crujientes con cebolla (Organic bio, Carrefour)",1,18.0,0.4,4.1,0.3,0.2,0.0,0,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Fajitas sin gluten,100,253.0,5.0,45.0,3.5,6.2,4.5,1.2,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Tostadas (torradas) sin gluten (hacendado),1,20.0,0.32,4.2,0.13,0.01,0.15,0.02,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Pan de molde sin gluten (hacendado),1,74.0,1.2,8.5,1.7,2.9,3.3,0.4,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Crakers sin gluten (hacendado),1,19.0,0.1,3.4,0.1,0.0,0.5,0.1,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+"Pan de molde sin gluten (con chia, ALDI)",1,42.0,1.0,7.8,0.6,1.0,0.5,0.1,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Panecillo tostado sin gluten (hacendado),1,47.0,0.11,8.6,0.5,1.0,1.21,0.2,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Bagel clasico,1,214.0,8.0,53.0,11.0,4.0,2.7,0.4,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False
+Huevo,1,85.0,6.6,0.35,0.0,0.0,6.3,2,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False
+Clara de huevo,100,50.0,11.0,0.5,0.0,0.0,0.1,0,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False
+Proteina en polvo ISO,100,359.0,84.0,5.1,2.8,0.0,0.0,0,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False
+Proteina en polvo Concentrada,100,387.0,75.0,5.7,4.0,0.0,7.1,2.5,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False
+Proteina en polvo vegana,100,360.0,84.0,4.9,0.0,0.5,0.2,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False
+BCAA,100,400.0,100.0,0.0,0.0,0.0,0.0,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False
+Bebida isotonica,100,22.0,0.0,5.0,5.0,0.0,0.0,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False
+Chucherias sin pica pica,100,350.0,4.8,80.0,50.0,0.0,0.5,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False
+Zumo de Naranja,100,44.0,0.7,10.0,9.5,0.6,0.1,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False
+Zumo de piña y uva,100,54.0,0.6,12.9,12.9,0.0,0.0,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False
+Zumo de piña,100,43.0,0.4,10.2,10.2,0.2,0.1,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False
+Patata,100,88.0,2.5,18.0,0.0,2.0,0.2,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False
+Patata congelada corte grueso (Hacendado),100,116.0,2.1,20.0,0.0,2.7,2.4,0.5,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False
+Boniato,100,96.0,1.2,21.5,0.0,2.5,0.6,0.2,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False
+Calabaza,100,25.0,1.1,4.6,0.0,2.1,0.1,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False
+Ñoquis de patata,100,174.0,4.5,37.6,0.2,0.0,0.4,0.2,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False
+Maiz dulce (lata),1,58.0,1.75,9.8,4.7,0.0,1.0,0.3,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False
+Verdura a elegir,100,40.0,1.0,7.0,0.0,2.0,0.4,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Gazpacho andaluz tradicional,100,44.0,0.8,3.6,3.4,1.1,2.4,0.4,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Salmorejo,100,89.0,0.7,8.0,1.5,0.0,6.0,1.1,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+"Croquetas estofado pollo (la Cocinera, paquete negro)",1,43.0,2.1,6.6,0.5,0.1,1.0,0.2,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Soja texturizada,100,326.0,51.0,20.0,10.0,15.0,1.3,0.2,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Tofu,100,110.0,11.0,0.9,0.5,0.5,6.9,1.2,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Seitan,100,142.0,22.9,3.4,0.0,2.7,3.5,1.3,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Tempeh,100,199.0,19.6,4.0,0.3,2.0,11.2,1.8,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Maiz natural para palomitas,100,360.0,10.5,70.4,0.0,1.8,4.0,0.6,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Mazorca de maiz,1,129.0,3.8,18.0,8.3,6.5,3.3,0.8,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Popitas ZERO,1,230.0,5.6,40.6,0.4,9.8,2.8,0.4,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Aceitunas con hueso,100,156.0,1.6,0.14,0.14,0.0,15.7,3.6,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Limon granizado 0% (hacendado),1,74.0,0.2,18.2,0.4,9.6,0.0,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Limon granizado (hacendado),1,155.0,0.2,38.4,37.2,0.1,0.0,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Calipo de lima-limon (Hacendado),1,110.0,0.0,27.0,25.0,0.0,0.0,0,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+"Helado de yogur y frutos rojos (Flete, Aldi)",100,167.0,1.9,28.9,25.0,0.0,4.7,3,True,False,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+"Helado de fresa (hacendado, tarrina grande)",100,189.0,2.9,29.0,27.0,0.0,6.7,5.4,True,False,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Chocolate 85%,100,570.0,12.0,22.0,15.0,15.0,46.0,28,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Chocolate 90%,20,592.0,10.0,14.0,7.0,10.0,55.0,30,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Chocolate 99%,20,597.0,15.0,9.7,0.6,17.0,52.0,32,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Chocolate 72%,20,580.0,7.4,33.0,29.0,11.0,44.0,27,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Maki de salmon / atún,1,29.0,1.1,5.0,1.0,0.0,0.5,0,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Nigiri de salmon / atún,1,48.0,1.9,9.0,1.0,0.0,0.5,0,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Amstel Radler 0.0%,1,89.0,0.0,21.8,18.5,0.0,0.0,0,False,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Galletas lotus,100,484.0,4.9,72.6,38.1,1.3,19.0,8,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Galleta oreo,100,494.0,4.8,70.0,40.0,2.6,21.0,9.9,True,True,True,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Galleta Maria,100,423.0,8.1,76.0,18.0,4.8,8.6,0.9,False,False,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True
+Galletas marbu centeno,100,441.0,6.2,61.0,18.0,14.0,16.0,1.5,False,False,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True

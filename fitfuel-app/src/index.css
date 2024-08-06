@@ -1,0 +1,34 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #1e1e1e; /* Fondo oscuro */
+  color: #f0f0f0; /* Texto claro */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+h1, h2, h3, h4 {
+  color: #fff !important;
+}
+
+.modal-title h2,
+.modal-title h3,
+.modal-title h4 {
+  color: #fff !important;
+}
+
+.form-label {
+  font-weight: bold;
+  color: #f0f0f0; /* Texto claro */
+}
+
+.form-check-label {
+  color: #f0f0f0; /* Texto claro */
+}

@@ -1,0 +1,80 @@
+.container-create-training {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(43, 43, 43, 1); /* Fondo gris oscuro con transparencia */
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    color: #f0f0f0; /* Texto claro */
+}
+
+.container-create-training h2 {
+    color: #f0f0f0; /* Texto claro */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: bold;
+    color: #f0f0f0 !important; /* Texto claro */
+}
+
+.form-control, .form-select {
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 5px;
+    background-color: #1e1e1e !important; /* Fondo gris oscuro */
+    border: 1px solid #444;
+    color: #f0f0f0 !important; /* Texto claro */
+}
+
+.form-control::placeholder {
+    color: #f0f0f0; /* Color del placeholder */
+    opacity: 0.7; /* Opacidad del placeholder */
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #3b3b3b !important; /* Fondo un poco más claro al enfocar */
+    color: #f0f0f0 !important; /* Texto claro */
+}
+
+.btn {
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #f0f0f0; /* Texto claro */
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+    transform: scale(1.05);
+}
+
+.btn-outline-secondary {
+    border-color: #6c757d;
+    color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.alert {
+    margin-top: 20px;
+    background-color: #3b3b3b; /* Fondo gris oscuro */
+    border: 1px solid #444;
+    color: #f0f0f0; /* Texto claro */
+}
+
+.alert p {
+    margin: 0;
+}

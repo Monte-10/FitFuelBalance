@@ -1,0 +1,29 @@
+.trainer-requests-container {
+    background-color: rgba(43, 43, 43, 0.9); /* Fondo gris oscuro con transparencia */
+    padding: 20px;
+    border-radius: 10px;
+    color: #f0f0f0; /* Texto claro */
+}
+
+.requests-table th, .requests-table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.requests-table th {
+    background-color: #343a40; /* Fondo gris oscuro para los encabezados */
+    color: #fff; /* Texto blanco */
+}
+
+.requests-table tbody tr:nth-child(odd) {
+    background-color: #2b2b2b; /* Fondo gris oscuro */
+}
+
+.requests-table tbody tr:nth-child(even) {
+    background-color: #1e1e1e; /* Fondo gris oscuro */
+}
+
+/* Opcional: Cambiar el estilo de las filas al pasar el ratón */
+.requests-table tbody tr:hover {
+    background-color: #383838; /* Fondo gris más claro al pasar el ratón */
+}

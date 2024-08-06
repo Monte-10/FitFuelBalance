@@ -1,0 +1,110 @@
+.create-meal-container {
+    background: rgba(43, 43, 43, 0.9); /* Fondo gris oscuro con transparencia */
+    padding: 20px;
+    border-radius: 10px;
+    color: #f0f0f0;
+  }
+  
+  .create-meal-container h2, 
+  .create-meal-container h3, 
+  .create-meal-container label {
+    color: #f0f0f0; /* Texto claro */
+  }
+  
+  .create-meal-container .form-control, 
+  .create-meal-container .form-select {
+    background-color: #1e1e1e; /* Fondo gris oscuro */
+    border: 1px solid #444;
+    color: #f0f0f0; /* Texto claro */
+  }
+  
+  .create-meal-container .form-control::placeholder {
+    color: #f0f0f0; /* Color del placeholder */
+    opacity: 0.7; /* Opacidad del placeholder */
+  }
+  
+  .create-meal-container .form-control:focus, 
+  .create-meal-container .form-select:focus {
+    background-color: #3b3b3b; /* Fondo un poco más claro al enfocar */
+    color: #f0f0f0; /* Texto claro */
+  }
+  
+  .create-meal-container .btn-primary {
+    background-color: #28a745; /* Fondo verde */
+    border: none;
+  }
+  
+  .create-meal-container .btn-primary:hover {
+    background-color: #218838; /* Fondo verde oscuro al pasar el ratón */
+  }
+  
+  .create-meal-container .btn-danger {
+    background-color: #dc3545; /* Fondo rojo */
+    border: none;
+  }
+  
+  .create-meal-container .btn-danger:hover {
+    background-color: #c82333; /* Fondo rojo oscuro al pasar el ratón */
+  }
+  
+  .create-meal-container .btn-info {
+    background-color: #17a2b8; /* Fondo azul */
+    border: none;
+  }
+  
+  .create-meal-container .btn-info:hover {
+    background-color: #138496; /* Fondo azul oscuro al pasar el ratón */
+  }
+  
+  .create-meal-container .list-group-item {
+    background-color: transparent; /* Fondo transparente */
+    color: #f0f0f0; /* Texto claro */
+  }
+  
+  .create-meal-container .card {
+    background-color: #2b2b2b; /* Fondo gris oscuro */
+    color: #f0f0f0; /* Texto claro */
+    border: none;
+  }
+  
+  .create-meal-container .card-header {
+    background-color: #343a40; /* Fondo un poco más oscuro */
+    border-bottom: none;
+    color: #f0f0f0; /* Texto claro */
+  }
+  
+  .create-meal-container .card-body {
+    background-color: #3b3b3b; /* Fondo un poco más claro */
+  }
+  
+  .create-meal-container .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .create-meal-container .pagination button {
+    margin: 0 5px;
+  }
+  
+  .dish-list .card {
+    flex: 0 0 48%; /* Ajusta el tamaño de la tarjeta para que ocupen dos columnas */
+    margin: 1%;
+  }
+  
+  .selected-dish-summary {
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #ffffff;
+  }
+  
+  /* Ajustes generales de margen y padding */
+  
+  .btn-success {
+    background-color: #28a745;
+    color: white;
+    margin-top: 20px; /* Separación adicional */
+    padding: 10px 20px;
+    font-size: 1.25rem;
+  }
+  

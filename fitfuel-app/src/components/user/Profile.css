@@ -1,0 +1,63 @@
+.container-profile {
+    max-width: 800px;
+    margin: auto;
+    background-color: rgba(43, 43, 43, 1); /* Fondo gris oscuro con transparencia */
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #f0f0f0; /* Texto claro */
+}
+
+.title-profile {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #f0f0f0; /* Texto claro */
+}
+
+.form-label {
+    font-weight: bold;
+    color: #f0f0f0; /* Texto claro */
+}
+
+.form-control, .form-select {
+    background-color: #1e1e1e; /* Fondo gris oscuro */
+    border: 1px solid #444;
+    color: #f0f0f0; /* Texto claro */
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.form-control::placeholder, .form-select::placeholder {
+    color: #f0f0f0; /* Color del placeholder */
+    opacity: 0.7; /* Opacidad del placeholder */
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #3b3b3b; /* Fondo un poco más claro al enfocar */
+    color: #f0f0f0; /* Texto claro */
+}
+
+.btn-primary {
+    width: 100%;
+    background-color: #28a745; /* Fondo verde */
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #218838; /* Fondo verde oscuro al pasar el ratón */
+    transform: scale(1.05);
+}
+
+.mt-4 {
+    margin-top: 2rem !important;
+}
+
+.form-check-label {
+    color: #f0f0f0; /* Texto claro */
+  }
+  

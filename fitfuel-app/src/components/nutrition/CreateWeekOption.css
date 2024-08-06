@@ -1,0 +1,44 @@
+.create-week-option-container {
+    background: #2b2b2b;
+    padding: 2rem;
+    border-radius: 12px;
+    color: #f0f0f0;
+  }
+  
+  .create-week-option-container .form-label {
+    color: #f0f0f0;
+  }
+  
+  .create-week-option-container .form-control, .create-week-option-container .form-select {
+    background: #1e1e1e;
+    color: #f0f0f0;
+    border: 1px solid #444;
+  }
+  
+  .create-week-option-container .form-control:focus, .create-week-option-container .form-select:focus {
+    background: #333;
+    color: #fff;
+    border-color: #28a745;
+  }
+  
+  .create-week-option-container .btn-primary {
+    background-color: #28a745;
+    border-color: #28a745;
+  }
+  
+  .create-week-option-container .btn-primary:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+  }
+  
+  .create-week-option-container .alert {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #1e7e34;
+  }
+  
+  .create-week-option-container .alert-danger {
+    background-color: #dc3545;
+    border-color: #c82333;
+  }
+  

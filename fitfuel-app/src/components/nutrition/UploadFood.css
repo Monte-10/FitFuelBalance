@@ -1,0 +1,33 @@
+/* UploadFood.css */
+
+.upload-food-container {
+    background: rgba(43, 43, 43, 0.9); /* Fondo gris oscuro con transparencia */
+    padding: 20px;
+    border-radius: 10px;
+    color: #f0f0f0;
+  }
+  
+  .upload-food-container h1 {
+    color: #f0f0f0; /* Texto claro */
+  }
+  
+  .upload-food-container .form-control {
+    background-color: #2b2b2b; /* Fondo gris oscuro */
+    border: none;
+    color: #f0f0f0; /* Texto claro */
+  }
+  
+  .upload-food-container .form-control:focus {
+    background-color: #3b3b3b; /* Fondo un poco más claro al enfocar */
+    color: #f0f0f0; /* Texto claro */
+  }
+  
+  .upload-food-container .btn-primary {
+    background-color: #28a745; /* Fondo verde */
+    border: none;
+  }
+  
+  .upload-food-container .btn-primary:hover {
+    background-color: #218838; /* Fondo verde oscuro al pasar el ratón */
+  }
+  

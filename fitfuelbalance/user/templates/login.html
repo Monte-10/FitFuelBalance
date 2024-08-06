@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <p>Ya estás logueado como: {{ request.user.username }}</p>
+        <a href="{% url 'logout' %}">¿Quieres cerrar sesión?</a>
+    {% else %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Login</button>
+        </form>
+    {% endif %}
+{% endblock %}

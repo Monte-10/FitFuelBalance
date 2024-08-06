@@ -1,0 +1,11 @@
+<!-- add_meal.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Add Meal</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Meal</button>
+</form>
+{% endblock %}

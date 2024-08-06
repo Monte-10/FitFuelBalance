@@ -1,0 +1,40 @@
+.container-weekly-trainings {
+    background-color: rgba(43, 43, 43, 0.9); /* Fondo gris oscuro con transparencia */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    color: #f0f0f0; /* Texto claro */
+}
+
+.container-weekly-trainings h2 {
+    color: #f0f0f0; /* Texto claro */
+    text-align: center;
+}
+
+.card {
+    background-color: #2b2b2b; /* Fondo gris oscuro */
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    color: #f0f0f0; /* Texto claro */
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    transition: background-color 0.3s, transform 0.3s;
+    color: #f0f0f0; /* Texto claro */
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+    transform: scale(1.05);
+}
+
+.pdf-viewer {
+    margin-top: 20px;
+}
+
+.pdf-viewer iframe {
+    border: none;
+}

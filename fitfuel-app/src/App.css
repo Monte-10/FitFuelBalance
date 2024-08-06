@@ -1,0 +1,113 @@
+body {
+  background-color: #1e1e1e;
+  color: #fff;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image: url('./components/img/background.png');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+}
+
+.modal-title h2,
+.modal-title h3,
+.modal-title h4 {
+  color: #fff !important;
+}
+
+h1, h2, h3, h4 {
+  color: #fff !important;
+}
+
+.form-label {
+  font-weight: bold;
+  color: #f0f0f0; /* Texto claro */
+}
+
+.form-check-label {
+  color: #f0f0f0; /* Texto claro */
+}
+
+.home-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  overflow: hidden; /* Evitar scroll en HomePage */
+}
+
+a {
+  color: #28a745; /* Verde */
+}
+
+a:hover {
+  color: #218838; /* Verde oscuro */
+}
+
+.navbar-dark .navbar-brand {
+  color: #28a745;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: #fff;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: #28a745;
+}
+
+.dropdown-menu {
+  background-color: #343a40;
+  border: none;
+}
+
+.dropdown-item {
+  color: #fff;
+}
+
+.dropdown-item:hover {
+  background-color: #495057;
+  color: #28a745;
+}
+
+.welcome-text {
+  margin-top: 20px;
+  z-index: 2;
+}
+
+.container-options {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  z-index: 2;
+}
+
+.option-card {
+  flex: 1;
+  min-width: 150px;
+  background-color: #333;
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+}
+
+.home-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.home-page > * {
+  z-index: 2;
+}

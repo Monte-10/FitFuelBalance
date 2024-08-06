@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Food List</h2>
+    <form method="get">
+        {{ filter.form.as_p }}
+        <button type="submit">Filter</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Unit Weight</th>
+                <th>Calories</th>
+                <th>Protein</th>
+                <th>Carbohydrates</th>
+                <th>Sugar</th>
+                <th>Fiber</th>
+                <th>Fat</th>
+                <th>Saturated Fat</th>
+                <th>Gluten Free</th>
+                <th>Lactose Free</th>
+                <th>Vegan</th>
+                <th>Vegetarian</th>
+                <th>Pescetarian</th>
+                <th>Contains Meat</th>
+                <th>Contains Vegetables</th>
+                <th>Contains Fish/Shellfish</th>
+                <th>Cereal</th>
+                <th>Pasta/Rice</th>
+                <th>Dairy/Yogurt/Cheese</th>
+                <th>Fruit</th>
+                <th>Nuts</th>
+                <th>Legume</th>
+                <th>Sauce/Condiment</th>
+                <th>Deli Meat</th>
+                <th>Bread/Toast</th>
+                <th>Egg</th>
+                <th>Special Drink/Supplement</th>
+                <th>Tuber</th>
+                <th>Other</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for food in filter.qs %}
+            <tr>
+                <td>{{ food.name }}</td>
+                <td>{{ food.unit_weight }}</td>
+                <td>{{ food.calories }}</td>
+                <td>{{ food.protein }}</td>
+                <td>{{ food.carbohydrates }}</td>
+                <td>{{ food.sugar }}</td>
+                <td>{{ food.fiber }}</td>
+                <td>{{ food.fat }}</td>
+                <td>{{ food.saturated_fat }}</td>
+                <td>{{ food.gluten_free|yesno:"Yes,No" }}</td>
+                <td>{{ food.lactose_free|yesno:"Yes,No" }}</td>
+                <td>{{ food.vegan|yesno:"Yes,No" }}</td>
+                <td>{{ food.vegetarian|yesno:"Yes,No" }}</td>
+                <td>{{ food.pescetarian|yesno:"Yes,No" }}</td>
+                <td>{{ food.contains_meat|yesno:"Yes,No" }}</td>
+                <td>{{ food.contains_vegetables|yesno:"Yes,No" }}</td>
+                <td>{{ food.contains_fish_shellfish_canned_preserved|yesno:"Yes,No" }}</td>
+                <td>{{ food.cereal|yesno:"Yes,No" }}</td>
+                <td>{{ food.pasta_or_rice|yesno:"Yes,No" }}</td>
+                <td>{{ food.dairy_yogurt_cheese|yesno:"Yes,No" }}</td>
+                <td>{{ food.fruit|yesno:"Yes,No" }}</td>
+                <td>{{ food.nuts|yesno:"Yes,No" }}</td>
+                <td>{{ food.legume|yesno:"Yes,No" }}</td>
+                <td>{{ food.sauce_or_condiment|yesno:"Yes,No" }}</td>
+                <td>{{ food.deli_meat|yesno:"Yes,No" }}</td>
+                <td>{{ food.bread_or_toast|yesno:"Yes,No" }}</td>
+                <td>{{ food.egg|yesno:"Yes,No" }}</td>
+                <td>{{ food.special_drink_or_supplement|yesno:"Yes,No" }}</td>
+                <td>{{ food.tuber|yesno:"Yes,No" }}</td>
+                <td>{{ food.other|yesno:"Yes,No" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="30">No foods found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('tr[data-href]').forEach(row => {
+        row.addEventListener('click', () => {
+            window.location.href = row.dataset.href;
+        });
+    });
+});
+</script>
+{% endblock %}
+

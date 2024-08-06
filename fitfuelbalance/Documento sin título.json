@@ -1,0 +1,125 @@
+/* DISH */
+
+{
+    "name": "Carne Variada 2",
+    "user": 8,
+    "dish_ingredients": [
+        {
+            "ingredient": 19,
+            "quantity": "200.0"
+        },
+        {
+            "ingredient": 20,
+            "quantity": "200.0"
+        }
+    ]
+}
+
+
+/* MEAL */
+
+
+{
+    "name": "Almuerzo Saludable",
+    "date": "2024-02-10",
+    "user": "8",
+    "mealdishes": [
+        {
+            "dish_ingredients": [
+                {
+                    "ingredient": "1",
+                    "quantity": "150",
+                    "notes": "Notas sobre el ingrediente si las hay"
+                }
+            ],
+            "name": "Nombre del plato 1",
+            "user": "8"
+        },
+        {
+            "dish_ingredients": [
+                {
+                    "ingredient": "2",
+                    "quantity": "150",
+                    "notes": "Notas sobre el ingrediente si las hay"
+                }
+            ],
+            "name": "Nombre del plato 2",
+            "user": "8"
+        }
+    ]
+}
+
+
+/***/
+
+{
+    "name": "Almuerzo Ejemplo",
+    "date": "2024-02-10",
+    "user": 8,
+    "dishes": [
+        {
+            "id": 27,
+            "portion": 1.5,
+            "notes": "Preferencia baja en sal para el Dish existente"
+        },
+        {
+            "dish_ingredients": [
+                {
+                    "ingredient": 1,
+                    "quantity": "100.00"
+                },
+                {
+                    "ingredient": 2,
+                    "quantity": "150.00"
+                }
+            ],
+            "name": "Nuevo Dish Creativo",
+            "user": 8,
+            "portion": 1.0,
+            "notes": "Anotaciones especiales para el nuevo Dish"
+        }
+    ]
+}
+
+/**/
+{
+    "name": "Almuerzo Ejemplo",
+    "date": "2024-02-10",
+    "user": 8,
+    "existing_dishes": [27],
+    "new_dishes": [
+        {
+            "name": "Nuevo Dish Creativo",
+            "user": 8,
+            "dish_ingredients": [
+                {
+                    "ingredient": 1,
+                    "quantity": "100.00"
+                },
+                {
+                    "ingredient": 2,
+                    "quantity": "150.00"
+                }
+            ]
+        }
+    ]
+}
+
+/**/
+
+{
+    "name": "Almuerzo Ejemplo",
+    "date": "2024-02-10",
+    "user": 8,
+    "existing_dishes": [27],
+    "new_dishes": [
+        {
+            "name": "Nuevo Dish Creativo",
+            "user": 8,
+            "dish_ingredients": [
+                {"ingredient": 1, "quantity": "100.00"},
+                {"ingredient": 2, "quantity": "150.00"}
+            ]
+        }
+    ]
+}

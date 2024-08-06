@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="get">
+        {{ form.as_p }}
+        <button type="submit">Buscar</button>
+    </form>
+
+    <ul>
+        {% for trainer in trainers %}
+        <li>{{ trainer.username }} - <a href="{% url 'send_request' trainer.pk %}">Enviar Solicitud</a></li>
+        {% empty %}
+        <li>No se encontraron entrenadores.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

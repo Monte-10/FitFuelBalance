@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <p>Ya estás registrado como: {{ request.user.username }}</p>
+        <a href="{% url 'logout' %}">¿Quieres cerrar sesión?</a>
+    {% else %}
+    <h2>Regístrate Como Usuario</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Registrarse</button>
+        </form>
+        <p> ¿Eres un entrenador o nutricionista (o ambos)? <a href="{% url 'trainersignup' %}">Regístrate aquí.</a></p>
+    {% endif %}
+{% endblock %}

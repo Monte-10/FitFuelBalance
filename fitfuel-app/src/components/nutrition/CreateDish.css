@@ -1,0 +1,101 @@
+.create-dish-container {
+  background: rgba(43, 43, 43, 1); /* Fondo gris oscuro */
+  padding: 20px;
+  border-radius: 10px;
+  color: #f0f0f0;
+}
+
+.create-dish-container h2, 
+.create-dish-container h3, 
+.create-dish-container label {
+  color: #f0f0f0; /* Texto claro */
+}
+
+.create-dish-container .form-control, 
+.create-dish-container .form-select {
+  background-color: #1e1e1e; /* Fondo gris oscuro */
+  border: 1px solid #444;
+  color: #f0f0f0; /* Texto claro */
+}
+
+.create-dish-container .form-control::placeholder {
+  color: #f0f0f0; /* Color del placeholder */
+  opacity: 0.7; /* Opacidad del placeholder */
+}
+
+.create-dish-container .form-control:focus, 
+.create-dish-container .form-select:focus {
+  background-color: #3b3b3b; /* Fondo un poco más claro al enfocar */
+  color: #f0f0f0; /* Texto claro */
+}
+
+.create-dish-container .btn-primary {
+  background-color: #28a745; /* Fondo verde */
+  border: none;
+}
+
+.create-dish-container .btn-primary:hover {
+  background-color: #218838; /* Fondo verde oscuro al pasar el ratón */
+}
+
+.create-dish-container .btn-danger {
+  background-color: #dc3545; /* Fondo rojo */
+  border: none;
+}
+
+.create-dish-container .btn-danger:hover {
+  background-color: #c82333; /* Fondo rojo oscuro al pasar el ratón */
+}
+
+.create-dish-container .btn-info {
+  background-color: #17a2b8; /* Fondo azul */
+  border: none;
+}
+
+.create-dish-container .btn-info:hover {
+  background-color: #138496; /* Fondo azul oscuro al pasar el ratón */
+}
+
+.create-dish-container .list-group-item {
+  background-color: transparent; /* Fondo transparente */
+  color: #f0f0f0; /* Texto claro */
+}
+
+.create-dish-container .card {
+  background-color: #2b2b2b; /* Fondo gris oscuro */
+  color: #f0f0f0; /* Texto claro */
+  border: none;
+}
+
+.create-dish-container .card-header {
+  background-color: #343a40; /* Fondo un poco más oscuro */
+  border-bottom: none;
+  color: #f0f0f0; /* Texto claro */
+}
+
+.create-dish-container .card-body {
+  background-color: #3b3b3b; /* Fondo un poco más claro */
+}
+
+.create-dish-container .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.create-dish-container .pagination button {
+  margin: 0 5px;
+}
+
+/* Ajusta las tarjetas de ingredientes disponibles para que sean más pequeñas y se alineen en dos columnas */
+.ingredient-list .card {
+  flex: 0 0 48%; /* Ajusta el tamaño de la tarjeta para que ocupen dos columnas */
+  margin: 1%;
+}
+
+/* Ajusta la visualización de los detalles de los ingredientes seleccionados */
+.ingredient-summary {
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: #ffffff;
+}

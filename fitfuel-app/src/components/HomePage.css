@@ -1,0 +1,149 @@
+.home-page {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #fff;
+    overflow: hidden; /* Evitar scroll en HomePage */
+    position: relative; /* Añadir para poder usar ::before */
+}
+
+h2, h3, h4 {
+    color: #fff; /* Blanco */
+}
+
+.welcome-text {
+    color: #fff;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.intro-text {
+    color: #ddd;
+    margin-bottom: 4rem;
+    text-align: center;
+}
+
+.option-card {
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s, color 0.3s;
+    background: #2b2b2b !important; /* Fondo gris oscuro */
+    border: none;
+    margin: 10px;
+    text-align: center;
+    border-radius: 8px; /* Bordes redondeados */
+    color: #f0f0f0 !important; /* Texto claro */
+    width: 200px; /* Ancho fijo */
+    height: 200px; /* Altura fija */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box; /* Incluye el padding y border dentro de las dimensiones */
+}
+
+.option-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #218838 !important; /* Fondo verde oscuro al pasar el ratón */
+    color: #fff !important; /* Texto blanco al pasar el ratón */
+}
+
+.option-card .card-title {
+    font-size: 1.5rem;
+    color: #f0f0f0 !important; /* Texto claro */
+}
+
+.option-card:hover .card-title {
+    color: #fff !important; /* Texto blanco al pasar el ratón */
+}
+
+.option-card .card-text {
+    color: #f0f0f0 !important; /* Texto claro */
+}
+
+.option-card:hover .card-text {
+    color: #fff !important; /* Texto blanco al pasar el ratón */
+}
+
+.modal-content {
+    background: #2b2b2b !important; /* Fondo gris oscuro para el modal */
+    border-radius: 12px;
+    padding: 2rem;
+    color: #f0f0f0 !important; /* Texto claro */
+}
+
+.modal-header, .modal-footer {
+    border: none;
+    color: #f0f0f0;
+}
+
+.modal-header {
+    border-bottom: 1px solid #444; /* Línea divisoria sutil */
+}
+
+.modal-footer {
+    border-top: 1px solid #444; /* Línea divisoria sutil */
+}
+
+.modal-title {
+    color: #f0f0f0 !important;
+}
+
+.modal-body ul {
+    list-style: none; /* Quitar puntos de la lista */
+    padding: 0;
+}
+
+.modal-body ul li {
+    margin-bottom: 10px;
+}
+
+.modal-body ul li a {
+    color: #28a745 !important; /* Verde */
+    text-decoration: none;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    display: block; /* Asegurarse de que el área de clic sea completa */
+    padding: 5px; /* Agregar relleno para hacer el área de clic más grande */
+    border-radius: 4px; /* Bordes redondeados del enlace */
+}
+
+.modal-body ul li a:hover {
+    color: #fff !important; /* Texto blanco al pasar el ratón */
+    background-color: #218838 !important; /* Fondo verde oscuro al pasar el ratón */
+}
+
+.modal-body ul li a:active {
+    background-color: #2b2b2b !important; /* Gris oscuro al hacer clic */
+    color: #fff !important; /* Texto blanco al hacer clic */
+}
+
+.home-option {
+    width: 100%;
+    text-decoration: none;
+    color: inherit;
+}
+
+.row-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -50px; /* Ajusta este valor para mover las opciones hacia arriba */
+}
+
+.home-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0);
+    z-index: 1;
+}
+
+.home-page > * {
+    z-index: 2;
+}

@@ -1,0 +1,84 @@
+.container-assigned {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(43, 43, 43, 0.9); /* Fondo gris oscuro con transparencia */
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    color: #f0f0f0; /* Texto claro */
+}
+
+.container-assigned h2 {
+    color: #f0f0f0; /* Texto claro */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.assigned-week-trainings-table {
+    margin-top: 20px;
+}
+
+.assigned-week-trainings-table th, .assigned-week-trainings-table td {
+    text-align: center;
+    vertical-align: middle;
+    background-color: #1e1e1e; /* Fondo gris oscuro */
+    border: 1px solid #444;
+    color: #f0f0f0; /* Texto claro */
+}
+
+.pdf-viewer {
+    margin-top: 20px;
+}
+
+.pdf-viewer iframe {
+    border: none;
+    background-color: #1e1e1e; /* Fondo gris oscuro */
+}
+
+.btn-close-pdf {
+    display: block;
+    margin-bottom: 10px;
+    background-color: #28a745; /* Fondo verde */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+}
+
+.btn-close-pdf:hover {
+    background-color: #218838; /* Fondo verde oscuro al pasar el ratón */
+    color: #fff;
+    text-decoration: none;
+}
+
+.pagination {
+    justify-content: center;
+}
+
+/* Ajustes adicionales para campos de formulario y selectores dentro del contenedor asignado */
+.container-assigned .form-control,
+.container-assigned .form-select {
+    background-color: #1e1e1e; /* Fondo gris oscuro */
+    border: 1px solid #444;
+    color: #f0f0f0; /* Texto claro */
+}
+
+.container-assigned .form-control::placeholder {
+    color: #f0f0f0; /* Color del placeholder */
+    opacity: 0.7; /* Opacidad del placeholder */
+}
+
+.container-assigned .form-control:focus,
+.container-assigned .form-select:focus {
+    background-color: #3b3b3b; /* Fondo un poco más claro al enfocar */
+    color: #f0f0f0; /* Texto claro */
+}
+
+.container-assigned .btn-primary {
+    background-color: #28a745; /* Fondo verde */
+    border: none;
+}
+
+.container-assigned .btn-primary:hover {
+    background-color: #218838; /* Fondo verde oscuro al pasar el ratón */
+}

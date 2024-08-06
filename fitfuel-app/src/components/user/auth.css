@@ -1,0 +1,34 @@
+.auth-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 500px;
+}
+
+.auth-card {
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+}
+
+.auth-card .card-body {
+    padding: 2rem;
+}
+
+.auth-card .card-title {
+    font-weight: bold;
+}
+
+.auth-card .form-label {
+    font-weight: 500;
+}
+
+.auth-card .btn {
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+}

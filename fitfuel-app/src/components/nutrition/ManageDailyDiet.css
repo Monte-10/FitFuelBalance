@@ -1,0 +1,91 @@
+/* ManageDailyDiet.css */
+
+.manage-daily-diet-container {
+    background: rgba(43, 43, 43, 0.9); /* Fondo gris oscuro con transparencia */
+    padding: 20px;
+    border-radius: 10px;
+    color: #f0f0f0;
+  }
+  
+  .manage-daily-diet-container h2, 
+  .manage-daily-diet-container h3, 
+  .manage-daily-diet-container label {
+    color: #f0f0f0; /* Texto claro */
+  }
+  
+  .manage-daily-diet-container .form-control, 
+  .manage-daily-diet-container .form-select {
+    background-color: #2b2b2b; /* Fondo gris oscuro */
+    border: none;
+    color: #f0f0f0; /* Texto claro */
+  }
+  
+  .manage-daily-diet-container .form-control::placeholder,
+  .manage-daily-diet-container .form-select::placeholder {
+    color: #f0f0f0; /* Color del texto del placeholder */
+  }
+  
+  .manage-daily-diet-container .form-control:focus, 
+  .manage-daily-diet-container .form-select:focus {
+    background-color: #3b3b3b; /* Fondo un poco más claro al enfocar */
+    color: #f0f0f0; /* Texto claro */
+  }
+  
+  .manage-daily-diet-container .btn-primary {
+    background-color: #28a745; /* Fondo verde */
+    border: none;
+  }
+  
+  .manage-daily-diet-container .btn-primary:hover {
+    background-color: #218838; /* Fondo verde oscuro al pasar el ratón */
+  }
+  
+  .manage-daily-diet-container .btn-danger {
+    background-color: #dc3545; /* Fondo rojo */
+    border: none;
+  }
+  
+  .manage-daily-diet-container .btn-danger:hover {
+    background-color: #c82333; /* Fondo rojo oscuro al pasar el ratón */
+  }
+  
+  .manage-daily-diet-container .btn-info {
+    background-color: #17a2b8; /* Fondo azul */
+    border: none;
+  }
+  
+  .manage-daily-diet-container .btn-info:hover {
+    background-color: #138496; /* Fondo azul oscuro al pasar el ratón */
+  }
+  
+  .manage-daily-diet-container .list-group-item {
+    background-color: transparent; /* Fondo transparente */
+    color: #f0f0f0; /* Texto claro */
+  }
+  
+  .manage-daily-diet-container .card {
+    background-color: #2b2b2b; /* Fondo gris oscuro */
+    color: #f0f0f0; /* Texto claro */
+    border: none;
+  }
+  
+  .manage-daily-diet-container .card-header {
+    background-color: #343a40; /* Fondo un poco más oscuro */
+    border-bottom: none;
+    color: #f0f0f0; /* Texto claro */
+  }
+  
+  .manage-daily-diet-container .card-body {
+    background-color: #3b3b3b; /* Fondo un poco más claro */
+  }
+  
+  .manage-daily-diet-container .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .manage-daily-diet-container .pagination button {
+    margin: 0 55px; /* Añade espacio entre los botones */
+  }
+  

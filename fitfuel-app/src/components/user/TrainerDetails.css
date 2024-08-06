@@ -1,0 +1,39 @@
+.trainer-details-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(43, 43, 43, 0.9); /* Fondo gris oscuro con transparencia */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: #f0f0f0; /* Texto claro */
+}
+
+.trainer-details-card {
+    padding: 20px;
+    background-color: #1e1e1e; /* Fondo gris oscuro */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: #f0f0f0; /* Texto claro */
+}
+
+.trainer-details-card .card-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #f0f0f0; /* Texto claro */
+}
+
+.trainer-details-card .card-text {
+    margin-bottom: 10px;
+    color: #f0f0f0; /* Texto claro */
+}
+
+.trainer-details-card .btn-danger {
+    margin-top: 20px;
+    background-color: #dc3545; /* Fondo rojo */
+    border: none;
+    color: #fff; /* Texto blanco */
+}
+
+.trainer-details-card .btn-danger:hover {
+    background-color: #c82333; /* Fondo rojo oscuro al pasar el ratón */
+}

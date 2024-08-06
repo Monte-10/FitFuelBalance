@@ -1,0 +1,134 @@
+.container-listingredient {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(43, 43, 43, 1); /* Fondo gris oscuro con transparencia */
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    color: #f0f0f0; /* Texto claro */
+}
+
+h1 {
+    color: #f0f0f0; /* Texto claro */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.table-listingredient {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.table-listingredient th, .table-listingredient td {
+    padding: 1rem;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table-listingredient thead th {
+    background-color: #343a40;
+    color: #fff;
+}
+
+.table-listingredient tbody tr {
+    transition: background-color 0.3s;
+    background-color: #2b2b2b; /* Fondo gris oscuro */
+    color: #f0f0f0; /* Texto claro */
+}
+
+.table-listingredient tbody tr:nth-child(even) {
+    background-color: #3a3a3a; /* Fondo gris un poco más claro */
+}
+
+.table-listingredient tbody tr:hover {
+    background-color: #444; /* Fondo un poco más claro al pasar el ratón */
+}
+
+.form-control-listingredient, .form-select-listingredient {
+    margin-bottom: 10px;
+    width: 100%;
+    background-color: #1e1e1e; /* Fondo gris oscuro */
+    border: 1px solid #444;
+    color: #f0f0f0; /* Texto claro */
+}
+
+.form-control-listingredient::placeholder, .form-select-listingredient::placeholder {
+    color: #f0f0f0; /* Color del placeholder */
+    opacity: 0.7; /* Opacidad del placeholder */
+}
+
+.form-control-listingredient:focus, .form-select-listingredient:focus {
+    background-color: #3b3b3b; /* Fondo un poco más claro al enfocar */
+    color: #f0f0f0; /* Texto claro */
+}
+
+.btn-listingredient {
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-listingredient:hover {
+    transform: scale(1.05);
+}
+
+.btn-primary-listingredient {
+    background-color: #28a745;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.btn-danger-listingredient {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+}
+
+.btn-secondary-listingredient {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+}
+
+.pagination-listingredient {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination-listingredient span {
+    margin: 0 10px;
+    color: #f0f0f0; /* Texto claro */
+}
+
+.alert-listingredient {
+    margin-top: 20px;
+    background-color: #343a40;
+    color: #f0f0f0; /* Texto claro */
+}
+
+.row-listingredient {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.col-md-2-listingredient {
+    flex: 0 0 calc(16.66667% - 20px);
+    max-width: calc(16.66667% - 20px);
+}
+
+@media (max-width: 768px) {
+    .col-md-2-listingredient {
+        flex: 0 0 calc(50% - 10px);
+        max-width: calc(50% - 10px);
+    }
+}

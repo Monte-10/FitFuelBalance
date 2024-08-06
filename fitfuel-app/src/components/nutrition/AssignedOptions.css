@@ -1,0 +1,51 @@
+.container-assigned {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    color: #343a40;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.assigned-options-table {
+    margin-top: 20px;
+}
+
+.assigned-options-table th, .assigned-options-table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.pdf-viewer {
+    margin-top: 20px;
+}
+
+.pdf-viewer iframe {
+    border: none;
+}
+
+.btn-close-pdf {
+    display: block;
+    margin-bottom: 10px;
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+}
+
+.btn-close-pdf:hover {
+    background-color: #5a6268;
+    color: #fff;
+    text-decoration: none;
+}
+
+.pagination {
+    justify-content: center;
+}

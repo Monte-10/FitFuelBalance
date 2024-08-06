@@ -1,0 +1,18 @@
+.trainer-request-modal .modal-content {
+    background-color: #1e1e1e; /* Fondo gris oscuro */
+    border-radius: 10px;
+    color: #f0f0f0; /* Texto claro */
+}
+
+.trainer-request-modal .modal-header {
+    background-color: #343a40;
+    color: #fff;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.trainer-request-modal .modal-footer {
+    background-color: #2b2b2b; /* Fondo gris oscuro */
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}

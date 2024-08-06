@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Solicitudes de Entrenamiento</h1>
+
+    <ul>
+        {% for request in requests %}
+        <li>
+            De: {{ request.regular_user.username }}
+            {% if not request.is_accepted %}
+                - <a href="{% url 'accept_request' request.pk %}">Aceptar</a>
+                - <a href="{% url 'reject_request' request.pk %}">Rechazar</a>
+            {% else %}
+                - Aceptada
+            {% endif %}
+        </li>
+        {% empty %}
+        <li>No tienes solicitudes pendientes.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <h1>{{ food.name }}</h1>
+    <p>Unit Weight: {{ food.unit_weight }}</p>
+    <p>Calories: {{ food.calories }}</p>
+    <p>Protein: {{ food.protein }}</p>
+    <p>Carbohydrates: {{ food.carbohydrates }}</p>
+    <p>Sugar: {{ food.sugar }}</p>
+    <p>Fiber: {{ food.fiber }}</p>
+    <p>Fat: {{ food.fat }}</p>
+    <p>Saturated Fat: {{ food.saturated_fat }}</p>
+    <p>Gluten Free: {{ food.gluten_free }}</p>
+    <p>Lactose Free: {{ food.lactose_free }}</p>
+    <p>Vegan: {{ food.vegan }}</p>
+    <p>Vegetarian: {{ food.vegetarian }}</p>
+    <p>Pescetarian: {{ food.pescetarian }}</p>
+    <p>Contains Meat: {{ food.contains_meat }}</p>
+    <p>Contains Vegetables: {{ food.contains_vegetables }}</p>
+    <p>Contains Fish/Shellfish/Canned/Preserved: {{ food.contains_fish_shellfish_canned_preserved }}</p>
+    <p>Cereal: {{ food.cereal }}</p>
+    <p>Pasta or Rice: {{ food.pasta_or_rice }}</p>
+    <p>Dairy/Yogurt/Cheese: {{ food.dairy_yogurt_cheese }}</p>
+    <p>Fruit: {{ food.fruit }}</p>
+    <p>Nuts: {{ food.nuts }}</p>
+    <p>Legume: {{ food.legume }}</p>
+    <p>Sauce or Condiment: {{ food.sauce_or_condiment }}</p>
+    <p>Deli Meat: {{ food.deli_meat }}</p>
+    <p>Bread or Toast: {{ food.bread_or_toast }}</p>
+    <p>Egg: {{ food.egg }}</p>
+    <p>Special Drink or Supplement: {{ food.special_drink_or_supplement }}</p>
+    <p>Tuber: {{ food.tuber }}</p>
+    <p>Other: {{ food.other }}</p>
+</div>
+{% endblock %}
+    

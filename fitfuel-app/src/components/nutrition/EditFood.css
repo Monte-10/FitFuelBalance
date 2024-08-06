@@ -1,0 +1,93 @@
+.container-editfood {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #2b2b2b; /* Fondo gris oscuro */
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+  color: #f0f0f0; /* Texto claro */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  font-weight: bold;
+  color: #f0f0f0; /* Texto claro */
+}
+
+.form-control, .form-check-input, .form-check-label {
+  background-color: #1e1e1e; /* Fondo gris oscuro */
+  border: 1px solid #444; /* Borde gris */
+  color: #f0f0f0; /* Texto claro */
+  margin-bottom: 10px;
+}
+
+.form-control:focus, .form-check-input:focus {
+  background-color: #3b3b3b; /* Fondo más claro al enfocar */
+  color: #f0f0f0; /* Texto claro */
+}
+
+.form-check {
+  margin-bottom: 10px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.col-md-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+  padding: 10px;
+}
+
+.btn {
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 14px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #004085;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #4e555b;
+}
+
+.alert {
+  margin-top: 20px;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}

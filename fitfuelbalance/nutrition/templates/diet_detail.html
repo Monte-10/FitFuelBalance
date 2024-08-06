@@ -1,0 +1,21 @@
+<!-- diet_detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ diet.name }}</h2>
+<!-- Iterar sobre DailyDiet -->
+{% for daily_diet in diet.dailydiet_set.all %}
+    <h3>{{ daily_diet.date }}</h3>
+    <!-- Iterar sobre las comidas para este día -->
+    {% for meal in daily_diet.meals.all %}
+        <p>{{ meal.name }}: 
+        <!-- Enlaces para editar o añadir platos a la comida -->
+        <a href="{% url 'add_dish' meal.id %}">Add Dish</a>
+        </p>
+        <!-- Iterar sobre los platos para esta comida -->
+        {% for dish in meal.dishes.all %}
+            <p>Dish: {{ dish.name }}</p>
+        {% endfor %}
+    {% endfor %}
+{% endfor %}
+{% endblock %}
