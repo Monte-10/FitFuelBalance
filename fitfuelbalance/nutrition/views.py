@@ -552,3 +552,15 @@ def get_assigned_options(request, client_id):
     assigned_options = AssignedOption.objects.filter(user_id=client_id)
     serializer = AssignedOptionSerializer(assigned_options, many=True)
     return Response(serializer.data)
+
+class PlanViewSet(viewsets.ModelViewSet):
+    queryset = Plan.objects.all()
+    serializer_class = PlanSerializer
+
+class CustomMealViewSet(viewsets.ModelViewSet):
+    queryset = CustomMeal.objects.all()
+    serializer_class = CustomMealSerializer
+
+class CustomMealIngredientViewSet(viewsets.ModelViewSet):
+    queryset = CustomMealIngredient.objects.all()
+    serializer_class = CustomMealIngredientSerializer

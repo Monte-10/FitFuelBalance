@@ -449,7 +449,6 @@ class Diet(models.Model):
             DailyDiet.objects.create(diet=self, date=date)
             date += timedelta(days=1)
 
-    
 class DailyDiet(models.Model):
     diet = models.ForeignKey(Diet, on_delete=models.CASCADE)
     date = models.DateField()

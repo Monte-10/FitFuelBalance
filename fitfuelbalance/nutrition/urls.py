@@ -15,6 +15,10 @@ router.register(r'dayoptions', views.DayOptionViewSet)
 router.register(r'weekoptions', views.WeekOptionViewSet)
 router.register(r'options', views.OptionViewSet)
 router.register(r'assignedoptions', views.AssignedOptionViewSet)
+router.register(r'plans', views.PlanViewSet)
+router.register(r'custom_meals', views.CustomMealViewSet)
+router.register(r'custom_meal_ingredients', views.CustomMealIngredientViewSet)
+
 
 urlpatterns = [
     path('', include(router.urls)),

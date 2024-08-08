@@ -938,3 +938,23 @@ class AssignedOptionSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         assignment = AssignedOption.objects.create(**validated_data)
         return assignment
+
+
+class CustomMealIngredientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomMealIngredient
+        fields = ['ingredient', 'quantity', 'unit_based']
+
+class CustomMealSerializer(serializers.ModelSerializer):
+    ingredients = CustomMealIngredientSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = CustomMeal
+        fields = ['id', 'meal_number', 'name', 'plan', 'ingredients']
+
+class PlanSerializer(serializers.ModelSerializer):
+    custom_meals = CustomMealSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Plan
+        fields = ['id', 'name', 'user', 'start_date', 'end_date', 'custom_meals']

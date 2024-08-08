@@ -55,6 +55,7 @@ import TrainerDetails from './components/user/TrainerDetails';
 import AssignedOptions from './components/nutrition/AssignedOptions';
 import AssignedWeekTrainings from './components/sport/AssignedWeekTrainings';
 import AdaptOption from './components/nutrition/AdaptOption';
+import CreatePlan from './components/nutrition/CreatePlan';
 
 function App() {
     const [authToken, setAuthToken] = useState(localStorage.getItem('authToken') || '');
@@ -210,6 +211,9 @@ function App() {
                                                 <Nav.Item>
                                                     <Nav.Link as={NavLink} to="/nutrition/list-meal">Listar Comidas</Nav.Link>
                                                 </Nav.Item>
+                                                <Nav.Item>
+                                                    <Nav.Link as={NavLink} to="/nutrition/create-plan">Crear Plan</Nav.Link>
+                                                </Nav.Item>
                                             </Nav>
                                         </Accordion.Body>
                                     </Accordion.Item>
@@ -282,6 +286,7 @@ function App() {
                                 <Route path="/nutrition/edit-dish/:dishId" element={<EditDish />} />
                                 <Route path="/nutrition/edit-meal/:mealId" element={<EditMeal />} />
                                 <Route path="/nutrition/edit-diet/:dietId" element={<EditDiet />} />
+                                <Route path="/nutrition/create-plan" element={<CreatePlan />} />
                                 <Route path="/sport/list-exercise" element={<ListExercise />} />
                                 <Route path="/sport/edit-training/:id" element={<EditTraining />} />
                                 <Route path="/sport/list-training" element={<ListTraining />} />
