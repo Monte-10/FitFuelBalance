@@ -1,5 +1,3 @@
-// CreatePlan.js
-
 import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,6 +14,7 @@ const CreatePlan = () => {
   const [ingredientName, setIngredientName] = useState('');
   const [quantity, setQuantity] = useState('');
   const [unitBased, setUnitBased] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const handleAddMeal = () => {
     setMeals([...meals, { mealName, mealNumber, ingredients: [] }]);
@@ -36,15 +35,14 @@ const CreatePlan = () => {
   };
 
   const handleSubmit = () => {
-    // Submit the plan with meals and ingredients
     const planData = {
       name: planName,
       start_date: startDate,
       end_date: endDate,
-      custom_meals: meals.map((meal, index) => ({
+      custom_meals: meals.map((meal) => ({
         meal_number: meal.mealNumber,
         name: meal.mealName,
-        ingredients: meal.ingredients.map(ingredient => ({
+        ingredients: meal.ingredients.map((ingredient) => ({
           ingredient: ingredient.ingredientName,
           quantity: ingredient.quantity,
           unit_based: ingredient.unitBased,
@@ -52,7 +50,7 @@ const CreatePlan = () => {
       }))
     };
 
-    fetch('/api/plans/', {
+    fetch(`${apiUrl}/nutrition/plans/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
