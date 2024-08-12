@@ -59,9 +59,21 @@ class FoodViewSet(viewsets.ModelViewSet):
     queryset = Food.objects.all().order_by('name')
     serializer_class = FoodSerializer
     
+from rest_framework.decorators import action
+    
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
+    
+    @action(detail=False, methods=['get'])
+    def search(self, request):
+        query = request.query_params.get('q', None)
+        if query:
+            ingredients = self.queryset.filter(name__icontains=query)
+        else:
+            ingredients = self.queryset.all()
+        serializer = self.get_serializer(ingredients, many=True)
+        return Response(serializer.data)
     
 from django_filters.rest_framework import DjangoFilterBackend
     
