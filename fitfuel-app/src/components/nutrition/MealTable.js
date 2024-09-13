@@ -1,91 +1,55 @@
-import React, { useState } from 'react';
-import IngredientForm from './IngredientForm';
+import React, { useState, useEffect } from 'react';
+import IngredientModal from './IngredientModal';
 
 const MealTable = ({ planId }) => {
-  const [plan, setPlan] = useState({
-    monday: { breakfast: [], lunch: [], dinner: [], extras: [] },
-    tuesday: { breakfast: [], lunch: [], dinner: [], extras: [] },
-    wednesday: { breakfast: [], lunch: [], dinner: [], extras: [] },
-    thursday: { breakfast: [], lunch: [], dinner: [], extras: [] },
-    friday: { breakfast: [], lunch: [], dinner: [], extras: [] },
-    saturday: { breakfast: [], lunch: [], dinner: [], extras: [] },
-    sunday: { breakfast: [], lunch: [], dinner: [], extras: [] },
-  });
-  const [currentDay, setCurrentDay] = useState(null);
-  const [currentMeal, setCurrentMeal] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedIngredients, setSelectedIngredients] = useState({});
+  const [nutritionTotals, setNutritionTotals] = useState({});
 
-  const handleAddIngredientClick = (day, meal) => {
-    setCurrentDay(day);
-    setCurrentMeal(meal);
+  // Abrir el modal de ingredientes
+  const openModal = (day, meal) => {
+    setShowModal({ day, meal });
   };
 
-  const handleSaveIngredient = (ingredient) => {
-    setPlan(prevPlan => ({
-      ...prevPlan,
-      [currentDay]: {
-        ...prevPlan[currentDay],
-        [currentMeal]: [...prevPlan[currentDay][currentMeal], ingredient]
-      }
-    }));
-    setCurrentDay(null);
-    setCurrentMeal(null);
-  };
-
-  const handleRemoveIngredient = (day, meal, index) => {
-    const updatedMeal = plan[day][meal].filter((_, i) => i !== index);
-    setPlan(prevPlan => ({
-      ...prevPlan,
-      [day]: {
-        ...prevPlan[day],
-        [meal]: updatedMeal
-      }
-    }));
-  };
-
-  const handleSubmit = () => {
-    const mealsData = Object.keys(plan).flatMap(day => {
-      const meals = plan[day];
-      return Object.keys(meals).flatMap(meal => 
-        meals[meal].map(ingredient => ({
-          plan: planId,
-          day: day,
-          meal_type: meal,
-          ingredient_id: ingredient.id,
-          quantity: ingredient.quantity
-        }))
-      );
+  // Agregar ingrediente seleccionado al día/meal correspondiente
+  const handleIngredientSelect = (ingredient) => {
+    const { day, meal } = showModal;
+    setSelectedIngredients((prev) => {
+      const dayIngredients = prev[day] || {};
+      const mealIngredients = dayIngredients[meal] || [];
+      return {
+        ...prev,
+        [day]: {
+          ...dayIngredients,
+          [meal]: [...mealIngredients, { ...ingredient, quantity: 100 }]  // Establece la cantidad inicial
+        }
+      };
     });
-
-    fetch(`${process.env.REACT_APP_API_URL}/nutrition/meals/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Token ${localStorage.getItem('authToken')}`
-      },
-      body: JSON.stringify(mealsData)
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Meals added:', data);
-    })
-    .catch(error => {
-      console.error('Error adding meals:', error);
-    });
+    setShowModal(false);
   };
+
+  // Calcular totales nutricionales por día
+  useEffect(() => {
+    const totals = {};
+    Object.keys(selectedIngredients).forEach((day) => {
+      const dayTotals = { calories: 0, fat: 0, saturated_fat: 0, protein: 0, carbohydrates: 0, sugar: 0 };
+      Object.values(selectedIngredients[day]).forEach((meal) => {
+        meal.forEach((ingredient) => {
+          dayTotals.calories += ingredient.calories * (ingredient.quantity / 100);
+          dayTotals.fat += ingredient.fat * (ingredient.quantity / 100);
+          dayTotals.saturated_fat += ingredient.saturated_fat * (ingredient.quantity / 100);
+          dayTotals.protein += ingredient.protein * (ingredient.quantity / 100);
+          dayTotals.carbohydrates += ingredient.carbohydrates * (ingredient.quantity / 100);
+          dayTotals.sugar += ingredient.sugar * (ingredient.quantity / 100);
+        });
+      });
+      totals[day] = dayTotals;
+    });
+    setNutritionTotals(totals);
+  }, [selectedIngredients]);
 
   return (
-    <div>
-      {currentDay && currentMeal && (
-        <IngredientForm
-          day={currentDay}
-          meal={currentMeal}
-          onSave={handleSaveIngredient}
-          onCancel={() => {
-            setCurrentDay(null);
-            setCurrentMeal(null);
-          }}
-        />
-      )}
+    <div className="meal-table-container">
       <table className="table table-bordered">
         <thead>
           <tr>
@@ -97,25 +61,69 @@ const MealTable = ({ planId }) => {
           </tr>
         </thead>
         <tbody>
-          {Object.keys(plan).map(day => (
+          {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => (
             <tr key={day}>
-              <td>{day.charAt(0).toUpperCase() + day.slice(1)}</td>
-              {['breakfast', 'lunch', 'dinner', 'extras'].map(meal => (
+              <td>{day}</td>
+              {['Desayuno', 'Almuerzo', 'Cena', 'Extras'].map((meal) => (
                 <td key={meal}>
-                  {plan[day][meal].map((ingredient, index) => (
-                    <div key={index}>
-                      <span>{ingredient.name} ({ingredient.quantity})</span>
-                      <button onClick={() => handleRemoveIngredient(day, meal, index)}>-</button>
-                    </div>
-                  ))}
-                  <button onClick={() => handleAddIngredientClick(day, meal)}>+ Añadir Ingrediente</button>
+                  <button onClick={() => openModal(day, meal)} className="btn btn-success btn-block mb-2">
+                    + Añadir Ingrediente
+                  </button>
+
+                  {/* Mostrar ingredientes seleccionados */}
+                  {selectedIngredients[day] && selectedIngredients[day][meal] && (
+                    <ul className="ingredient-list">
+                      {selectedIngredients[day][meal].map((ingredient) => (
+                        <li key={ingredient.id} className="ingredient-item">
+                          {ingredient.name} ({ingredient.quantity}g)
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </td>
               ))}
             </tr>
           ))}
         </tbody>
       </table>
-      <button onClick={handleSubmit} className="btn btn-primary">Save Meals</button>
+
+      {/* Totales Nutricionales por día */}
+      <h3>Totales Nutricionales</h3>
+      <table className="table table-bordered">
+        <thead>
+          <tr>
+            <th>Día</th>
+            <th>Calorías</th>
+            <th>Grasas</th>
+            <th>Grasas Saturadas</th>
+            <th>Proteínas</th>
+            <th>Carbohidratos</th>
+            <th>Azúcares</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Object.keys(nutritionTotals).map((day) => (
+            <tr key={day}>
+              <td>{day}</td>
+              <td>{nutritionTotals[day].calories.toFixed(2)}</td>
+              <td>{nutritionTotals[day].fat.toFixed(2)}g</td>
+              <td>{nutritionTotals[day].saturated_fat.toFixed(2)}g</td>
+              <td>{nutritionTotals[day].protein.toFixed(2)}g</td>
+              <td>{nutritionTotals[day].carbohydrates.toFixed(2)}g</td>
+              <td>{nutritionTotals[day].sugar.toFixed(2)}g</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Modal para seleccionar ingredientes */}
+      {showModal && (
+        <IngredientModal
+          show={!!showModal}
+          onClose={() => setShowModal(false)}
+          onIngredientSelect={handleIngredientSelect}
+        />
+      )}
     </div>
   );
 };

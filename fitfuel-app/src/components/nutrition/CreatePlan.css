@@ -1,0 +1,30 @@
+.meal-table-container {
+    padding: 20px;
+  }
+  
+  .ingredient-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .ingredient-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .ingredient-item button {
+    margin-left: 10px;
+  }
+  
+  .table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  .btn-block {
+    width: 100%;
+  }
+  

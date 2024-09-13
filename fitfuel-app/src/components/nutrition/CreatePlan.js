@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MealTable from './MealTable';  // Importamos el componente de la tabla
+import MealTable from './MealTable';  // Importa el componente de la tabla
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './CreatePlan.css';
