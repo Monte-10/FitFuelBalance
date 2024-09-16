@@ -1,10 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import IngredientModal from './IngredientModal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const MealTable = ({ planId }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedIngredients, setSelectedIngredients] = useState({});
   const [nutritionTotals, setNutritionTotals] = useState({});
+  const [selectedUser, setSelectedUser] = useState('');
+  const [users, setUsers] = useState([]);
+  const apiUrl = process.env.REACT_APP_API_URL;
+
+  // Fetch users to assign the plan
+  useEffect(() => {
+    fetch(`${apiUrl}/user/regularusers/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => setUsers(data.results));
+  }, [apiUrl]);
 
   // Abrir el modal de ingredientes
   const openModal = (day, meal) => {
@@ -21,11 +37,27 @@ const MealTable = ({ planId }) => {
         ...prev,
         [day]: {
           ...dayIngredients,
-          [meal]: [...mealIngredients, { ...ingredient, quantity: 100 }]  // Establece la cantidad inicial
+          [meal]: [...mealIngredients, { ...ingredient, quantity: 100 }]
         }
       };
     });
     setShowModal(false);
+  };
+
+  // Eliminar ingrediente
+  const removeIngredient = (day, meal, ingredientId) => {
+    setSelectedIngredients((prev) => {
+      const dayIngredients = prev[day] || {};
+      const mealIngredients = dayIngredients[meal] || [];
+      const filteredIngredients = mealIngredients.filter(ing => ing.id !== ingredientId);
+      return {
+        ...prev,
+        [day]: {
+          ...dayIngredients,
+          [meal]: filteredIngredients
+        }
+      };
+    });
   };
 
   // Calcular totales nutricionales por día
@@ -48,8 +80,52 @@ const MealTable = ({ planId }) => {
     setNutritionTotals(totals);
   }, [selectedIngredients]);
 
+  // Guardar el plan asignado a un usuario
+  const handleSavePlan = () => {
+    const planData = {
+      plan_id: planId,
+      user: selectedUser,
+      meals: selectedIngredients,
+    };
+
+    fetch(`${apiUrl}/nutrition/saveplan/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      },
+      body: JSON.stringify(planData)
+    })
+    .then((response) => {
+      if (response.ok) {
+        toast.success("Plan asignado al usuario con éxito.");
+      } else {
+        toast.error("Error al asignar el plan.");
+      }
+    })
+    .catch(() => toast.error("Error al asignar el plan."));
+  };
+
   return (
     <div className="meal-table-container">
+      <ToastContainer />
+      <div className="mb-3">
+        <label htmlFor="userSelect">Seleccionar Usuario para asignar el plan:</label>
+        <select
+          className="form-control"
+          id="userSelect"
+          value={selectedUser}
+          onChange={(e) => setSelectedUser(e.target.value)}
+        >
+          <option value="">Selecciona un usuario</option>
+          {users.map((user) => (
+            <option key={user.id} value={user.id}>
+              {user.username}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <table className="table table-bordered">
         <thead>
           <tr>
@@ -76,6 +152,12 @@ const MealTable = ({ planId }) => {
                       {selectedIngredients[day][meal].map((ingredient) => (
                         <li key={ingredient.id} className="ingredient-item">
                           {ingredient.name} ({ingredient.quantity}g)
+                          <button
+                            onClick={() => removeIngredient(day, meal, ingredient.id)}
+                            className="btn btn-danger btn-sm ml-2"
+                          >
+                            Eliminar
+                          </button>
                         </li>
                       ))}
                     </ul>
@@ -88,33 +170,25 @@ const MealTable = ({ planId }) => {
       </table>
 
       {/* Totales Nutricionales por día */}
-      <h3>Totales Nutricionales</h3>
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th>Día</th>
-            <th>Calorías</th>
-            <th>Grasas</th>
-            <th>Grasas Saturadas</th>
-            <th>Proteínas</th>
-            <th>Carbohidratos</th>
-            <th>Azúcares</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.keys(nutritionTotals).map((day) => (
-            <tr key={day}>
-              <td>{day}</td>
-              <td>{nutritionTotals[day].calories.toFixed(2)}</td>
-              <td>{nutritionTotals[day].fat.toFixed(2)}g</td>
-              <td>{nutritionTotals[day].saturated_fat.toFixed(2)}g</td>
-              <td>{nutritionTotals[day].protein.toFixed(2)}g</td>
-              <td>{nutritionTotals[day].carbohydrates.toFixed(2)}g</td>
-              <td>{nutritionTotals[day].sugar.toFixed(2)}g</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="nutrition-totals">
+        {Object.keys(nutritionTotals).map((day) => (
+          <div key={day}>
+            <h4>Totales Nutricionales para {day}</h4>
+            <ul>
+              <li>Calorías: {nutritionTotals[day].calories.toFixed(2)}</li>
+              <li>Grasas: {nutritionTotals[day].fat.toFixed(2)}g</li>
+              <li>Grasas Saturadas: {nutritionTotals[day].saturated_fat.toFixed(2)}g</li>
+              <li>Proteínas: {nutritionTotals[day].protein.toFixed(2)}g</li>
+              <li>Carbohidratos: {nutritionTotals[day].carbohydrates.toFixed(2)}g</li>
+              <li>Azúcares: {nutritionTotals[day].sugar.toFixed(2)}g</li>
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <button onClick={handleSavePlan} className="btn btn-primary mt-4">
+        Guardar y Asignar Plan
+      </button>
 
       {/* Modal para seleccionar ingredientes */}
       {showModal && (
