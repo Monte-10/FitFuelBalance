@@ -576,3 +576,55 @@ class CustomMealViewSet(viewsets.ModelViewSet):
 class CustomMealIngredientViewSet(viewsets.ModelViewSet):
     queryset = CustomMealIngredient.objects.all()
     serializer_class = CustomMealIngredientSerializer
+
+from django.http import JsonResponse
+import json
+@csrf_exempt
+def save_plan(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            user_id = data.get('user')
+            plan_name = data.get('planId')
+            start_date = data.get('start_date')
+            end_date = data.get('end_date')
+            meals_data = data.get('ingredients', {})
+
+            # Validar la información
+            if not user_id or not plan_name or not start_date or not end_date:
+                return JsonResponse({'error': 'Faltan datos obligatorios'}, status=400)
+
+            # Obtener el usuario
+            user = CustomUser.objects.get(id=user_id)
+
+            # Crear el plan
+            plan = Plan.objects.create(
+                name=plan_name,
+                user=user,
+                start_date=parse_date(start_date),
+                end_date=parse_date(end_date)
+            )
+
+            # Crear las comidas personalizadas y sus ingredientes
+            for day, meals in meals_data.items():
+                for meal_num, ingredients in meals.items():
+                    custom_meal = CustomMeal.objects.create(
+                        plan=plan,
+                        meal_number=meal_num,
+                        name=f"{day} - Meal {meal_num}"
+                    )
+                    for ingredient_data in ingredients:
+                        ingredient = Ingredient.objects.get(id=ingredient_data['id'])
+                        CustomMealIngredient.objects.create(
+                            custom_meal=custom_meal,
+                            ingredient=ingredient,
+                            quantity=ingredient_data['quantity'],
+                            unit_based=ingredient_data.get('unit_based', False)
+                        )
+
+            return JsonResponse({'message': 'Plan guardado exitosamente'}, status=200)
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'error': 'Usuario no encontrado'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    return JsonResponse({'error': 'Método no permitido'}, status=405)

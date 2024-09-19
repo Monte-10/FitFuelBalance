@@ -33,6 +33,7 @@ urlpatterns = [
     path('assigned-options/', views.assigned_options, name='assigned_options'),
     path('adapt-option/', views.adapt_option_to_user_view, name='adapt_option_to_user'),
     path('assignedoptions/client/<int:client_id>/', views.get_assigned_options, name='get_assigned_options'),
+    path('plans/save/', views.save_plan, name='save_plan'),
 ]
 
 if settings.DEBUG:
