@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './CreateIngredient.css';
 
 function CreateIngredient() {
-  const [foods, setFoods] = useState([]);
-  const [filteredFoods, setFilteredFoods] = useState([]);
-  const [selectedFood, setSelectedFood] = useState(null);
-  const [quantity, setQuantity] = useState(0);
-  const [name, setName] = useState('');
-  const [nutritionalInfo, setNutritionalInfo] = useState({});
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
-  const [filters, setFilters] = useState({
+  const [foods, setFoods] = useState([]); // Lista completa de alimentos
+  const [filteredFoods, setFilteredFoods] = useState([]); // Alimentos filtrados
+  const [selectedFood, setSelectedFood] = useState(null); // Alimento seleccionado
+  const [quantity, setQuantity] = useState(0); // Cantidad del ingrediente
+  const [name, setName] = useState(''); // Nombre del ingrediente
+  const [nutritionalInfo, setNutritionalInfo] = useState({}); // Información nutricional
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false); // Estado para mostrar/ocultar filtros avanzados
+  const [filters, setFilters] = useState({ // Estado de los filtros
     name: '',
     minCalories: '',
     maxCalories: '',
@@ -28,93 +28,69 @@ function CreateIngredient() {
     minSaturatedFat: '',
     maxSaturatedFat: ''
   });
-  const [itemsPerPage] = useState(6); // Cambiado a 6 para más platos por página
-  const [totalPages, setTotalPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const [itemsPerPage] = useState(6); // Cantidad de elementos por página
+  const [currentPage, setCurrentPage] = useState(1); // Página actual
+  const apiUrl = process.env.REACT_APP_API_URL; // URL de la API
 
-  useEffect(() => {
-    fetchFoods(currentPage, filters);
-  }, [currentPage, filters]);
-
-  const fetchFoods = (page, filters) => {
-    const queryParams = new URLSearchParams({
-      page: page,
-      page_size: itemsPerPage,
-      name: filters.name,
-      calories__gte: filters.minCalories,
-      calories__lte: filters.maxCalories,
-      protein__gte: filters.minProtein,
-      protein__lte: filters.maxProtein,
-      carbohydrates__gte: filters.minCarbohydrates,
-      carbohydrates__lte: filters.maxCarbohydrates,
-      fat__gte: filters.minFat,
-      fat__lte: filters.maxFat,
-      sugar__gte: filters.minSugar,
-      sugar__lte: filters.maxSugar,
-      fiber__gte: filters.minFiber,
-      fiber__lte: filters.maxFiber,
-      saturated_fat__gte: filters.minSaturatedFat,
-      saturated_fat__lte: filters.maxSaturatedFat
-    });
-
-    fetch(`${apiUrl}/nutrition/foods/?${queryParams.toString()}`, {
+  // Obtener todos los alimentos filtrados
+  const fetchFoods = useCallback(() => {
+    fetch(`${apiUrl}/nutrition/foods/`, {
       headers: {
         'Authorization': `Token ${localStorage.getItem('authToken')}`
       }
     })
       .then(response => response.json())
       .then(data => {
-        setFoods(data.results);
-        setTotalPages(Math.ceil(data.count / itemsPerPage));
+        setFoods(data.results); // Guardar todos los alimentos
       })
       .catch(error => console.error('Error fetching foods:', error));
-  };
+  }, [apiUrl]);
 
   useEffect(() => {
-    const updatedFoods = foods.filter(food => {
-      return Object.entries(filters).every(([key, filter]) => {
-        if (!filter || filter === '') return true;
-        const value = parseFloat(filter);
-        switch (key) {
-          case 'name':
-            return food.name.toLowerCase().includes(filter.toLowerCase());
-          case 'minCalories':
-            return food.calories >= value;
-          case 'maxCalories':
-            return food.calories <= value;
-          case 'minProtein':
-            return food.protein >= value;
-          case 'maxProtein':
-            return food.protein <= value;
-          case 'minCarbohydrates':
-            return food.carbohydrates >= value;
-          case 'maxCarbohydrates':
-            return food.carbohydrates <= value;
-          case 'minFat':
-            return food.fat >= value;
-          case 'maxFat':
-            return food.fat <= value;
-          case 'minSugar':
-            return food.sugar >= value;
-          case 'maxSugar':
-            return food.sugar <= value;
-          case 'minFiber':
-            return food.fiber >= value;
-          case 'maxFiber':
-            return food.fiber <= value;
-          case 'minSaturatedFat':
-            return food.saturated_fat >= value;
-          case 'maxSaturatedFat':
-            return food.saturated_fat <= value;
-          default:
-            return true;
-        }
-      });
-    });
-    setFilteredFoods(updatedFoods);
-  }, [foods, filters]);
+    fetchFoods(); // Llamar a fetchFoods cuando se monta el componente
+  }, [fetchFoods]);
 
+  // Aplicar los filtros
+  useEffect(() => {
+    const applyFilters = () => {
+      const filtered = foods.filter(food => {
+        return (
+          (!filters.name || food.name.toLowerCase().includes(filters.name.toLowerCase())) &&
+          (!filters.minCalories || food.calories >= parseFloat(filters.minCalories)) &&
+          (!filters.maxCalories || food.calories <= parseFloat(filters.maxCalories)) &&
+          (!filters.minProtein || food.protein >= parseFloat(filters.minProtein)) &&
+          (!filters.maxProtein || food.protein <= parseFloat(filters.maxProtein)) &&
+          (!filters.minCarbohydrates || food.carbohydrates >= parseFloat(filters.minCarbohydrates)) &&
+          (!filters.maxCarbohydrates || food.carbohydrates <= parseFloat(filters.maxCarbohydrates)) &&
+          (!filters.minFat || food.fat >= parseFloat(filters.minFat)) &&
+          (!filters.maxFat || food.fat <= parseFloat(filters.maxFat)) &&
+          (!filters.minSugar || food.sugar >= parseFloat(filters.minSugar)) &&
+          (!filters.maxSugar || food.sugar <= parseFloat(filters.maxSugar)) &&
+          (!filters.minFiber || food.fiber >= parseFloat(filters.minFiber)) &&
+          (!filters.maxFiber || food.fiber <= parseFloat(filters.maxFiber)) &&
+          (!filters.minSaturatedFat || food.saturated_fat >= parseFloat(filters.minSaturatedFat)) &&
+          (!filters.maxSaturatedFat || food.saturated_fat <= parseFloat(filters.maxSaturatedFat))
+        );
+      });
+
+      setFilteredFoods(filtered); // Guardar los alimentos filtrados
+      setCurrentPage(1); // Reiniciar a la primera página
+    };
+
+    applyFilters();
+  }, [foods, filters]); // Ejecutar el filtrado cuando cambian los alimentos o los filtros
+
+  // Alimentos paginados
+  const currentFoods = filteredFoods.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  // Cambiar página
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= Math.ceil(filteredFoods.length / itemsPerPage)) {
+      setCurrentPage(newPage);
+    }
+  };
+
+  // Manejador de cambios en los filtros
   const handleFilterChange = (name, value) => {
     setFilters(prevFilters => ({
       ...prevFilters,
@@ -122,10 +98,12 @@ function CreateIngredient() {
     }));
   };
 
+  // Alternar la visibilidad de los filtros avanzados
   const toggleAdvancedFilters = () => {
     setShowAdvancedFilters(!showAdvancedFilters);
   };
 
+  // Resetear los filtros
   const resetFilters = () => {
     setFilters({
       name: '',
@@ -147,6 +125,7 @@ function CreateIngredient() {
     setShowAdvancedFilters(false);
   };
 
+  // Seleccionar un alimento
   const handleSelectChange = (foodId) => {
     if (selectedFood && selectedFood.id === foodId) {
       setSelectedFood(null);
@@ -158,15 +137,18 @@ function CreateIngredient() {
     }
   };
 
+  // Manejar el cambio de cantidad
   const handleQuantityChange = (event) => {
     setQuantity(event.target.value);
   };
 
+  // Calcular los valores nutricionales según la cantidad
   const calculateNutritionalValues = (value, quantity) => {
     if (!value || !quantity) return 0;
     return (value * quantity) / 100;
   };
 
+  // Manejar el envío del formulario para crear el ingrediente
   const handleSubmit = (event) => {
     event.preventDefault();
     const ingredientData = {
@@ -363,7 +345,7 @@ function CreateIngredient() {
 
           <label className="form-label">Alimento</label>
           <div className="row">
-            {filteredFoods.map(food => (
+            {currentFoods.map(food => (
               <div key={food.id} className="col-md-6 mb-3">
                 <div className="card">
                   <div className="card-body">
@@ -439,6 +421,25 @@ function CreateIngredient() {
         </div>
       </form>
       <ToastContainer />
+
+      {/* Paginación ahora debajo de los alimentos */}
+      <div className="pagination-create-ingredient">
+        <button
+          disabled={currentPage === 1}
+          onClick={() => handlePageChange(currentPage - 1)}
+          className="btn btn-secondary"
+        >
+          Anterior
+        </button>
+        <span> Página {currentPage} de {Math.ceil(filteredFoods.length / itemsPerPage)} </span>
+        <button
+          disabled={currentPage >= Math.ceil(filteredFoods.length / itemsPerPage)}
+          onClick={() => handlePageChange(currentPage + 1)}
+          className="btn btn-secondary"
+        >
+          Siguiente
+        </button>
+      </div>
     </div>
   );
 }

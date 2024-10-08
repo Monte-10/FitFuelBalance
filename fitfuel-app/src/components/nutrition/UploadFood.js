@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './UploadFood.css'; // Importa el archivo CSS
+import './UploadFood.css';
 
 const UploadFood = () => {
   const [file, setFile] = useState(null);
@@ -25,14 +25,17 @@ const UploadFood = () => {
       })
       .then(response => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          return response.json().then(err => {
+            throw new Error(err.error || 'Unknown error occurred');
+          });
         }
         return response.json();
       })
       .then(result => {
-        alert('Foods imported successfully!');
+        alert(result.message || 'Foods imported successfully!');
       })
       .catch(error => {
+        console.error('Error importing foods:', error);
         alert('Error importing foods: ' + error.message);
       });
     } else {
@@ -45,7 +48,14 @@ const UploadFood = () => {
       <h1 className="mb-4">Subir Alimentos por CSV</h1>
       <form onSubmit={handleFormSubmit} className="mb-3">
         <div className="mb-3">
-          <input type="file" className="form-control" name="file" accept=".csv" onChange={handleFileChange} required />
+          <input
+            type="file"
+            className="form-control"
+            name="file"
+            accept=".csv"
+            onChange={handleFileChange}
+            required
+          />
         </div>
         <button type="submit" className="btn btn-primary">Subir CSV</button>
       </form>

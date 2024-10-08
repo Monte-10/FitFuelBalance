@@ -31,6 +31,10 @@ def create_food(request):
         form = FoodForm()
     return render(request, 'create_food.html', {'form': form})
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
+
 @csrf_exempt
 def upload_food_csv(request):
     if request.method == 'POST':
@@ -39,13 +43,15 @@ def upload_food_csv(request):
             try:
                 csv_file = request.FILES['csv_file']
                 import_foods_from_csv(csv_file)
-                messages.success(request, 'Foods imported successfully!')
+                return JsonResponse({'message': 'Foods imported successfully!'}, status=200)
             except Exception as e:
-                messages.error(request, f'Error importing foods: {e}')
-            return redirect('food_list.html')
+                return JsonResponse({'error': f'Error importing foods: {str(e)}'}, status=500)
+        else:
+            return JsonResponse({'error': 'Invalid form data'}, status=400)
     else:
-        form = FoodCSVForm()
-    return render(request, 'upload_food_csv.html', {'form': form})
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
 
 def food_detail(request, pk):
     food = get_object_or_404(Food, pk=pk)
