@@ -34,7 +34,7 @@ function CreateIngredient() {
 
   // Obtener todos los alimentos filtrados
   const fetchFoods = useCallback(() => {
-    fetch(`${apiUrl}/nutrition/foods/`, {
+    fetch(`${apiUrl}/nutrition/foods/?page_size=1000`, { // Obtener todos los alimentos
       headers: {
         'Authorization': `Token ${localStorage.getItem('authToken')}`
       }
@@ -363,7 +363,28 @@ function CreateIngredient() {
             ))}
           </div>
 
-          <label htmlFor="quantity" className="form-label">Cantidad (g)</label>
+          {/* Paginación justo debajo de los alimentos */}
+          <div className="pagination-create-ingredient mt-3">
+            <button
+              type="button" // Este botón ya no dispara el submit del formulario
+              disabled={currentPage === 1}
+              onClick={() => handlePageChange(currentPage - 1)}
+              className="btn btn-secondary"
+            >
+              Anterior
+            </button>
+            <span> Página {currentPage} de {Math.ceil(filteredFoods.length / itemsPerPage)} </span>
+            <button
+              type="button" // Este botón ya no dispara el submit del formulario
+              disabled={currentPage >= Math.ceil(filteredFoods.length / itemsPerPage)}
+              onClick={() => handlePageChange(currentPage + 1)}
+              className="btn btn-secondary"
+            >
+              Siguiente
+            </button>
+          </div>
+
+          <label htmlFor="quantity" className="form-label mt-3">Cantidad (g)</label>
           <input 
             type="number" 
             className="form-control" 
@@ -420,26 +441,8 @@ function CreateIngredient() {
           </div>
         </div>
       </form>
-      <ToastContainer />
 
-      {/* Paginación ahora debajo de los alimentos */}
-      <div className="pagination-create-ingredient">
-        <button
-          disabled={currentPage === 1}
-          onClick={() => handlePageChange(currentPage - 1)}
-          className="btn btn-secondary"
-        >
-          Anterior
-        </button>
-        <span> Página {currentPage} de {Math.ceil(filteredFoods.length / itemsPerPage)} </span>
-        <button
-          disabled={currentPage >= Math.ceil(filteredFoods.length / itemsPerPage)}
-          onClick={() => handlePageChange(currentPage + 1)}
-          className="btn btn-secondary"
-        >
-          Siguiente
-        </button>
-      </div>
+      <ToastContainer />
     </div>
   );
 }

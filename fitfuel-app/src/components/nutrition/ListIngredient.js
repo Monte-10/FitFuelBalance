@@ -79,11 +79,10 @@ function ListIngredients() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Fetched ingredients:', data); // Debug log
             const ingredientsList = data.results || [];
             setIngredients(ingredientsList);
             setFilteredIngredients(ingredientsList);
-            setTotalPages(Math.ceil(data.count / itemsPerPage));
+            setTotalPages(Math.ceil(ingredientsList.length / itemsPerPage)); // Calcular total de páginas basado en los ingredientes
         })
         .catch(error => console.error('Error fetching ingredients:', error));
     }, [apiUrl, itemsPerPage]);
@@ -107,9 +106,10 @@ function ListIngredients() {
                     }
                 });
             });
-            console.log('Filtered ingredients:', updatedIngredients); // Debug log
+
             setFilteredIngredients(updatedIngredients);
-            setTotalPages(Math.ceil(updatedIngredients.length / itemsPerPage));
+            setTotalPages(Math.ceil(updatedIngredients.length / itemsPerPage)); // Recalcular páginas basado en los ingredientes filtrados
+            setCurrentPage(0); // Reiniciar a la primera página tras filtrar
         };
 
         applyFilters();
@@ -162,8 +162,10 @@ function ListIngredients() {
             tuber: false,
             other: false
         });
+        setCurrentPage(0); // Resetear a la primera página al limpiar filtros
     };
 
+    // Alimentos paginados basados en los ingredientes filtrados
     const currentIngredients = filteredIngredients.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return (
