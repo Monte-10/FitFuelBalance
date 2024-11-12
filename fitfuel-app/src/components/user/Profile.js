@@ -263,8 +263,8 @@ const Profile = () => {
         const datasets = selectedMeasurements.map((measurement, index) => ({
             label: measurement,
             data: filteredMeasurements.map(m => m[measurement]),
-            backgroundColor: `rgba(${index * 50}, ${index * 100}, ${index * 150}, 0.6)`,
-            borderColor: `rgba(${index * 50}, ${index * 100}, ${index * 150}, 1)`,
+            backgroundColor: `rgba(${(index * 50) % 255}, ${(index * 80) % 255}, ${(index * 110) % 255}, 0.6)`,
+            borderColor: `rgba(${(index * 50) % 255}, ${(index * 80) % 255}, ${(index * 110) % 255}, 1)`,
             borderWidth: 1,
             fill: false,
             spanGaps: true
@@ -473,6 +473,7 @@ const Profile = () => {
                                     </div>
                                 </Col>
                             </Row>
+                            {/* Resto de campos de medidas */}
                             <Row>
                                 <Col md={6}>
                                     <div className="mb-3">
@@ -616,49 +617,66 @@ const Profile = () => {
                             <button type="submit" className="btn btn-primary">Guardar Medidas</button>
                         </Container>
                     </form>
-                    <div>
-                        <Form.Group controlId="viewTypeSelect" className="mt-3">
-                            <Form.Label>Tipo de Vista</Form.Label>
-                            <Form.Control as="select" value={viewType} onChange={handleViewTypeChange}>
-                                <option value="chart">Gráfico</option>
-                                <option value="table">Tabla</option>
-                            </Form.Control>
-                        </Form.Group>
-                        <Form.Group controlId="chartTypeSelect" className="mt-3">
-                            <Form.Label>Tipo de Gráfico</Form.Label>
-                            <Form.Control as="select" value={chartType} onChange={handleChartTypeChange}>
-                                <option value="line">Línea</option>
-                                <option value="bar">Barras</option>
-                                <option value="pie">Circular</option>
-                            </Form.Control>
-                        </Form.Group>
-                        <Form.Group controlId="measurementSelect" className="mt-3">
-                            <Form.Label>Mediciones</Form.Label>
-                            {['weight', 'height', 'neck', 'shoulder', 'chest', 'waist', 'hip', 'arm', 'glute', 'upper_leg', 'middle_leg', 'lower_leg'].map((measurement) => (
-                                <Form.Check
-                                    key={measurement}
-                                    type="checkbox"
-                                    label={measurement}
-                                    value={measurement}
-                                    checked={selectedMeasurements.includes(measurement)}
-                                    onChange={handleMeasurementChange}
-                                />
-                            ))}
-                        </Form.Group>
-                        <Form.Group controlId="timeRangeSelect" className="mt-3">
-                            <Form.Label>Rango de Tiempo</Form.Label>
-                            <Form.Control as="select" value={timeRange} onChange={handleTimeRangeChange}>
-                                <option value="1week">1 Semana</option>
-                                <option value="1month">1 Mes</option>
-                                <option value="3months">3 Meses</option>
-                                <option value="6months">6 Meses</option>
-                                <option value="9months">9 Meses</option>
-                                <option value="1year">1 Año</option>
-                                <option value="2years">2 Años</option>
-                            </Form.Control>
-                        </Form.Group>
-                        {viewType === 'chart' ? renderChart() : renderTable()}
+                    <div className="measurement-filters-container mt-4 p-3 rounded border">
+                        <h4>Filtros de Mediciones</h4>
+                        <Row>
+                            <Col md={6}>
+                                <Form.Group controlId="viewTypeSelect">
+                                    <Form.Label>Tipo de Vista</Form.Label>
+                                    <Form.Control as="select" value={viewType} onChange={handleViewTypeChange}>
+                                        <option value="chart">Gráfico</option>
+                                        <option value="table">Tabla</option>
+                                    </Form.Control>
+                                </Form.Group>
+                            </Col>
+                            <Col md={6}>
+                                <Form.Group controlId="chartTypeSelect">
+                                    <Form.Label>Tipo de Gráfico</Form.Label>
+                                    <Form.Control as="select" value={chartType} onChange={handleChartTypeChange}>
+                                        <option value="line">Línea</option>
+                                        <option value="bar">Barras</option>
+                                        <option value="pie">Circular</option>
+                                    </Form.Control>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+
+                        <Row className="mt-3">
+                            <Col md={6}>
+                                <Form.Group controlId="timeRangeSelect">
+                                    <Form.Label>Rango de Tiempo</Form.Label>
+                                    <Form.Control as="select" value={timeRange} onChange={handleTimeRangeChange}>
+                                        <option value="1week">1 Semana</option>
+                                        <option value="1month">1 Mes</option>
+                                        <option value="3months">3 Meses</option>
+                                        <option value="6months">6 Meses</option>
+                                        <option value="9months">9 Meses</option>
+                                        <option value="1year">1 Año</option>
+                                        <option value="2years">2 Años</option>
+                                    </Form.Control>
+                                </Form.Group>
+                            </Col>
+                            <Col md={6}>
+                                <Form.Group controlId="measurementSelect">
+                                    <Form.Label>Seleccionar Mediciones</Form.Label>
+                                    <div className="d-flex flex-wrap">
+                                        {['weight', 'height', 'neck', 'shoulder', 'chest', 'waist', 'hip', 'arm', 'glute', 'upper_leg', 'middle_leg', 'lower_leg'].map((measurement) => (
+                                            <Form.Check
+                                                key={measurement}
+                                                type="checkbox"
+                                                label={measurement}
+                                                value={measurement}
+                                                checked={selectedMeasurements.includes(measurement)}
+                                                onChange={handleMeasurementChange}
+                                                className="me-3 mb-2"
+                                            />
+                                        ))}
+                                    </div>
+                                </Form.Group>
+                            </Col>
+                        </Row>
                     </div>
+                    {viewType === 'chart' ? renderChart() : renderTable()}
                 </>
             )}
         </div>

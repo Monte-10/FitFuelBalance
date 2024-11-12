@@ -1,48 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import IngredientModal from './IngredientModal';
 
-const MealTable = ({ planId }) => {
-  const [showModal, setShowModal] = useState(false);
+const MealTable = ({ planId, planName, startDate, endDate, selectedUser }) => {
+  const [showModal, setShowModal] = useState(null);
   const [selectedIngredients, setSelectedIngredients] = useState({});
   const [nutritionTotals, setNutritionTotals] = useState({});
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState('');
+  const [selectedUserId, setSelectedUserId] = useState(selectedUser || '');
   const apiUrl = process.env.REACT_APP_API_URL;
 
-  // Fetch users when the component is mounted
   useEffect(() => {
-    fetch(`${apiUrl}/user/regularusers/`, {
-      headers: {
-        'Authorization': `Token ${localStorage.getItem('authToken')}`
-      }
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setUsers(data.results || []); // Asegúrate de obtener los usuarios
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/user/regularusers/`, {
+          headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` },
+        });
+        const data = await response.json();
+        setUsers(data.results || []);
         if (data.results.length > 0) {
-          setSelectedUser(data.results[0].id);  // Set the first user as the default
+          setSelectedUserId(data.results[0].id);  // Set the first user as default
         }
-      });
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+    fetchUsers();
   }, [apiUrl]);
 
-  // Open ingredient modal
   const openModal = (day, meal) => {
     setShowModal({ day, meal });
   };
 
-  // Add selected ingredient to the corresponding day/meal
   const handleIngredientSelect = (ingredient) => {
     const { day, meal } = showModal;
     setSelectedIngredients((prev) => {
       const dayIngredients = prev[day] || {};
       const mealIngredients = dayIngredients[meal] || [];
 
-      // Check if ingredient already exists, and update quantity
       const existingIngredient = mealIngredients.find((ing) => ing.id === ingredient.id);
       if (existingIngredient) {
-        existingIngredient.quantity += 100;  // Increment quantity by 100g
+        existingIngredient.quantity += 100;
       } else {
-        mealIngredients.push({ ...ingredient, quantity: 100 });  // Add new ingredient
+        mealIngredients.push({ ...ingredient, quantity: 100 });
       }
 
       return {
@@ -53,10 +52,9 @@ const MealTable = ({ planId }) => {
         },
       };
     });
-    setShowModal(false);  // Close modal
+    setShowModal(null);
   };
 
-  // Remove ingredient
   const removeIngredient = (day, meal, ingredientId) => {
     setSelectedIngredients((prev) => {
       const dayIngredients = prev[day] || {};
@@ -73,13 +71,10 @@ const MealTable = ({ planId }) => {
     });
   };
 
-  // Calculate nutritional totals per day
   useEffect(() => {
     const totals = {};
     Object.keys(selectedIngredients).forEach((day) => {
-      const dayTotals = {
-        calories: 0, fat: 0, saturated_fat: 0, protein: 0, carbohydrates: 0, sugar: 0,
-      };
+      const dayTotals = { calories: 0, fat: 0, saturated_fat: 0, protein: 0, carbohydrates: 0, sugar: 0 };
 
       Object.values(selectedIngredients[day]).forEach((meal) => {
         meal.forEach((ingredient) => {
@@ -94,51 +89,68 @@ const MealTable = ({ planId }) => {
 
       totals[day] = dayTotals;
     });
-
     setNutritionTotals(totals);
   }, [selectedIngredients]);
 
-  // Save the plan and assign to user
   const savePlan = async () => {
+    const ingredientsList = [];
+    Object.keys(selectedIngredients).forEach((day) => {
+      const meals = selectedIngredients[day];
+      Object.keys(meals).forEach((meal) => {
+        meals[meal].forEach((ingredient) => {
+          ingredientsList.push({
+            day,
+            meal,
+            ingredient: ingredient.id,
+            quantity: ingredient.quantity,
+          });
+        });
+      });
+    });
+
     const payload = {
-      planId,
-      ingredients: selectedIngredients,  // Pass the selected ingredients by day and meal
-      user: selectedUser,  // Include the selected user
+      name: planName,
+      start_date: startDate,
+      end_date: endDate,
+      user: selectedUserId,
+      ingredients: ingredientsList,
     };
 
+    console.log('Payload enviado:', payload);
+
     try {
-      const response = await fetch(`${apiUrl}/nutrition/plans/save/`, {
-        method: 'POST',
+      const response = await fetch(`${apiUrl}/nutrition/plans/${planId}/`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Token ${localStorage.getItem('authToken')}`,
+          Authorization: `Token ${localStorage.getItem('authToken')}`,
         },
         body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        throw new Error('Error saving plan');
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Error saving plan');
       }
 
       const data = await response.json();
       console.log('Plan saved successfully:', data);
-      alert('Plan saved and assigned!');
+      alert('Plan saved successfully!');
     } catch (error) {
       console.error('Error saving plan:', error);
-      alert('Error saving plan');
+      alert(`Error saving plan: ${error.message}`);
     }
   };
 
   return (
     <div className="meal-table-container">
-      {/* Select user */}
       <div className="form-group">
         <label htmlFor="userSelect">Asignar a Usuario:</label>
         <select
           id="userSelect"
           className="form-control"
-          value={selectedUser}
-          onChange={(e) => setSelectedUser(e.target.value)}
+          value={selectedUserId}
+          onChange={(e) => setSelectedUserId(e.target.value)}
         >
           {users.map((user) => (
             <option key={user.id} value={user.id}>
@@ -168,7 +180,6 @@ const MealTable = ({ planId }) => {
                     + Añadir Ingrediente
                   </button>
 
-                  {/* Display selected ingredients */}
                   {selectedIngredients[day] && selectedIngredients[day][meal] && (
                     <ul className="ingredient-list">
                       {selectedIngredients[day][meal].map((ingredient) => (
@@ -191,7 +202,6 @@ const MealTable = ({ planId }) => {
         </tbody>
       </table>
 
-      {/* Nutritional Totals per day */}
       <h3>Totales Nutricionales</h3>
       <table className="table table-bordered">
         <thead>
@@ -220,10 +230,8 @@ const MealTable = ({ planId }) => {
         </tbody>
       </table>
 
-      {/* Save Plan Button */}
       <button onClick={savePlan} className="btn btn-primary">Guardar y Asignar Plan</button>
 
-      {/* Modal for ingredient selection */}
       {showModal && (
         <IngredientModal
           show={!!showModal}

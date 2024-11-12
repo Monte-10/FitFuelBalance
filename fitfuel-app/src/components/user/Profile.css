@@ -1,7 +1,7 @@
 .container-profile {
     max-width: 800px;
     margin: auto;
-    background-color: rgba(43, 43, 43, 1); /* Fondo gris oscuro con transparencia */
+    background-color: rgba(43, 43, 43, 1); /* Fondo gris oscuro */
     padding: 2rem;
     border-radius: 0.5rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -59,5 +59,45 @@
 
 .form-check-label {
     color: #f0f0f0; /* Texto claro */
-  }
-  
+}
+
+.measurement-filters-container {
+    background-color: #2b2b2b; /* Fondo oscuro a juego */
+    border: 1px solid #444;
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.measurement-filters-container h4 {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #f0f0f0;
+}
+
+.measurement-filters-container .form-label {
+    font-weight: bold;
+    color: #f0f0f0;
+}
+
+.measurement-filters-container .form-control,
+.measurement-filters-container .form-check-label {
+    font-size: 0.9em;
+    background-color: #1e1e1e;
+    color: #f0f0f0;
+    border-radius: 4px;
+    border: 1px solid #444;
+}
+
+.measurement-filters-container .form-check {
+    margin-right: 10px;
+}
+
+.measurement-filters-container .form-check-label {
+    color: #f0f0f0;
+}
+
+.measurement-filters-container .form-control:focus,
+.measurement-filters-container .form-check-input:focus {
+    background-color: #3b3b3b;
+    color: #f0f0f0;
+}

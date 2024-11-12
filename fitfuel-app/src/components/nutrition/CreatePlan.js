@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import MealTable from './MealTable';  
+import MealTable from './MealTable';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './CreatePlan.css';
@@ -10,56 +10,82 @@ const CreatePlan = () => {
   const [endDate, setEndDate] = useState('');
   const [planCreated, setPlanCreated] = useState(false);
   const [planId, setPlanId] = useState(null);
-  const [users, setUsers] = useState([]);  // Inicializa como un array vacío
+  const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState('');
   const apiUrl = process.env.REACT_APP_API_URL;
 
-  // Fetch users when the component is mounted
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await fetch(`${apiUrl}/user/regularusers/`, {
           headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` }
         });
-        const data = await response.json();
-        setUsers(data.results || []);  // Asegúrate de que sea un array
+        if (response.ok) {
+          const data = await response.json();
+          setUsers(data.results || []);
+        } else {
+          toast.error('Error fetching users.');
+        }
       } catch (error) {
         console.error('Error fetching users:', error);
+        toast.error('Error fetching users.');
       }
     };
     fetchUsers();
   }, [apiUrl]);
 
-  const handleSubmit = () => {
+  const validateDates = () => {
+    if (new Date(startDate) > new Date(endDate)) {
+      toast.error('End date must be after start date.');
+      return false;
+    }
+    if (!startDate || !endDate) {
+      toast.error('Please provide both start and end dates.');
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async () => {
+    if (!planName) {
+      toast.error('Plan name is required.');
+      return;
+    }
+    if (!selectedUser) {
+      toast.error('Please select a user.');
+      return;
+    }
+    if (!validateDates()) return;
+
     const planData = {
       name: planName,
       start_date: startDate,
       end_date: endDate,
-      user: selectedUser,  // Agrega el usuario seleccionado al payload
+      user: selectedUser,
     };
 
-    fetch(`${apiUrl}/nutrition/plans/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Token ${localStorage.getItem('authToken')}`
-      },
-      body: JSON.stringify(planData)
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.id) {
+    try {
+      const response = await fetch(`${apiUrl}/nutrition/plans/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${localStorage.getItem('authToken')}`
+        },
+        body: JSON.stringify(planData)
+      });
+
+      const data = await response.json();
+      if (response.ok && data.id) {
         toast.success('Plan created successfully!');
         setPlanCreated(true);
-        setPlanId(data.id);  // Guarda el ID del plan creado
+        setPlanId(data.id);
       } else {
-        toast.error('Error creating plan');
+        toast.error(data.detail || 'Error creating plan.');
       }
-    })
-    .catch(error => {
+    } catch (error) {
       console.error('Error creating plan:', error);
-      toast.error('Error creating plan');
-    });
+      toast.error('Error creating plan.');
+    }
   };
 
   return (
@@ -69,7 +95,6 @@ const CreatePlan = () => {
 
       {!planCreated ? (
         <>
-          {/* Formulario de creación del plan */}
           <div className="form-group mb-3">
             <label htmlFor="planName">Plan Name:</label>
             <input
@@ -106,7 +131,6 @@ const CreatePlan = () => {
             />
           </div>
 
-          {/* Selección de usuario */}
           <div className="form-group mb-3">
             <label htmlFor="userSelect">Assign to User:</label>
             <select
@@ -114,9 +138,10 @@ const CreatePlan = () => {
               className="form-control"
               value={selectedUser}
               onChange={(e) => setSelectedUser(e.target.value)}
+              required
             >
               <option value="">Select User</option>
-              {Array.isArray(users) && users.map((user) => (
+              {users.map((user) => (
                 <option key={user.id} value={user.id}>
                   {user.username}
                 </option>
@@ -129,7 +154,7 @@ const CreatePlan = () => {
       ) : (
         <>
           <h2>Plan Created: {planName}</h2>
-          <MealTable planId={planId} />  {/* Renderizamos la tabla con el ID del plan */}
+          <MealTable planId={planId} />
         </>
       )}
     </div>
