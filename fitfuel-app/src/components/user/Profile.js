@@ -31,13 +31,13 @@ const Profile = () => {
         lower_leg: ''
     });
     const [specialties, setSpecialties] = useState([]);
-    const [isTrainer, setIsTrainer] = useState(false);
     const [error, setError] = useState('');
     const [measurements, setMeasurements] = useState([]);
     const [chartType, setChartType] = useState('line');
     const [selectedMeasurements, setSelectedMeasurements] = useState(['weight']);
     const [timeRange, setTimeRange] = useState('1month');
     const [viewType, setViewType] = useState('chart');
+    const [role, setRole] = useState(''); // Estado para el rol del usuario
 
     const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -49,7 +49,7 @@ const Profile = () => {
                         'Authorization': `Token ${localStorage.getItem('authToken')}`
                     }
                 });
-                const { profile: profileData = {}, trainer = {}, regular_user = {} } = response.data;
+                const { profile: profileData = {}, trainer = {}, regular_user = {}, role } = response.data;
 
                 setProfile({
                     bio: profileData.bio || '',
@@ -77,9 +77,9 @@ const Profile = () => {
                     lower_leg: regular_user.lower_leg || ''
                 });
 
-                setIsTrainer(!!trainer.specialties?.length);
+                setRole(role); // Establecemos el rol del usuario
 
-                if (!trainer.specialties?.length) {
+                if (role === 'regular_user') {
                     const measurementsResponse = await axios.get(`${apiUrl}/user/measurements/history/${response.data.id}/`, {
                         headers: {
                             'Authorization': `Token ${localStorage.getItem('authToken')}`
@@ -87,6 +87,7 @@ const Profile = () => {
                     });
                     setMeasurements(Array.isArray(measurementsResponse.data) ? measurementsResponse.data : []);
                 }
+
             } catch (error) {
                 setError("Error al cargar el perfil");
                 console.error("Error al cargar el perfil:", error.response?.data || error.message);
@@ -168,7 +169,7 @@ const Profile = () => {
             formData.append('image', profile.image);
         }
 
-        if (isTrainer) {
+        if (role === 'trainer') {
             formData.append('trainer_type', profile.trainer_type);
             formData.append('specialties', JSON.stringify(profile.specialties));
         }
@@ -182,14 +183,14 @@ const Profile = () => {
             });
 
             setProfile({
-                bio: response.data.bio || '',
-                age: response.data.age || '',
-                gender: response.data.gender || 'male',
-                image: response.data.image || null,
+                bio: response.data.profile.bio || '',
+                age: response.data.profile.age || '',
+                gender: response.data.profile.gender || 'male',
+                image: response.data.profile.image || null,
                 specialties: response.data.trainer?.specialties || [],
                 trainer_type: response.data.trainer?.trainer_type || 'trainer',
-                communication_email: response.data.communication_email || '',
-                phone: response.data.phone || ''
+                communication_email: response.data.trainer?.communication_email || response.data.regular_user?.communication_email || '',
+                phone: response.data.trainer?.phone || response.data.regular_user?.phone || ''
             });
 
         } catch (error) {
@@ -374,7 +375,7 @@ const Profile = () => {
                         <option value="other">Otro</option>
                     </select>
                 </div>
-                {isTrainer && (
+                {role === 'trainer' && (
                     <>
                         <div className="mb-3">
                             <label htmlFor="trainer_type" className="form-label">Tipo de Entrenador</label>
@@ -440,225 +441,225 @@ const Profile = () => {
                 </Row>
                 <button type="submit" className="btn btn-primary">Guardar Cambios del Perfil</button>
             </form>
-            {!isTrainer && (
-                <form onSubmit={handleSubmitMeasurements}>
-                    <Container>
-                        <Row>
-                            <Col md={6}>
-                                <div className="mb-3">
-                                    <label htmlFor="weight" className="form-label">Peso</label>
-                                    <input
-                                        type="number"
-                                        id="weight"
-                                        name="weight"
-                                        className="form-control"
-                                        value={regularUser.weight}
-                                        onChange={handleRegularUserChange}
-                                    />
-                                </div>
-                            </Col>
-                            <Col md={6}>
-                                <div className="mb-3">
-                                    <label htmlFor="height" className="form-label">Altura</label>
-                                    <input
-                                        type="number"
-                                        id="height"
-                                        name="height"
-                                        className="form-control"
-                                        value={regularUser.height}
-                                        onChange={handleRegularUserChange}
-                                    />
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
-                                <div className="mb-3">
-                                    <label htmlFor="neck" className="form-label">Cuello</label>
-                                    <input
-                                        type="number"
-                                        id="neck"
-                                        name="neck"
-                                        className="form-control"
-                                        value={regularUser.neck}
-                                        onChange={handleRegularUserChange}
-                                    />
-                                </div>
-                            </Col>
-                            <Col md={6}>
-                                <div className="mb-3">
-                                    <label htmlFor="shoulder" className="form-label">Hombro</label>
-                                    <input
-                                        type="number"
-                                        id="shoulder"
-                                        name="shoulder"
-                                        className="form-control"
-                                        value={regularUser.shoulder}
-                                        onChange={handleRegularUserChange}
-                                    />
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
-                                <div className="mb-3">
-                                    <label htmlFor="chest" className="form-label">Pecho</label>
-                                    <input
-                                        type="number"
-                                        id="chest"
-                                        name="chest"
-                                        className="form-control"
-                                        value={regularUser.chest}
-                                        onChange={handleRegularUserChange}
-                                    />
-                                </div>
-                            </Col>
-                            <Col md={6}>
-                                <div className="mb-3">
-                                    <label htmlFor="waist" className="form-label">Cintura</label>
-                                    <input
-                                        type="number"
-                                        id="waist"
-                                        name="waist"
-                                        className="form-control"
-                                        value={regularUser.waist}
-                                        onChange={handleRegularUserChange}
-                                    />
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
-                                <div className="mb-3">
-                                    <label htmlFor="hip" className="form-label">Cadera</label>
-                                    <input
-                                        type="number"
-                                        id="hip"
-                                        name="hip"
-                                        className="form-control"
-                                        value={regularUser.hip}
-                                        onChange={handleRegularUserChange}
-                                    />
-                                </div>
-                            </Col>
-                            <Col md={6}>
-                                <div className="mb-3">
-                                    <label htmlFor="arm" className="form-label">Brazo</label>
-                                    <input
-                                        type="number"
-                                        id="arm"
-                                        name="arm"
-                                        className="form-control"
-                                        value={regularUser.arm}
-                                        onChange={handleRegularUserChange}
-                                    />
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
-                                <div className="mb-3">
-                                    <label htmlFor="glute" className="form-label">Glúteo</label>
-                                    <input
-                                        type="number"
-                                        id="glute"
-                                        name="glute"
-                                        className="form-control"
-                                        value={regularUser.glute}
-                                        onChange={handleRegularUserChange}
-                                    />
-                                </div>
-                            </Col>
-                            <Col md={6}>
-                                <div className="mb-3">
-                                    <label htmlFor="upper_leg" className="form-label">Pierna Superior</label>
-                                    <input
-                                        type="number"
-                                        id="upper_leg"
-                                        name="upper_leg"
-                                        className="form-control"
-                                        value={regularUser.upper_leg}
-                                        onChange={handleRegularUserChange}
-                                    />
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
-                                <div className="mb-3">
-                                    <label htmlFor="middle_leg" className="form-label">Pierna Media</label>
-                                    <input
-                                        type="number"
-                                        id="middle_leg"
-                                        name="middle_leg"
-                                        className="form-control"
-                                        value={regularUser.middle_leg}
-                                        onChange={handleRegularUserChange}
-                                    />
-                                </div>
-                            </Col>
-                            <Col md={6}>
-                                <div className="mb-3">
-                                    <label htmlFor="lower_leg" className="form-label">Pierna Inferior</label>
-                                    <input
-                                        type="number"
-                                        id="lower_leg"
-                                        name="lower_leg"
-                                        className="form-control"
-                                        value={regularUser.lower_leg}
-                                        onChange={handleRegularUserChange}
-                                    />
-                                </div>
-                            </Col>
-                        </Row>
-                        <button type="submit" className="btn btn-primary">Guardar Medidas</button>
-                    </Container>
-                </form>
-            )}
-            {!isTrainer && (
-                <div>
-                    <Form.Group controlId="viewTypeSelect" className="mt-3">
-                        <Form.Label>Tipo de Vista</Form.Label>
-                        <Form.Control as="select" value={viewType} onChange={handleViewTypeChange}>
-                            <option value="chart">Gráfico</option>
-                            <option value="table">Tabla</option>
-                        </Form.Control>
-                    </Form.Group>
-                    <Form.Group controlId="chartTypeSelect" className="mt-3">
-                        <Form.Label>Tipo de Gráfico</Form.Label>
-                        <Form.Control as="select" value={chartType} onChange={handleChartTypeChange}>
-                            <option value="line">Línea</option>
-                            <option value="bar">Barras</option>
-                            <option value="pie">Circular</option>
-                        </Form.Control>
-                    </Form.Group>
-                    <Form.Group controlId="measurementSelect" className="mt-3">
-                        <Form.Label>Mediciones</Form.Label>
-                        {['weight', 'height', 'neck', 'shoulder', 'chest', 'waist', 'hip', 'arm', 'glute', 'upper_leg', 'middle_leg', 'lower_leg'].map((measurement) => (
-                            <Form.Check
-                                key={measurement}
-                                type="checkbox"
-                                label={measurement}
-                                value={measurement}
-                                checked={selectedMeasurements.includes(measurement)}
-                                onChange={handleMeasurementChange}
-                            />
-                        ))}
-                    </Form.Group>
-                    <Form.Group controlId="timeRangeSelect" className="mt-3">
-                        <Form.Label>Rango de Tiempo</Form.Label>
-                        <Form.Control as="select" value={timeRange} onChange={handleTimeRangeChange}>
-                            <option value="1week">1 Semana</option>
-                            <option value="1month">1 Mes</option>
-                            <option value="3months">3 Meses</option>
-                            <option value="6months">6 Meses</option>
-                            <option value="9months">9 Meses</option>
-                            <option value="1year">1 Año</option>
-                            <option value="2years">2 Años</option>
-                        </Form.Control>
-                    </Form.Group>
-                    {viewType === 'chart' ? renderChart() : renderTable()}
-                </div>
+            {role === 'regular_user' && (
+                <>
+                    <form onSubmit={handleSubmitMeasurements}>
+                        <Container>
+                            <Row>
+                                <Col md={6}>
+                                    <div className="mb-3">
+                                        <label htmlFor="weight" className="form-label">Peso</label>
+                                        <input
+                                            type="number"
+                                            id="weight"
+                                            name="weight"
+                                            className="form-control"
+                                            value={regularUser.weight}
+                                            onChange={handleRegularUserChange}
+                                        />
+                                    </div>
+                                </Col>
+                                <Col md={6}>
+                                    <div className="mb-3">
+                                        <label htmlFor="height" className="form-label">Altura</label>
+                                        <input
+                                            type="number"
+                                            id="height"
+                                            name="height"
+                                            className="form-control"
+                                            value={regularUser.height}
+                                            onChange={handleRegularUserChange}
+                                        />
+                                    </div>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={6}>
+                                    <div className="mb-3">
+                                        <label htmlFor="neck" className="form-label">Cuello</label>
+                                        <input
+                                            type="number"
+                                            id="neck"
+                                            name="neck"
+                                            className="form-control"
+                                            value={regularUser.neck}
+                                            onChange={handleRegularUserChange}
+                                        />
+                                    </div>
+                                </Col>
+                                <Col md={6}>
+                                    <div className="mb-3">
+                                        <label htmlFor="shoulder" className="form-label">Hombro</label>
+                                        <input
+                                            type="number"
+                                            id="shoulder"
+                                            name="shoulder"
+                                            className="form-control"
+                                            value={regularUser.shoulder}
+                                            onChange={handleRegularUserChange}
+                                        />
+                                    </div>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={6}>
+                                    <div className="mb-3">
+                                        <label htmlFor="chest" className="form-label">Pecho</label>
+                                        <input
+                                            type="number"
+                                            id="chest"
+                                            name="chest"
+                                            className="form-control"
+                                            value={regularUser.chest}
+                                            onChange={handleRegularUserChange}
+                                        />
+                                    </div>
+                                </Col>
+                                <Col md={6}>
+                                    <div className="mb-3">
+                                        <label htmlFor="waist" className="form-label">Cintura</label>
+                                        <input
+                                            type="number"
+                                            id="waist"
+                                            name="waist"
+                                            className="form-control"
+                                            value={regularUser.waist}
+                                            onChange={handleRegularUserChange}
+                                        />
+                                    </div>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={6}>
+                                    <div className="mb-3">
+                                        <label htmlFor="hip" className="form-label">Cadera</label>
+                                        <input
+                                            type="number"
+                                            id="hip"
+                                            name="hip"
+                                            className="form-control"
+                                            value={regularUser.hip}
+                                            onChange={handleRegularUserChange}
+                                        />
+                                    </div>
+                                </Col>
+                                <Col md={6}>
+                                    <div className="mb-3">
+                                        <label htmlFor="arm" className="form-label">Brazo</label>
+                                        <input
+                                            type="number"
+                                            id="arm"
+                                            name="arm"
+                                            className="form-control"
+                                            value={regularUser.arm}
+                                            onChange={handleRegularUserChange}
+                                        />
+                                    </div>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={6}>
+                                    <div className="mb-3">
+                                        <label htmlFor="glute" className="form-label">Glúteo</label>
+                                        <input
+                                            type="number"
+                                            id="glute"
+                                            name="glute"
+                                            className="form-control"
+                                            value={regularUser.glute}
+                                            onChange={handleRegularUserChange}
+                                        />
+                                    </div>
+                                </Col>
+                                <Col md={6}>
+                                    <div className="mb-3">
+                                        <label htmlFor="upper_leg" className="form-label">Pierna Superior</label>
+                                        <input
+                                            type="number"
+                                            id="upper_leg"
+                                            name="upper_leg"
+                                            className="form-control"
+                                            value={regularUser.upper_leg}
+                                            onChange={handleRegularUserChange}
+                                        />
+                                    </div>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={6}>
+                                    <div className="mb-3">
+                                        <label htmlFor="middle_leg" className="form-label">Pierna Media</label>
+                                        <input
+                                            type="number"
+                                            id="middle_leg"
+                                            name="middle_leg"
+                                            className="form-control"
+                                            value={regularUser.middle_leg}
+                                            onChange={handleRegularUserChange}
+                                        />
+                                    </div>
+                                </Col>
+                                <Col md={6}>
+                                    <div className="mb-3">
+                                        <label htmlFor="lower_leg" className="form-label">Pierna Inferior</label>
+                                        <input
+                                            type="number"
+                                            id="lower_leg"
+                                            name="lower_leg"
+                                            className="form-control"
+                                            value={regularUser.lower_leg}
+                                            onChange={handleRegularUserChange}
+                                        />
+                                    </div>
+                                </Col>
+                            </Row>
+                            <button type="submit" className="btn btn-primary">Guardar Medidas</button>
+                        </Container>
+                    </form>
+                    <div>
+                        <Form.Group controlId="viewTypeSelect" className="mt-3">
+                            <Form.Label>Tipo de Vista</Form.Label>
+                            <Form.Control as="select" value={viewType} onChange={handleViewTypeChange}>
+                                <option value="chart">Gráfico</option>
+                                <option value="table">Tabla</option>
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId="chartTypeSelect" className="mt-3">
+                            <Form.Label>Tipo de Gráfico</Form.Label>
+                            <Form.Control as="select" value={chartType} onChange={handleChartTypeChange}>
+                                <option value="line">Línea</option>
+                                <option value="bar">Barras</option>
+                                <option value="pie">Circular</option>
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId="measurementSelect" className="mt-3">
+                            <Form.Label>Mediciones</Form.Label>
+                            {['weight', 'height', 'neck', 'shoulder', 'chest', 'waist', 'hip', 'arm', 'glute', 'upper_leg', 'middle_leg', 'lower_leg'].map((measurement) => (
+                                <Form.Check
+                                    key={measurement}
+                                    type="checkbox"
+                                    label={measurement}
+                                    value={measurement}
+                                    checked={selectedMeasurements.includes(measurement)}
+                                    onChange={handleMeasurementChange}
+                                />
+                            ))}
+                        </Form.Group>
+                        <Form.Group controlId="timeRangeSelect" className="mt-3">
+                            <Form.Label>Rango de Tiempo</Form.Label>
+                            <Form.Control as="select" value={timeRange} onChange={handleTimeRangeChange}>
+                                <option value="1week">1 Semana</option>
+                                <option value="1month">1 Mes</option>
+                                <option value="3months">3 Meses</option>
+                                <option value="6months">6 Meses</option>
+                                <option value="9months">9 Meses</option>
+                                <option value="1year">1 Año</option>
+                                <option value="2years">2 Años</option>
+                            </Form.Control>
+                        </Form.Group>
+                        {viewType === 'chart' ? renderChart() : renderTable()}
+                    </div>
+                </>
             )}
         </div>
     );
