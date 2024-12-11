@@ -574,6 +574,48 @@ def get_assigned_options(request, client_id):
 class PlanViewSet(viewsets.ModelViewSet):
     queryset = Plan.objects.all()
     serializer_class = PlanSerializer
+    permission_classes = [IsAuthenticated]
+
+    # Listar planes de un usuario
+    @action(detail=False, methods=['get'], url_path='user-plans/(?P<user_id>\d+)')
+    def user_plans(self, request, user_id=None):
+        plans = Plan.objects.filter(user_id=user_id)
+        if not plans:
+            return Response({"detail": "No se encontraron planes para este usuario."}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(plans, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # Actualizar parcialmente un plan
+    def update(self, request, *args, **kwargs):
+        plan = self.get_object()
+        serializer = self.get_serializer(plan, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # Crear un plan con validaciones adicionales (opcional)
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        plan = serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    # Acción personalizada: Ejemplo para duplicar un plan
+    @action(detail=True, methods=['post'], url_path='duplicate')
+    def duplicate_plan(self, request, pk=None):
+        try:
+            original_plan = self.get_object()
+            duplicate_plan = Plan.objects.create(
+                name=f"{original_plan.name} (Duplicado)",
+                user=original_plan.user,
+                start_date=original_plan.start_date,
+                end_date=original_plan.end_date
+            )
+            # Si hay relaciones, deberás copiarlas manualmente
+            return Response({"detail": "Plan duplicado exitosamente.", "id": duplicate_plan.id}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class CustomMealViewSet(viewsets.ModelViewSet):
     queryset = CustomMeal.objects.all()
