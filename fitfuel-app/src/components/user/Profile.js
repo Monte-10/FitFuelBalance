@@ -80,11 +80,14 @@ const Profile = () => {
                 setRole(role); // Establecemos el rol del usuario
 
                 if (role === 'regular_user') {
-                    const measurementsResponse = await axios.get(`${apiUrl}/user/measurements/history/${response.data.id}/`, {
-                        headers: {
-                            'Authorization': `Token ${localStorage.getItem('authToken')}`
+                    const measurementsResponse = await axios.get(
+                        `${apiUrl}/user/measurements/history/${response.data.id}/`,
+                        {
+                            headers: {
+                                'Authorization': `Token ${localStorage.getItem('authToken')}`
+                            }
                         }
-                    });
+                    );
                     setMeasurements(Array.isArray(measurementsResponse.data) ? measurementsResponse.data : []);
                 }
 
@@ -194,7 +197,11 @@ const Profile = () => {
             });
 
         } catch (error) {
-            setError(`Error al actualizar el perfil: ${error.response ? JSON.stringify(error.response.data) : error.message}`);
+            setError(
+                `Error al actualizar el perfil: ${
+                    error.response ? JSON.stringify(error.response.data) : error.message
+                }`
+            );
             console.error("Error al actualizar el perfil:", error.response?.data || error.message);
         }
     };
@@ -218,7 +225,11 @@ const Profile = () => {
             setMeasurements(Array.isArray(measurementsResponse.data) ? measurementsResponse.data : []);
 
         } catch (error) {
-            setError(`Error al guardar las medidas: ${error.response ? JSON.stringify(error.response.data) : error.message}`);
+            setError(
+                `Error al guardar las medidas: ${
+                    error.response ? JSON.stringify(error.response.data) : error.message
+                }`
+            );
             console.error("Error al guardar las medidas:", error.response?.data || error.message);
         }
     };
@@ -253,7 +264,9 @@ const Profile = () => {
                 startDate = new Date(now.setMonth(now.getMonth() - 1));
         }
 
-        return Array.isArray(measurements) ? measurements.filter(measurement => new Date(measurement.date) >= startDate) : [];
+        return Array.isArray(measurements)
+            ? measurements.filter(measurement => new Date(measurement.date) >= startDate)
+            : [];
     };
 
     const getChartData = () => {
@@ -660,7 +673,11 @@ const Profile = () => {
                                 <Form.Group controlId="measurementSelect">
                                     <Form.Label>Seleccionar Mediciones</Form.Label>
                                     <div className="d-flex flex-wrap">
-                                        {['weight', 'height', 'neck', 'shoulder', 'chest', 'waist', 'hip', 'arm', 'glute', 'upper_leg', 'middle_leg', 'lower_leg'].map((measurement) => (
+                                        {[
+                                            'weight', 'height', 'neck', 'shoulder', 'chest',
+                                            'waist', 'hip', 'arm', 'glute', 'upper_leg',
+                                            'middle_leg', 'lower_leg'
+                                        ].map((measurement) => (
                                             <Form.Check
                                                 key={measurement}
                                                 type="checkbox"

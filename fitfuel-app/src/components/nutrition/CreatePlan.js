@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import MealTable from './MealTable';
 import { ToastContainer, toast } from 'react-toastify';
+import { useParams } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import './CreatePlan.css';
 
-const CreatePlan = () => {
+const CreatePlan = ({ isEditMode = false }) => {
+  const { id: planIdParam } = useParams(); // planId en modo edición
   const [planName, setPlanName] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -14,25 +16,59 @@ const CreatePlan = () => {
   const [selectedUser, setSelectedUser] = useState('');
   const apiUrl = process.env.REACT_APP_API_URL;
 
+  // Al montar:
+  //  - Carga la lista de usuarios
+  //  - Si isEditMode, también carga los datos del plan
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch(`${apiUrl}/user/regularusers/`, {
-          headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` }
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setUsers(data.results || []);
-        } else {
-          toast.error('Error fetching users.');
-        }
-      } catch (error) {
-        console.error('Error fetching users:', error);
+    fetchUsers();
+    if (isEditMode && planIdParam) {
+      fetchPlanData(planIdParam);
+    }
+  }, [isEditMode, planIdParam]);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/user/regularusers/`, {
+        headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUsers(data.results || []);
+      } else {
         toast.error('Error fetching users.');
       }
-    };
-    fetchUsers();
-  }, [apiUrl]);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      toast.error('Error fetching users.');
+    }
+  };
+
+  // Sólo se usa en modo edición
+  const fetchPlanData = async (planId) => {
+    try {
+      const response = await fetch(`${apiUrl}/nutrition/plans/${planId}/`, {
+        headers: {
+          'Authorization': `Token ${localStorage.getItem('authToken')}`
+        }
+      });
+      if (!response.ok) {
+        throw new Error('Plan no encontrado o error al cargarlo.');
+      }
+      const data = await response.json();
+      // Rellenar campos
+      setPlanName(data.name);
+      setStartDate(data.start_date);
+      setEndDate(data.end_date);
+      setSelectedUser(data.user);
+
+      // Dejar listo para mostrar la tabla
+      setPlanId(data.id);
+      setPlanCreated(true);
+    } catch (error) {
+      console.error('Error fetching plan data:', error);
+      toast.error('Error fetching plan data.');
+    }
+  };
 
   const validateDates = () => {
     if (new Date(startDate) > new Date(endDate)) {
@@ -47,6 +83,7 @@ const CreatePlan = () => {
   };
 
   const handleSubmit = async () => {
+    // Validaciones
     if (!planName) {
       toast.error('Plan name is required.');
       return;
@@ -65,34 +102,58 @@ const CreatePlan = () => {
     };
 
     try {
-      const response = await fetch(`${apiUrl}/nutrition/plans/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Token ${localStorage.getItem('authToken')}`
-        },
-        body: JSON.stringify(planData)
-      });
+      let response;
+      let data;
 
-      const data = await response.json();
-      if (response.ok && data.id) {
-        toast.success('Plan created successfully!');
-        setPlanCreated(true);
-        setPlanId(data.id);
+      if (!isEditMode) {
+        // Crear Plan (POST)
+        response = await fetch(`${apiUrl}/nutrition/plans/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${localStorage.getItem('authToken')}`
+          },
+          body: JSON.stringify(planData)
+        });
+        data = await response.json();
+        if (response.ok && data.id) {
+          toast.success('Plan created successfully!');
+          setPlanCreated(true);
+          setPlanId(data.id);
+        } else {
+          toast.error(data.detail || 'Error creating plan.');
+        }
       } else {
-        toast.error(data.detail || 'Error creating plan.');
+        // Editar Plan (PUT)
+        response = await fetch(`${apiUrl}/nutrition/plans/${planIdParam}/`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${localStorage.getItem('authToken')}`
+          },
+          body: JSON.stringify(planData)
+        });
+        data = await response.json();
+        if (response.ok && data.id) {
+          toast.success('Plan updated successfully!');
+          setPlanCreated(true);
+          setPlanId(data.id);
+        } else {
+          toast.error(data.detail || 'Error updating plan.');
+        }
       }
     } catch (error) {
-      console.error('Error creating plan:', error);
-      toast.error('Error creating plan.');
+      console.error('Error saving plan:', error);
+      toast.error('Error saving plan.');
     }
   };
 
   return (
     <div className="container mt-4 create-plan-container">
-      <h2>Create Plan</h2>
+      <h2>{isEditMode ? 'Edit Plan' : 'Create Plan'}</h2>
       <ToastContainer />
 
+      {/* Si el plan aún no está creado, muestra el formulario de crear/editar */}
       {!planCreated ? (
         <>
           <div className="form-group mb-3">
@@ -149,12 +210,21 @@ const CreatePlan = () => {
             </select>
           </div>
 
-          <button onClick={handleSubmit} className="btn btn-primary">Create Plan</button>
+          <button onClick={handleSubmit} className="btn btn-primary">
+            {isEditMode ? 'Update Plan' : 'Create Plan'}
+          </button>
         </>
       ) : (
         <>
-          <h2>Plan Created: {planName}</h2>
-          <MealTable planId={planId} />
+          {/* Si el plan YA está creado (o cargado en edición), mostramos la MealTable */}
+          <h2>Plan: {planName}</h2>
+          <MealTable
+            planId={planId}
+            planName={planName}
+            startDate={startDate}
+            endDate={endDate}
+            selectedUser={selectedUser}
+          />
         </>
       )}
     </div>
