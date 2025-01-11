@@ -1,4 +1,3 @@
-// PlanDetails.jsx
 import React, { useEffect, useState } from "react";
 import { fetchPlanDetails } from "./PlanAPI";
 import { useParams, useNavigate } from "react-router-dom";
@@ -39,18 +38,26 @@ const PlanDetails = () => {
 
           {/* Render de las comidas */}
           <h3>Comidas</h3>
-          {Object.keys(plan.ingredients || {}).map((day) => (
-            <div key={day}>
-              <h4>{day}</h4>
-              <ul>
-                {plan.ingredients[day].map((ingredient) => (
-                  <li key={ingredient.id}>
-                    {ingredient.name} - {ingredient.quantity}g
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* plan.custom_meals es un array, cada item = un "customMeal" */}
+          {plan.custom_meals?.length ? (
+            plan.custom_meals.map((meal) => (
+              <div key={meal.id} style={{ marginBottom: '1rem' }}>
+                <h4>{meal.day} - {meal.meal_type}</h4>
+                {/* meal.ingredients = array de { ingredient, quantity, unit_based } */}
+                <ul>
+                  {meal.ingredients.map((ing, index) => (
+                    <li key={index}>
+                      {/* No tenemos "name" a menos que anidemos IngredientSerializer 
+                          en el back. Por ahora solo ID. */}
+                      Ingredient #{ing.ingredient} - {ing.quantity}g
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          ) : (
+            <p>No hay comidas registradas.</p>
+          )}
 
           <button className="btn btn-primary mt-3" onClick={handleEdit}>
             Editar Plan

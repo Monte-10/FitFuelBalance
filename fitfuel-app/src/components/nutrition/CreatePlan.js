@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import MealTable from './MealTable';
 import { ToastContainer, toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
@@ -14,19 +14,16 @@ const CreatePlan = ({ isEditMode = false }) => {
   const [planId, setPlanId] = useState(null);
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState('');
+
+  // Estado para almacenar la "versión cruda" de ingredientes (day, meal, ingredient, quantity, etc.)
+  const [existingIngredients, setExistingIngredients] = useState([]);
+
   const apiUrl = process.env.REACT_APP_API_URL;
 
-  // Al montar:
-  //  - Carga la lista de usuarios
-  //  - Si isEditMode, también carga los datos del plan
-  useEffect(() => {
-    fetchUsers();
-    if (isEditMode && planIdParam) {
-      fetchPlanData(planIdParam);
-    }
-  }, [isEditMode, planIdParam]);
-
-  const fetchUsers = async () => {
+  // -----------
+  // Evitar warning por missing deps: definimos los fetch con useCallback
+  // -----------
+  const fetchUsers = useCallback(async () => {
     try {
       const response = await fetch(`${apiUrl}/user/regularusers/`, {
         headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` }
@@ -41,10 +38,9 @@ const CreatePlan = ({ isEditMode = false }) => {
       console.error('Error fetching users:', error);
       toast.error('Error fetching users.');
     }
-  };
+  }, [apiUrl]);
 
-  // Sólo se usa en modo edición
-  const fetchPlanData = async (planId) => {
+  const fetchPlanData = useCallback(async (planId) => {
     try {
       const response = await fetch(`${apiUrl}/nutrition/plans/${planId}/`, {
         headers: {
@@ -55,20 +51,49 @@ const CreatePlan = ({ isEditMode = false }) => {
         throw new Error('Plan no encontrado o error al cargarlo.');
       }
       const data = await response.json();
+
       // Rellenar campos
       setPlanName(data.name);
       setStartDate(data.start_date);
       setEndDate(data.end_date);
       setSelectedUser(data.user);
-
-      // Dejar listo para mostrar la tabla
       setPlanId(data.id);
+
+      // Convertimos custom_meals -> existingIngredients
+      if (data.custom_meals) {
+        const parsedIngredients = [];
+        data.custom_meals.forEach((cm) => {
+          // Cada cm tiene cm.day, cm.meal_type y un array ingredients (si existen)
+          if (cm.ingredients) {
+            cm.ingredients.forEach((ing) => {
+              parsedIngredients.push({
+                day: cm.day,
+                meal: cm.meal_type,
+                id: ing.ingredient,
+                quantity: ing.quantity
+              });
+            });
+          }
+        });
+        setExistingIngredients(parsedIngredients);
+      }
+
       setPlanCreated(true);
     } catch (error) {
       console.error('Error fetching plan data:', error);
       toast.error('Error fetching plan data.');
     }
-  };
+  }, [apiUrl]);
+
+  // Llamamos a fetchUsers y fetchPlanData cuando sea necesario
+  useEffect(() => {
+    fetchUsers();
+    if (isEditMode && planIdParam) {
+      fetchPlanData(planIdParam);
+    }
+  }, [isEditMode, planIdParam, fetchUsers, fetchPlanData]);
+
+  // --------------------
 
   const validateDates = () => {
     if (new Date(startDate) > new Date(endDate)) {
@@ -83,7 +108,6 @@ const CreatePlan = ({ isEditMode = false }) => {
   };
 
   const handleSubmit = async () => {
-    // Validaciones
     if (!planName) {
       toast.error('Plan name is required.');
       return;
@@ -153,7 +177,6 @@ const CreatePlan = ({ isEditMode = false }) => {
       <h2>{isEditMode ? 'Edit Plan' : 'Create Plan'}</h2>
       <ToastContainer />
 
-      {/* Si el plan aún no está creado, muestra el formulario de crear/editar */}
       {!planCreated ? (
         <>
           <div className="form-group mb-3">
@@ -216,14 +239,16 @@ const CreatePlan = ({ isEditMode = false }) => {
         </>
       ) : (
         <>
-          {/* Si el plan YA está creado (o cargado en edición), mostramos la MealTable */}
           <h2>Plan: {planName}</h2>
+          {/* Ahora que tenemos un plan con ID, y existingIngredients (si en edit), 
+              mostramos MealTable */}
           <MealTable
             planId={planId}
             planName={planName}
             startDate={startDate}
             endDate={endDate}
             selectedUser={selectedUser}
+            existingIngredients={existingIngredients} // array [ { day, meal, id, quantity }, ... ]
           />
         </>
       )}

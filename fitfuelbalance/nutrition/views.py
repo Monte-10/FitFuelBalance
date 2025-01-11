@@ -571,37 +571,68 @@ def get_assigned_options(request, client_id):
     serializer = AssignedOptionSerializer(assigned_options, many=True)
     return Response(serializer.data)
 
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import viewsets
+
 class PlanViewSet(viewsets.ModelViewSet):
     queryset = Plan.objects.all()
     serializer_class = PlanSerializer
-    permission_classes = [IsAuthenticated]
 
-    # Listar planes de un usuario
-    @action(detail=False, methods=['get'], url_path='user-plans/(?P<user_id>\d+)')
-    def user_plans(self, request, user_id=None):
-        plans = Plan.objects.filter(user_id=user_id)
-        if not plans:
-            return Response({"detail": "No se encontraron planes para este usuario."}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = self.get_serializer(plans, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    # Actualizar parcialmente un plan
-    def update(self, request, *args, **kwargs):
-        plan = self.get_object()
-        serializer = self.get_serializer(plan, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    # Crear un plan con validaciones adicionales (opcional)
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         plan = serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    # Acción personalizada: Ejemplo para duplicar un plan
+        ingredients_data = request.data.get('ingredients', [])
+        self._create_or_update_custom_meals(plan, ingredients_data)
+
+        return Response(self.get_serializer(plan).data, status=status.HTTP_201_CREATED)
+
+    def update(self, request, *args, **kwargs):
+        plan = self.get_object()
+
+        serializer = self.get_serializer(plan, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        plan = serializer.save()
+
+        plan.custom_meals.all().delete()
+
+        ingredients_data = request.data.get('ingredients', [])
+        self._create_or_update_custom_meals(plan, ingredients_data)
+
+        return Response(self.get_serializer(plan).data, status=status.HTTP_200_OK)
+
+    def _create_or_update_custom_meals(self, plan, ingredients_data):
+        from collections import defaultdict
+        grouped = defaultdict(list)
+        for item in ingredients_data:
+            # item = { day, meal, ingredient, quantity, ...}
+            key = (item['day'], item['meal'])
+            grouped[key].append(item)
+
+        meal_number = 1
+        for (day, meal_type), items in grouped.items():
+            custom_meal = CustomMeal.objects.create(
+                plan=plan,
+                meal_number=meal_number,
+                name=f"{day} - {meal_type}",
+                day=day,
+                meal_type=meal_type
+            )
+            meal_number += 1
+
+            for ing_item in items:
+                CustomMealIngredient.objects.create(
+                    custom_meal=custom_meal,
+                    ingredient_id=ing_item['ingredient'],
+                    quantity=ing_item['quantity'],
+                    unit_based=ing_item.get('unit_based', False)
+                )
+
+    # Resto de acciones personalizadas que ya tenías
     @action(detail=True, methods=['post'], url_path='duplicate')
     def duplicate_plan(self, request, pk=None):
         try:
@@ -613,9 +644,11 @@ class PlanViewSet(viewsets.ModelViewSet):
                 end_date=original_plan.end_date
             )
             # Si hay relaciones, deberás copiarlas manualmente
-            return Response({"detail": "Plan duplicado exitosamente.", "id": duplicate_plan.id}, status=status.HTTP_201_CREATED)
+            return Response({"detail": "Plan duplicado exitosamente.", "id": duplicate_plan.id},
+                            status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class CustomMealViewSet(viewsets.ModelViewSet):
     queryset = CustomMeal.objects.all()
@@ -659,7 +692,8 @@ def save_plan(request):
                     custom_meal = CustomMeal.objects.create(
                         plan=plan,
                         meal_number=meal_num,
-                        name=f"{day} - Meal {meal_num}"
+                        name=f"{day} - Meal {meal_num}",
+                        # Podrías poner day=day, meal_type='...',
                     )
                     for ingredient_data in ingredients:
                         ingredient = Ingredient.objects.get(id=ingredient_data['id'])

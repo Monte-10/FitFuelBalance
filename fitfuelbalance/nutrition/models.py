@@ -885,9 +885,11 @@ class Plan(models.Model):
         return (self.end_date - self.start_date).days + 1
     
 class CustomMeal(models.Model):
-    plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
+    plan = models.ForeignKey(Plan, on_delete=models.CASCADE, related_name='custom_meals')
     meal_number = models.PositiveIntegerField()
     name = models.CharField(max_length=100)
+    day = models.CharField(max_length=20, blank=True)
+    meal_type = models.CharField(max_length=20, blank=True)
 
     def __str__(self):
         return f"{self.name} (Meal {self.meal_number})"

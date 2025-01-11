@@ -946,15 +946,31 @@ class CustomMealIngredientSerializer(serializers.ModelSerializer):
         fields = ['ingredient', 'quantity', 'unit_based']
 
 class CustomMealSerializer(serializers.ModelSerializer):
+    # Relacion inversa: 'ingredients' (related_name en el modelo)
     ingredients = CustomMealIngredientSerializer(many=True, read_only=True)
 
     class Meta:
         model = CustomMeal
-        fields = ['id', 'meal_number', 'name', 'plan', 'ingredients']
+        fields = [
+            'id',
+            'meal_number',
+            'name',
+            'day',
+            'meal_type',
+            'plan',
+            'ingredients',
+        ]
 
 class PlanSerializer(serializers.ModelSerializer):
     custom_meals = CustomMealSerializer(many=True, read_only=True)
 
     class Meta:
         model = Plan
-        fields = ['id', 'name', 'user', 'start_date', 'end_date', 'custom_meals']
+        fields = [
+            'id',
+            'name',
+            'user',
+            'start_date',
+            'end_date',
+            'custom_meals'
+        ]

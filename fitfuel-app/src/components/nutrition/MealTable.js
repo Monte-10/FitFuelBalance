@@ -1,14 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import IngredientModal from './IngredientModal';
 
-const MealTable = ({ planId, planName, startDate, endDate, selectedUser }) => {
+const MealTable = ({
+  planId,
+  planName,
+  startDate,
+  endDate,
+  selectedUser,
+  existingIngredients = []
+}) => {
   const [showModal, setShowModal] = useState(null);
+
+  // Estructura interna:
+  // selectedIngredients: {
+  //   Monday: {
+  //     Desayuno: [ { id, quantity, etc. }, ...],
+  //     Almuerzo: [...],
+  //     ...
+  //   },
+  //   ...
+  // }
   const [selectedIngredients, setSelectedIngredients] = useState({});
   const [nutritionTotals, setNutritionTotals] = useState({});
   const [users, setUsers] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState(selectedUser || '');
+
   const apiUrl = process.env.REACT_APP_API_URL;
 
+  // Cargar la lista de usuarios (opcional, si lo usas para reasignar)
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -17,8 +36,8 @@ const MealTable = ({ planId, planName, startDate, endDate, selectedUser }) => {
         });
         const data = await response.json();
         setUsers(data.results || []);
-        if (data.results.length > 0) {
-          setSelectedUserId(data.results[0].id);  // Set the first user as default
+        if (data.results?.length > 0) {
+          setSelectedUserId(data.results[0].id);
         }
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -27,63 +46,97 @@ const MealTable = ({ planId, planName, startDate, endDate, selectedUser }) => {
     fetchUsers();
   }, [apiUrl]);
 
+  // Al montar o cambiar existingIngredients, parseamos
+  useEffect(() => {
+    if (existingIngredients.length > 0) {
+      const parsed = parseIngredientsToSelected(existingIngredients);
+      setSelectedIngredients(parsed);
+    } 
+    else {
+      // Si no hay existingIngredients, asegúrate de setear un objeto vacío
+      setSelectedIngredients({});
+    }
+  }, [existingIngredients]);
+
+  // Transforma el array [ { day, meal, id, quantity, ... }, ... ]
+  // a { day: { meal: [ { id, quantity }, ... ] } }
+  const parseIngredientsToSelected = (ingredientsArray) => {
+    const result = {};
+    ingredientsArray.forEach((item) => {
+      const { day, meal, ...rest } = item;
+      if (!result[day]) {
+        result[day] = {};
+      }
+      if (!result[day][meal]) {
+        result[day][meal] = [];
+      }
+      // rest contendrá { id, quantity, etc. }
+      result[day][meal].push(rest);
+    });
+    return result;
+  };
+
+  // Abre el modal para elegir ingrediente
   const openModal = (day, meal) => {
     setShowModal({ day, meal });
   };
 
+  // Maneja la selección de un ingrediente en el modal
   const handleIngredientSelect = (ingredient) => {
     const { day, meal } = showModal;
     setSelectedIngredients((prev) => {
-      const dayIngredients = prev[day] || {};
-      const mealIngredients = dayIngredients[meal] || [];
+      const dayMeals = prev[day] || {};
+      const mealArray = dayMeals[meal] || [];
 
-      const existingIngredient = mealIngredients.find((ing) => ing.id === ingredient.id);
-      if (existingIngredient) {
-        existingIngredient.quantity += 100;
+      const existing = mealArray.find((ing) => ing.id === ingredient.id);
+      if (existing) {
+        existing.quantity += 100;
       } else {
-        mealIngredients.push({ ...ingredient, quantity: 100 });
+        mealArray.push({ ...ingredient, quantity: 100 });
       }
 
       return {
         ...prev,
         [day]: {
-          ...dayIngredients,
-          [meal]: mealIngredients,
-        },
+          ...dayMeals,
+          [meal]: mealArray
+        }
       };
     });
     setShowModal(null);
   };
 
+  // Eliminar ingrediente
   const removeIngredient = (day, meal, ingredientId) => {
     setSelectedIngredients((prev) => {
-      const dayIngredients = prev[day] || {};
-      const mealIngredients = dayIngredients[meal] || [];
-      const filteredIngredients = mealIngredients.filter((ing) => ing.id !== ingredientId);
+      const dayMeals = prev[day] || {};
+      const mealArray = dayMeals[meal] || [];
+      const filtered = mealArray.filter((ing) => ing.id !== ingredientId);
 
       return {
         ...prev,
         [day]: {
-          ...dayIngredients,
-          [meal]: filteredIngredients,
-        },
+          ...dayMeals,
+          [meal]: filtered
+        }
       };
     });
   };
 
+  // Calcular totales
   useEffect(() => {
     const totals = {};
     Object.keys(selectedIngredients).forEach((day) => {
       const dayTotals = { calories: 0, fat: 0, saturated_fat: 0, protein: 0, carbohydrates: 0, sugar: 0 };
 
-      Object.values(selectedIngredients[day]).forEach((meal) => {
-        meal.forEach((ingredient) => {
-          dayTotals.calories += ingredient.calories * (ingredient.quantity / 100);
-          dayTotals.fat += ingredient.fat * (ingredient.quantity / 100);
-          dayTotals.saturated_fat += ingredient.saturated_fat * (ingredient.quantity / 100);
-          dayTotals.protein += ingredient.protein * (ingredient.quantity / 100);
-          dayTotals.carbohydrates += ingredient.carbohydrates * (ingredient.quantity / 100);
-          dayTotals.sugar += ingredient.sugar * (ingredient.quantity / 100);
+      Object.values(selectedIngredients[day]).forEach((mealArray) => {
+        mealArray.forEach((ingredient) => {
+          dayTotals.calories += (ingredient.calories || 0) * (ingredient.quantity / 100);
+          dayTotals.fat += (ingredient.fat || 0) * (ingredient.quantity / 100);
+          dayTotals.saturated_fat += (ingredient.saturated_fat || 0) * (ingredient.quantity / 100);
+          dayTotals.protein += (ingredient.protein || 0) * (ingredient.quantity / 100);
+          dayTotals.carbohydrates += (ingredient.carbohydrates || 0) * (ingredient.quantity / 100);
+          dayTotals.sugar += (ingredient.sugar || 0) * (ingredient.quantity / 100);
         });
       });
 
@@ -92,6 +145,7 @@ const MealTable = ({ planId, planName, startDate, endDate, selectedUser }) => {
     setNutritionTotals(totals);
   }, [selectedIngredients]);
 
+  // Actualizar plan (PUT) con la lista de ingredientes
   const savePlan = async () => {
     const ingredientsList = [];
     Object.keys(selectedIngredients).forEach((day) => {
@@ -113,7 +167,7 @@ const MealTable = ({ planId, planName, startDate, endDate, selectedUser }) => {
       start_date: startDate,
       end_date: endDate,
       user: selectedUserId,
-      ingredients: ingredientsList,
+      ingredients: ingredientsList
     };
 
     console.log('Payload enviado:', payload);
@@ -176,7 +230,10 @@ const MealTable = ({ planId, planName, startDate, endDate, selectedUser }) => {
               <td>{day}</td>
               {['Desayuno', 'Almuerzo', 'Cena', 'Extras'].map((meal) => (
                 <td key={meal}>
-                  <button onClick={() => openModal(day, meal)} className="btn btn-success btn-block mb-2">
+                  <button
+                    onClick={() => openModal(day, meal)}
+                    className="btn btn-success btn-block mb-2"
+                  >
                     + Añadir Ingrediente
                   </button>
 
@@ -184,7 +241,7 @@ const MealTable = ({ planId, planName, startDate, endDate, selectedUser }) => {
                     <ul className="ingredient-list">
                       {selectedIngredients[day][meal].map((ingredient) => (
                         <li key={ingredient.id} className="ingredient-item">
-                          {ingredient.name} ({ingredient.quantity}g)
+                          {ingredient.name || `Ing #${ingredient.id}`} ({ingredient.quantity}g)
                           <button
                             onClick={() => removeIngredient(day, meal, ingredient.id)}
                             className="btn btn-danger btn-sm ml-2"
@@ -230,7 +287,9 @@ const MealTable = ({ planId, planName, startDate, endDate, selectedUser }) => {
         </tbody>
       </table>
 
-      <button onClick={savePlan} className="btn btn-primary">Guardar y Asignar Plan</button>
+      <button onClick={savePlan} className="btn btn-primary">
+        Guardar y Asignar Plan
+      </button>
 
       {showModal && (
         <IngredientModal
