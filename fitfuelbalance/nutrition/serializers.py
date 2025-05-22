@@ -941,9 +941,39 @@ class AssignedOptionSerializer(serializers.ModelSerializer):
 
 
 class CustomMealIngredientSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='ingredient.id', read_only=True)
+    name = serializers.CharField(source='ingredient.name', read_only=True)
+    calories = serializers.SerializerMethodField()
+    protein = serializers.SerializerMethodField()
+    fat = serializers.SerializerMethodField()
+    saturated_fat = serializers.SerializerMethodField()
+    carbohydrates = serializers.SerializerMethodField()
+    sugar = serializers.SerializerMethodField()
+
     class Meta:
         model = CustomMealIngredient
-        fields = ['ingredient', 'quantity', 'unit_based']
+        fields = [
+            'id', 'ingredient', 'name', 'quantity', 'unit_based',
+            'calories', 'protein', 'fat', 'saturated_fat', 'carbohydrates', 'sugar'
+        ]
+
+    def get_calories(self, obj):
+        return obj.calories
+
+    def get_protein(self, obj):
+        return obj.protein
+
+    def get_fat(self, obj):
+        return obj.fat
+
+    def get_saturated_fat(self, obj):
+        return obj.saturated_fat
+
+    def get_carbohydrates(self, obj):
+        return obj.carbohydrates
+
+    def get_sugar(self, obj):
+        return obj.sugar
 
 class CustomMealSerializer(serializers.ModelSerializer):
     # Relacion inversa: 'ingredients' (related_name en el modelo)
@@ -963,6 +993,7 @@ class CustomMealSerializer(serializers.ModelSerializer):
 
 class PlanSerializer(serializers.ModelSerializer):
     custom_meals = CustomMealSerializer(many=True, read_only=True)
+    username = serializers.CharField(source='user.username', read_only=True)
 
     class Meta:
         model = Plan
@@ -970,6 +1001,7 @@ class PlanSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'user',
+            'username',
             'start_date',
             'end_date',
             'custom_meals'

@@ -18,6 +18,9 @@ const CreatePlan = ({ isEditMode = false }) => {
   // Estado para almacenar la "versión cruda" de ingredientes (day, meal, ingredient, quantity, etc.)
   const [existingIngredients, setExistingIngredients] = useState([]);
 
+  // Añade un estado para los ingredientes seleccionados en MealTable
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
+
   const apiUrl = process.env.REACT_APP_API_URL;
 
   // -----------
@@ -63,14 +66,21 @@ const CreatePlan = ({ isEditMode = false }) => {
       if (data.custom_meals) {
         const parsedIngredients = [];
         data.custom_meals.forEach((cm) => {
-          // Cada cm tiene cm.day, cm.meal_type y un array ingredients (si existen)
           if (cm.ingredients) {
             cm.ingredients.forEach((ing) => {
               parsedIngredients.push({
                 day: cm.day,
                 meal: cm.meal_type,
                 id: ing.ingredient,
-                quantity: ing.quantity
+                name: ing.name,
+                quantity: ing.quantity,
+                unit_based: ing.unit_based,
+                calories: ing.calories,
+                protein: ing.protein,
+                fat: ing.fat,
+                saturated_fat: ing.saturated_fat,
+                carbohydrates: ing.carbohydrates,
+                sugar: ing.sugar,
               });
             });
           }
@@ -123,6 +133,7 @@ const CreatePlan = ({ isEditMode = false }) => {
       start_date: startDate,
       end_date: endDate,
       user: selectedUser,
+      ingredients: selectedIngredients.length > 0 ? selectedIngredients : existingIngredients,
     };
 
     try {
@@ -248,7 +259,8 @@ const CreatePlan = ({ isEditMode = false }) => {
             startDate={startDate}
             endDate={endDate}
             selectedUser={selectedUser}
-            existingIngredients={existingIngredients} // array [ { day, meal, id, quantity }, ... ]
+            existingIngredients={existingIngredients}
+            onIngredientsChange={setSelectedIngredients}
           />
         </>
       )}

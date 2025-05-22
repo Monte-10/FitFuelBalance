@@ -895,7 +895,7 @@ class CustomMeal(models.Model):
         return f"{self.name} (Meal {self.meal_number})"
     
 class CustomMealIngredient(models.Model):
-    custom_meal = models.ForeignKey(CustomMeal, on_delete=models.CASCADE)
+    custom_meal = models.ForeignKey(CustomMeal, on_delete=models.CASCADE, related_name='ingredients')
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.FloatField(default=0)
     unit_based = models.BooleanField(default=False)

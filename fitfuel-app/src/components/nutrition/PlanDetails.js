@@ -21,7 +21,7 @@ const PlanDetails = () => {
   }, [id]);
 
   const handleEdit = () => {
-    navigate(`/nutrition/plans/${id}/edit`);
+    navigate(`/nutrition/plans/${id}/edit`, { state: { selectedUser: plan.user } });
   };
 
   return (

@@ -7,7 +7,8 @@ const MealTable = ({
   startDate,
   endDate,
   selectedUser,
-  existingIngredients = []
+  existingIngredients = [],
+  onIngredientsChange
 }) => {
   const [showModal, setShowModal] = useState(null);
 
@@ -27,6 +28,11 @@ const MealTable = ({
 
   const apiUrl = process.env.REACT_APP_API_URL;
 
+  // Si selectedUser cambia (por ejemplo, tras cargar detalles del plan), actualiza selectedUserId
+  useEffect(() => {
+    if (selectedUser) setSelectedUserId(selectedUser);
+  }, [selectedUser]);
+
   // Cargar la lista de usuarios (opcional, si lo usas para reasignar)
   useEffect(() => {
     const fetchUsers = async () => {
@@ -36,7 +42,7 @@ const MealTable = ({
         });
         const data = await response.json();
         setUsers(data.results || []);
-        if (data.results?.length > 0) {
+        if (!selectedUserId && data.results?.length > 0) {
           setSelectedUserId(data.results[0].id);
         }
       } catch (error) {
@@ -44,7 +50,7 @@ const MealTable = ({
       }
     };
     fetchUsers();
-  }, [apiUrl]);
+  }, [apiUrl, selectedUserId]);
 
   // Al montar o cambiar existingIngredients, parseamos
   useEffect(() => {
@@ -123,12 +129,29 @@ const MealTable = ({
     });
   };
 
+  // Añade la función para actualizar la cantidad
+  const handleQuantityChange = (day, meal, ingredientId, newQuantity) => {
+    setSelectedIngredients((prev) => {
+      const dayMeals = prev[day] || {};
+      const mealArray = dayMeals[meal] || [];
+      const updatedArray = mealArray.map((ing) =>
+        ing.id === ingredientId ? { ...ing, quantity: Number(newQuantity) } : ing
+      );
+      return {
+        ...prev,
+        [day]: {
+          ...dayMeals,
+          [meal]: updatedArray,
+        },
+      };
+    });
+  };
+
   // Calcular totales
   useEffect(() => {
     const totals = {};
     Object.keys(selectedIngredients).forEach((day) => {
       const dayTotals = { calories: 0, fat: 0, saturated_fat: 0, protein: 0, carbohydrates: 0, sugar: 0 };
-
       Object.values(selectedIngredients[day]).forEach((mealArray) => {
         mealArray.forEach((ingredient) => {
           dayTotals.calories += (ingredient.calories || 0) * (ingredient.quantity / 100);
@@ -139,7 +162,6 @@ const MealTable = ({
           dayTotals.sugar += (ingredient.sugar || 0) * (ingredient.quantity / 100);
         });
       });
-
       totals[day] = dayTotals;
     });
     setNutritionTotals(totals);
@@ -196,6 +218,33 @@ const MealTable = ({
     }
   };
 
+  // Cuando selectedIngredients cambie, emite el valor al padre si hay callback
+  useEffect(() => {
+    if (onIngredientsChange) {
+      // Convierte el objeto selectedIngredients a array plano
+      const ingredientsList = [];
+      Object.keys(selectedIngredients).forEach((day) => {
+        const meals = selectedIngredients[day];
+        Object.keys(meals).forEach((meal) => {
+          meals[meal].forEach((ingredient) => {
+            ingredientsList.push({
+              day,
+              meal,
+              ...ingredient
+            });
+          });
+        });
+      });
+      onIngredientsChange(ingredientsList);
+    }
+  }, [selectedIngredients, onIngredientsChange]);
+
+  // Al montar el componente, fuerza el cálculo de los totales
+  useEffect(() => {
+    // Esto fuerza el cálculo inicial de los totales al entrar
+    setSelectedIngredients((prev) => ({ ...prev }));
+  }, []);
+
   return (
     <div className="meal-table-container">
       <div className="form-group">
@@ -238,13 +287,28 @@ const MealTable = ({
                   </button>
 
                   {selectedIngredients[day] && selectedIngredients[day][meal] && (
-                    <ul className="ingredient-list">
+                    <ul className="ingredient-list" style={{ paddingLeft: 0 }}>
                       {selectedIngredients[day][meal].map((ingredient) => (
-                        <li key={ingredient.id} className="ingredient-item">
-                          {ingredient.name || `Ing #${ingredient.id}`} ({ingredient.quantity}g)
+                        <li key={ingredient.id} className="ingredient-item" style={{ display: 'flex', alignItems: 'center', marginBottom: 6, background: '#23272b', borderRadius: 6, padding: '6px 10px' }}>
+                          <span style={{ flex: 1, fontWeight: 500, color: '#fff' }}>
+                            {ingredient.name || `Ing #${ingredient.id}`}
+                          </span>
+                          <span style={{ marginRight: 8, color: '#bbb' }}>
+                            <input
+                              type="number"
+                              min="1"
+                              value={ingredient.quantity}
+                              style={{ width: 60, display: 'inline-block', marginRight: 4, borderRadius: 4, border: '1px solid #888', background: '#181a1b', color: '#fff', padding: '2px 6px' }}
+                              onChange={e =>
+                                handleQuantityChange(day, meal, ingredient.id, e.target.value)
+                              }
+                            />
+                            g
+                          </span>
                           <button
                             onClick={() => removeIngredient(day, meal, ingredient.id)}
                             className="btn btn-danger btn-sm ml-2"
+                            style={{ fontSize: 13, padding: '2px 10px', borderRadius: 4 }}
                           >
                             Eliminar
                           </button>
