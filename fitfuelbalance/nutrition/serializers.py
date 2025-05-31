@@ -427,7 +427,7 @@ class MealSerializer(serializers.ModelSerializer):
     
     def get_other(self, obj):
         return obj.other
-    
+
 class DailyDietSerializer(serializers.ModelSerializer):
     meals = serializers.PrimaryKeyRelatedField(queryset=Meal.objects.all(), many=True)
     calories = serializers.SerializerMethodField()
@@ -1006,3 +1006,143 @@ class PlanSerializer(serializers.ModelSerializer):
             'end_date',
             'custom_meals'
         ]
+
+class ComparativeMealIngredientSerializer(serializers.ModelSerializer):
+    ingredient_name = serializers.CharField(source='ingredient.name', read_only=True)
+    calories = serializers.SerializerMethodField()
+    protein = serializers.SerializerMethodField()
+    fat = serializers.SerializerMethodField()
+    carbohydrates = serializers.SerializerMethodField()
+    sugar = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ComparativeMealIngredient
+        fields = ['id', 'ingredient', 'ingredient_name', 'quantity', 'unit', 'notes', 'calories', 'protein', 'fat', 'carbohydrates', 'sugar']
+
+    def get_calories(self, obj):
+        return obj.ingredient.food.calories if obj.ingredient and obj.ingredient.food else 0
+
+    def get_protein(self, obj):
+        return obj.ingredient.food.protein if obj.ingredient and obj.ingredient.food else 0
+
+    def get_fat(self, obj):
+        return obj.ingredient.food.fat if obj.ingredient and obj.ingredient.food else 0
+
+    def get_carbohydrates(self, obj):
+        return obj.ingredient.food.carbohydrates if obj.ingredient and obj.ingredient.food else 0
+
+    def get_sugar(self, obj):
+        return obj.ingredient.food.sugar if obj.ingredient and obj.ingredient.food else 0
+
+class ComparativeMealSerializer(serializers.ModelSerializer):
+    ingredients = ComparativeMealIngredientSerializer(many=True, required=False)
+    class Meta:
+        model = ComparativeMeal
+        fields = ['id', 'meal_number', 'name', 'time', 'ingredients']
+
+    def create(self, validated_data):
+        ingredients_data = validated_data.pop('ingredients', [])
+        meal = ComparativeMeal.objects.create(**validated_data)
+        for ing in ingredients_data:
+            ComparativeMealIngredient.objects.create(meal=meal, **ing)
+        return meal
+
+    def update(self, instance, validated_data):
+        ingredients_data = validated_data.pop('ingredients', None)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        if ingredients_data is not None:
+            instance.ingredients.all().delete()
+            for ing in ingredients_data:
+                ComparativeMealIngredient.objects.create(meal=instance, **ing)
+        return instance
+
+class ComparativePlanSerializer(serializers.ModelSerializer):
+    meals = ComparativeMealSerializer(many=True, required=False)
+    class Meta:
+        model = ComparativePlan
+        fields = ['id', 'name', 'order', 'meals']
+
+    def create(self, validated_data):
+        meals_data = validated_data.pop('meals', [])
+        plan = ComparativePlan.objects.create(**validated_data)
+        for meal in meals_data:
+            ComparativeMeal.objects.create(plan=plan, **meal)
+        return plan
+
+    def update(self, instance, validated_data):
+        meals_data = validated_data.pop('meals', None)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        if meals_data is not None:
+            instance.meals.all().delete()
+            for meal in meals_data:
+                ComparativeMeal.objects.create(plan=instance, **meal)
+        return instance
+
+class ComparativePlanTableSerializer(serializers.ModelSerializer):
+    user_username = serializers.CharField(source='user.username', read_only=True)
+    comparative_plans = ComparativePlanSerializer(many=True, required=False)
+    class Meta:
+        model = ComparativePlanTable
+        fields = ['id', 'user', 'user_username', 'name', 'created_at', 'comparative_plans']
+
+    def create(self, validated_data):
+        plans_data = validated_data.pop('comparative_plans', [])
+        table = ComparativePlanTable.objects.create(**validated_data)
+        for plan_data in plans_data:
+            meals_data = plan_data.pop('meals', [])
+            plan = ComparativePlan.objects.create(table=table, **plan_data)
+            for meal_data in meals_data:
+                ingredients_data = meal_data.pop('ingredients', [])
+                meal = ComparativeMeal.objects.create(plan=plan, **meal_data)
+                for ing_data in ingredients_data:
+                    ComparativeMealIngredient.objects.create(meal=meal, **ing_data)
+        return table
+
+    def update(self, instance, validated_data):
+        # Actualiza el usuario si viene en el payload
+        user = validated_data.pop('user', None)
+        if user is not None:
+            instance.user = user
+        plans_data = validated_data.pop('comparative_plans', None)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        if plans_data is not None:
+            # Borra todos los planes y comidas antiguos
+            instance.comparative_plans.all().delete()
+            for plan_data in plans_data:
+                meals_data = plan_data.pop('meals', [])
+                plan = ComparativePlan.objects.create(table=instance, **plan_data)
+                for meal_data in meals_data:
+                    ingredients_data = meal_data.pop('ingredients', [])
+                    meal = ComparativeMeal.objects.create(plan=plan, **meal_data)
+                    for ing_data in ingredients_data:
+                        ComparativeMealIngredient.objects.create(meal=meal, **ing_data)
+        # Recarga el objeto desde la base de datos para evitar problemas de relaciones
+        instance.refresh_from_db()
+        return instance
+
+# Serializers simples para edición granular
+class ComparativePlanTableSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ComparativePlanTable
+        fields = ['id', 'user', 'name', 'created_at']
+
+class ComparativePlanSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ComparativePlan
+        fields = ['id', 'table', 'name', 'order']
+
+class ComparativeMealSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ComparativeMeal
+        fields = ['id', 'plan', 'meal_number', 'name', 'time']
+
+class ComparativeMealIngredientSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ComparativeMealIngredient
+        fields = ['id', 'meal', 'ingredient', 'quantity', 'unit', 'notes']

@@ -944,3 +944,42 @@ class CustomMealIngredient(models.Model):
 
     def __str__(self):
         return f"{self.ingredient.name} ({self.quantity} {'units' if self.unit_based else 'grams'})"
+
+class ComparativePlanTable(models.Model):
+    user = models.ForeignKey('user.RegularUser', on_delete=models.CASCADE, related_name='comparative_plan_tables')
+    name = models.CharField(max_length=100, default='Tabla comparativa')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Comparativa de {self.user.username} ({self.name})"
+
+    @property
+    def plans(self):
+        return self.comparative_plans.all()
+
+class ComparativePlan(models.Model):
+    table = models.ForeignKey(ComparativePlanTable, on_delete=models.CASCADE, related_name='comparative_plans')
+    name = models.CharField(max_length=100, default='Plan')  # Ej: Plan A, Plan B, Plan C
+    order = models.PositiveIntegerField(default=1)  # 1 = A, 2 = B, 3 = C
+
+    def __str__(self):
+        return f"{self.name} (Tabla: {self.table.id})"
+
+class ComparativeMeal(models.Model):
+    plan = models.ForeignKey(ComparativePlan, on_delete=models.CASCADE, related_name='meals')
+    meal_number = models.PositiveIntegerField()
+    name = models.CharField(max_length=100)  # Ej: "Comida 1"
+    time = models.TimeField()                # Ej: 08:00
+
+    def __str__(self):
+        return f"{self.name} ({self.time}) - {self.plan.name}"
+
+class ComparativeMealIngredient(models.Model):
+    meal = models.ForeignKey(ComparativeMeal, on_delete=models.CASCADE, related_name='ingredients')
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    quantity = models.FloatField(default=0)
+    unit = models.CharField(max_length=20, default='g')  # gr, ml, etc.
+    notes = models.CharField(max_length=200, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.ingredient.name} ({self.quantity}{self.unit}) en {self.meal.name}"

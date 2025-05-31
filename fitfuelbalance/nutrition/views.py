@@ -19,6 +19,7 @@ import datetime
 from rest_framework.decorators import api_view, permission_classes
 from user.models import *
 from .pagination import StandardResultsSetPagination
+from rest_framework import permissions
 
 def create_food(request):
     if request.method == 'POST':
@@ -710,3 +711,34 @@ def save_plan(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+class IsTrainerOrReadOnly(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated
+    def has_object_permission(self, request, view, obj):
+        # Solo el entrenador (o superuser) puede editar
+        return request.method in permissions.SAFE_METHODS or getattr(request.user, 'is_trainer', False) or request.user.is_superuser
+
+class ComparativePlanTableViewSet(viewsets.ModelViewSet):
+    queryset = ComparativePlanTable.objects.all()
+    serializer_class = ComparativePlanTableSerializer
+    permission_classes = [IsTrainerOrReadOnly]
+    filterset_fields = ['user']
+
+class ComparativePlanViewSet(viewsets.ModelViewSet):
+    queryset = ComparativePlan.objects.all()
+    serializer_class = ComparativePlanSerializer
+    permission_classes = [IsTrainerOrReadOnly]
+    filterset_fields = ['table']
+
+class ComparativeMealViewSet(viewsets.ModelViewSet):
+    queryset = ComparativeMeal.objects.all()
+    serializer_class = ComparativeMealSerializer
+    permission_classes = [IsTrainerOrReadOnly]
+    filterset_fields = ['plan']
+
+class ComparativeMealIngredientViewSet(viewsets.ModelViewSet):
+    queryset = ComparativeMealIngredient.objects.all()
+    serializer_class = ComparativeMealIngredientSerializer
+    permission_classes = [IsTrainerOrReadOnly]
+    filterset_fields = ['meal']

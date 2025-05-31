@@ -64,6 +64,10 @@ import AssignedOptions from './components/nutrition/AssignedOptions';
 import AssignedWeekTrainings from './components/sport/AssignedWeekTrainings';
 import AdaptOption from './components/nutrition/AdaptOption';
 import CreatePlan from './components/nutrition/CreatePlan';
+import ComparativePlanTable from './components/nutrition/ComparativePlanTable';
+import CreateComparativePlan from './components/nutrition/CreateComparativePlan';
+import ComparativePlanTableList from './components/nutrition/ComparativePlanTableList';
+import ComparativePlanTableDetail from './components/nutrition/ComparativePlanTableDetail';
 
 // <-- Nuevo
 import PlanList from './components/nutrition/PlanList';
@@ -298,6 +302,25 @@ function App() {
                           </Nav.Link>
                         </Nav.Item>
                         {/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */}
+
+                        <p className="mt-2 mb-1">
+                          <strong>Planes Comparativos</strong>
+                        </p>
+                        <Nav.Item>
+                          <Nav.Link as={NavLink} to="/nutrition/comparative-tables">
+                            Listar Tablas Comparativas
+                          </Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                          <Nav.Link as={NavLink} to="/nutrition/comparative-table">
+                            Ver Tabla Comparativa
+                          </Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                          <Nav.Link as={NavLink} to="/nutrition/comparative-table/create">
+                            Crear Tabla Comparativa
+                          </Nav.Link>
+                        </Nav.Item>
                       </Nav>
                     </Accordion.Body>
                   </Accordion.Item>
@@ -409,6 +432,9 @@ function App() {
                 <Route path="/trainer-details" element={<TrainerDetails />} />
                 <Route path="/assigned-options" element={<AssignedOptions />} />
                 <Route path="/assigned-week-trainings" element={<AssignedWeekTrainings />} />
+                <Route path="/nutrition/comparative-tables" element={<ComparativePlanTableList />} />
+                <Route path="/nutrition/comparative-table/:id" element={<ComparativePlanTableDetail />} />
+                <Route path="/nutrition/comparative-table/:id/edit" element={<ComparativePlanTable />} />
                 <Route path="*" element={<Navigate replace to="/" />} />
               </>
             ) : (

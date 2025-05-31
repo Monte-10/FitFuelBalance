@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import IngredientModal from './IngredientModal';
+import './MealTable.css';
 
 const MealTable = ({
   planId,
@@ -247,22 +248,6 @@ const MealTable = ({
 
   return (
     <div className="meal-table-container">
-      <div className="form-group">
-        <label htmlFor="userSelect">Asignar a Usuario:</label>
-        <select
-          id="userSelect"
-          className="form-control"
-          value={selectedUserId}
-          onChange={(e) => setSelectedUserId(e.target.value)}
-        >
-          {users.map((user) => (
-            <option key={user.id} value={user.id}>
-              {user.username}
-            </option>
-          ))}
-        </select>
-      </div>
-
       <table className="table table-bordered">
         <thead>
           <tr>

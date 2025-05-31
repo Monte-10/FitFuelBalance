@@ -18,6 +18,10 @@ router.register(r'assignedoptions', views.AssignedOptionViewSet)
 router.register(r'plans', views.PlanViewSet)  # <-- PlanViewSet con create/update
 router.register(r'custom_meals', views.CustomMealViewSet)
 router.register(r'custom_meal_ingredients', views.CustomMealIngredientViewSet)
+router.register(r'comparative-tables', views.ComparativePlanTableViewSet)
+router.register(r'comparative-plans', views.ComparativePlanViewSet)
+router.register(r'comparative-meals', views.ComparativeMealViewSet)
+router.register(r'comparative-meal-ingredients', views.ComparativeMealIngredientViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

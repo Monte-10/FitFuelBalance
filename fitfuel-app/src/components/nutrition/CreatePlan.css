@@ -28,3 +28,97 @@
     width: 100%;
   }
   
+  .edit-plan-header-box {
+    background: rgba(30, 30, 30, 0.85);
+    border-radius: 18px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+    padding: 32px 24px 18px 24px;
+    margin: 0 auto 32px auto;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  
+  .edit-plan-header-box::before {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 18px;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #27ae60 60%, #219150 100%);
+    border-radius: 50%;
+    opacity: 0.18;
+  }
+  
+  .edit-plan-header-box::after {
+    content: '';
+    position: absolute;
+    right: 30px;
+    bottom: 18px;
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, #27ae60 60%, #219150 100%);
+    border-radius: 50%;
+    opacity: 0.13;
+  }
+  
+  .edit-plan-title {
+    color: #fff;
+    text-shadow: 2px 2px 8px #000;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 8px;
+    text-align: center;
+    z-index: 1;
+  }
+  
+  .edit-plan-name {
+    color: #27ae60;
+    font-size: 1.6rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 0;
+    letter-spacing: 1px;
+    z-index: 1;
+  }
+  
+  .assign-user-box {
+    background: rgba(35, 39, 43, 0.97);
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 18px 24px 12px 24px;
+    margin: 0 auto 32px auto;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .assign-user-label {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+  
+  .assign-user-select {
+    background: #181a1b;
+    color: #fff;
+    border: 1.5px solid #27ae60;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 1.1rem;
+    width: 100%;
+    margin-bottom: 0;
+    transition: border 0.2s;
+  }
+  .assign-user-select:focus {
+    border: 1.5px solid #219150;
+    outline: none;
+  }
+  

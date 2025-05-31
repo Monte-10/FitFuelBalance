@@ -1,0 +1,142 @@
+.create-comparative-plan-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 200px);
+  padding: 20px;
+}
+
+.create-comparative-plan-box {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  padding: 32px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.create-comparative-plan-box h2 {
+  color: #27ae60;
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 1.8rem;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #27ae60;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.cancel-btn {
+  background: #e0e0e0;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cancel-btn:hover {
+  background: #d0d0d0;
+}
+
+.submit-btn {
+  background: linear-gradient(90deg, #27ae60 60%, #219150 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(90deg, #219150 60%, #27ae60 100%);
+}
+
+.error-message {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.plans-info {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 24px 0;
+}
+
+.plans-info h3 {
+  color: #333;
+  font-size: 1.1rem;
+  margin: 0 0 12px 0;
+}
+
+.plans-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.plans-info li {
+  padding: 8px 0;
+  border-bottom: 1px solid #e9ecef;
+  color: #495057;
+}
+
+.plans-info li:last-child {
+  border-bottom: none;
+}
+
+.plans-info li strong {
+  color: #27ae60;
+  margin-right: 8px;
+} 

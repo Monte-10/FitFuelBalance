@@ -1,26 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const IngredientModal = ({ show, onClose, onIngredientSelect }) => {
-  const [ingredients, setIngredients] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const apiUrl = process.env.REACT_APP_API_URL;
+const IngredientModal = ({ show, onClose, onIngredientSelect, ingredients = [], searchValue = '', onSearch, page = 1, totalPages = 1, totalCount = 0, onPageChange, pageSize = 10, onPageSizeChange }) => {
+  const [searchTerm, setSearchTerm] = useState(searchValue);
 
   useEffect(() => {
-    if (show) {
-      fetch(`${apiUrl}/nutrition/ingredients/`, {
-        headers: {
-          'Authorization': `Token ${localStorage.getItem('authToken')}`
-        }
-      })
-        .then((res) => res.json())
-        .then((data) => setIngredients(data.results));
-    }
-  }, [show, apiUrl]);
+    setSearchTerm(searchValue);
+  }, [searchValue]);
 
-  const filteredIngredients = ingredients.filter((ingredient) =>
-    ingredient.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleInputChange = (e) => {
+    setSearchTerm(e.target.value);
+    if (onSearch) onSearch(e);
+  };
 
   const handleSelectIngredient = (ingredient) => {
     onIngredientSelect(ingredient);
@@ -28,39 +19,50 @@ const IngredientModal = ({ show, onClose, onIngredientSelect }) => {
   };
 
   return (
-    <Modal show={show} onHide={onClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Seleccionar Ingrediente</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <input
-          type="text"
-          className="form-control mb-3"
-          placeholder="Buscar ingrediente por nombre"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <ul className="list-group">
-          {filteredIngredients.map((ingredient) => (
-            <li key={ingredient.id} className="list-group-item">
-              {ingredient.name}
-              <Button
-                variant="primary"
-                className="float-right"
-                onClick={() => handleSelectIngredient(ingredient)}
-              >
-                Seleccionar
-              </Button>
-            </li>
-          ))}
-        </ul>
-      </Modal.Body>
-      <Modal.Footer>
+    <div>
+      <input
+        type="text"
+        className="form-control mb-3"
+        placeholder="Buscar ingrediente por nombre"
+        value={searchTerm}
+        onChange={handleInputChange}
+      />
+      <ul className="list-group">
+        {ingredients.map((ingredient) => (
+          <li key={ingredient.id} className="list-group-item">
+            {ingredient.name}
+            <Button
+              variant="primary"
+              className="float-right"
+              onClick={() => handleSelectIngredient(ingredient)}
+            >
+              Seleccionar
+            </Button>
+          </li>
+        ))}
+      </ul>
+      <div className="pagination-controls" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16 }}>
+        <div>
+          <Button variant="secondary" onClick={() => onPageChange(page - 1)} disabled={page === 1}>Anterior</Button>
+          <span style={{ margin: '0 12px' }}>Página {page} de {totalPages} (Total: {totalCount})</span>
+          <Button variant="secondary" onClick={() => onPageChange(page + 1)} disabled={page >= totalPages}>Siguiente</Button>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <label className="me-2">Mostrar:</label>
+          <select value={pageSize} onChange={onPageSizeChange} className="form-select" style={{ width: 70 }}>
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={50}>50</option>
+          </select>
+        </div>
+      </div>
+      <div style={{ marginTop: 16, textAlign: 'right' }}>
         <Button variant="secondary" onClick={onClose}>
           Cerrar
         </Button>
-      </Modal.Footer>
-    </Modal>
+      </div>
+    </div>
   );
 };
 

@@ -3,10 +3,13 @@ import { fetchPlanDetails } from "./PlanAPI";
 import { useParams, useNavigate } from "react-router-dom";
 import "./PlanDetails.css";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const PlanDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [plan, setPlan] = useState(null);
+  const [ingredientsDict, setIngredientsDict] = useState({});
 
   useEffect(() => {
     const loadPlanDetails = async () => {
@@ -20,53 +23,79 @@ const PlanDetails = () => {
     loadPlanDetails();
   }, [id]);
 
+  useEffect(() => {
+    // Traer todos los ingredientes y armar un diccionario {id: nombre}
+    const fetchIngredients = async () => {
+      try {
+        const response = await fetch(`${API_URL}/nutrition/ingredients/?page_size=1000`, {
+          headers: {
+            Authorization: `Token ${localStorage.getItem('authToken')}`,
+          },
+        });
+        const data = await response.json();
+        const dict = {};
+        (data.results || []).forEach(ing => {
+          dict[ing.id] = ing.name;
+        });
+        setIngredientsDict(dict);
+      } catch (error) {
+        console.error("Error fetching ingredients:", error);
+      }
+    };
+    fetchIngredients();
+  }, []);
+
   const handleEdit = () => {
     navigate(`/nutrition/plans/${id}/edit`, { state: { selectedUser: plan.user } });
   };
 
   return (
+    <>
+      <div className="plan-details-background" />
+      <div className="plan-details-overlay" />
     <div className="plan-details-container">
       {plan ? (
         <>
-          <h2>Detalles del Plan: {plan.name}</h2>
-          <p>
+            <h2 className="plan-details-title">Detalles del Plan: {plan.name}</h2>
+            <p className="plan-details-info">
             <strong>Fechas:</strong> {plan.start_date} a {plan.end_date}
           </p>
-          <p>
+            <p className="plan-details-info">
             <strong>Asignado a:</strong> {plan.user?.username}
           </p>
 
-          {/* Render de las comidas */}
-          <h3>Comidas</h3>
-          {/* plan.custom_meals es un array, cada item = un "customMeal" */}
+            <h3 className="plan-details-section-title">Comidas</h3>
           {plan.custom_meals?.length ? (
             plan.custom_meals.map((meal) => (
-              <div key={meal.id} style={{ marginBottom: '1rem' }}>
-                <h4>{meal.day} - {meal.meal_type}</h4>
-                {/* meal.ingredients = array de { ingredient, quantity, unit_based } */}
-                <ul>
+                <div key={meal.id} className="plan-details-meal-card enhanced-meal-card">
+                  <div className="meal-header">
+                    <span className="meal-day">{meal.day}</span>
+                    <span className="meal-type">{meal.meal_type}</span>
+                  </div>
+                  <ul className="meal-ingredients-list">
                   {meal.ingredients.map((ing, index) => (
-                    <li key={index}>
-                      {/* No tenemos "name" a menos que anidemos IngredientSerializer 
-                          en el back. Por ahora solo ID. */}
-                      Ingredient #{ing.ingredient} - {ing.quantity}g
+                      <li key={index} className="meal-ingredient-item">
+                        <span className="ingredient-dot" />
+                        <span className="ingredient-name">{ingredientsDict[ing.ingredient] || `Ingrediente #${ing.ingredient}`}</span>
+                        <span className="ingredient-qty">{ing.quantity}g</span>
                     </li>
                   ))}
                 </ul>
               </div>
             ))
           ) : (
-            <p>No hay comidas registradas.</p>
+              <p className="plan-details-info">No hay comidas registradas.</p>
           )}
 
-          <button className="btn btn-primary mt-3" onClick={handleEdit}>
+            <button className="plan-details-edit-btn" onClick={handleEdit}>
             Editar Plan
           </button>
         </>
       ) : (
-        <p>Cargando detalles del plan...</p>
+          <p className="plan-details-info">Cargando detalles del plan...</p>
       )}
     </div>
+    </>
   );
 };
 

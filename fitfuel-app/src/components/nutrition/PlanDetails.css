@@ -1,8 +1,174 @@
+.plan-details-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.6);
+  z-index: 1;
+}
+
 .plan-details-container {
-    padding: 20px;
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 40px 16px 32px 16px;
+}
+
+.plan-details-title {
+  color: #fff;
+  text-shadow: 2px 2px 8px #000;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.plan-details-info {
+  color: #f1f1f1;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.plan-details-section-title {
+  color: #fff;
+  font-size: 2rem;
+  margin: 32px 0 16px 0;
+  text-align: center;
+  text-shadow: 1px 1px 6px #000;
+}
+
+.plan-details-meal-card {
+  background: rgba(255,255,255,0.92);
+  border-radius: 18px;
+  padding: 24px 28px;
+  margin: 18px 0;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  color: #222;
+}
+
+.plan-details-meal-card h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #27ae60;
+}
+
+.plan-details-meal-card ul {
+  padding-left: 18px;
+  margin: 0;
+}
+
+.plan-details-edit-btn {
+  background: #27ae60;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 16px 48px;
+  font-size: 1.2rem;
+  margin: 32px auto 0 auto;
+  display: block;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+}
+.plan-details-edit-btn:hover {
+  background: #219150;
+}
+
+@media (max-width: 600px) {
+  .plan-details-meal-card {
+    padding: 16px 8px;
+    max-width: 98vw;
+  }
+  .plan-details-title {
+    font-size: 1.5rem;
+  }
+  .plan-details-section-title {
+    font-size: 1.2rem;
+  }
   }
   
   .plan-details-container h4 {
     margin-top: 20px;
   }
+
+.enhanced-meal-card {
+  padding: 0 0 18px 0 !important;
+  margin-bottom: 32px !important;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+  border: none;
+}
+
+.meal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #27ae60 60%, #219150 100%);
+  color: #fff;
+  border-radius: 18px 18px 0 0;
+  padding: 18px 28px 12px 28px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.meal-day {
+  font-size: 1.1rem;
+  font-weight: 500;
+  opacity: 0.95;
+}
+
+.meal-type {
+  font-size: 1.1rem;
+  font-weight: 500;
+  opacity: 0.95;
+}
+
+.meal-ingredients-list {
+  list-style: none;
+  margin: 0;
+  padding: 18px 28px 0 28px;
+}
+
+.meal-ingredient-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 1.08rem;
+  color: #222;
+  background: rgba(39, 174, 96, 0.07);
+  border-radius: 8px;
+  padding: 7px 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.ingredient-dot {
+  width: 10px;
+  height: 10px;
+  background: #27ae60;
+  border-radius: 50%;
+  margin-right: 12px;
+  display: inline-block;
+}
+
+.ingredient-name {
+  flex: 1;
+  font-weight: 500;
+  color: #1a3d2c;
+}
+
+.ingredient-qty {
+  color: #219150;
+  font-weight: 500;
+  margin-left: 12px;
+}
   

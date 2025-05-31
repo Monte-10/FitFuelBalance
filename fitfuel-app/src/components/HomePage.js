@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { Container, Row, Col, Card, Modal } from 'react-bootstrap';
 import './HomePage.css';
 
@@ -35,6 +35,7 @@ function HomePage({ profile }) {
             <ul>
                 <li><Link to="/nutrition/list-food">Listar Alimentos</Link></li>
                 <li><Link to="/nutrition/list-ingredient">Listar Ingredientes</Link></li>
+                <li><Link to="/nutrition/comparative-tables">Listar Tablas Comparativas</Link></li>
             </ul>
         </>
     );

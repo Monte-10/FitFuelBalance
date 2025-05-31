@@ -1,0 +1,135 @@
+/* Estética moderna para la tabla de edición de planes */
+
+.meal-table-container {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 32px 0 64px 0;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.meal-table-container .form-group label {
+  color: #222;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.meal-table-container .form-control {
+  background: #23272b;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 8px;
+  margin-bottom: 18px;
+}
+
+.table {
+  background: rgba(255,255,255,0.04);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+
+.table thead th {
+  background: linear-gradient(90deg, #27ae60 60%, #219150 100%);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  text-align: center;
+  padding: 16px 0;
+}
+
+.table tbody td {
+  background: #23272b;
+  color: #fff;
+  border: 1px solid #333;
+  text-align: center;
+  vertical-align: middle;
+  min-width: 180px;
+  padding: 12px 6px;
+}
+
+.btn-success {
+  background: #27ae60 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 10px 0 !important;
+  margin-bottom: 8px;
+  width: 90%;
+  transition: background 0.2s;
+}
+.btn-success:hover {
+  background: #219150 !important;
+}
+
+.ingredient-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ingredient-item {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.08);
+  border-radius: 8px;
+  margin-bottom: 7px;
+  padding: 7px 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
+.ingredient-item span {
+  color: #fff;
+}
+.ingredient-item input[type="number"] {
+  background: #181a1b;
+  color: #fff;
+  border: 1px solid #888;
+  border-radius: 4px;
+  width: 60px;
+  margin-right: 4px;
+  padding: 2px 6px;
+}
+.ingredient-item .btn-danger {
+  background: #e74c3c !important;
+  border: none !important;
+  border-radius: 6px !important;
+  font-size: 0.95rem;
+  margin-left: 8px;
+  padding: 2px 12px !important;
+  transition: background 0.2s;
+}
+.ingredient-item .btn-danger:hover {
+  background: #c0392b !important;
+}
+
+/* Totales Nutricionales */
+.meal-table-container h3 {
+  color: #222;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .meal-table-container {
+    max-width: 99vw;
+    padding: 8px 0 32px 0;
+  }
+  .table tbody td {
+    min-width: 120px;
+    padding: 8px 2px;
+  }
+}
+
+@media (max-width: 600px) {
+  .meal-table-container {
+    padding: 2px 0 16px 0;
+  }
+  .table thead th, .table tbody td {
+    font-size: 0.9rem;
+    padding: 6px 2px;
+  }
+} 

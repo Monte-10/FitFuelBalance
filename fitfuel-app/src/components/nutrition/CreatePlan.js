@@ -185,7 +185,33 @@ const CreatePlan = ({ isEditMode = false }) => {
 
   return (
     <div className="container mt-4 create-plan-container">
+      {isEditMode && planCreated ? (
+        <>
+          <div className="edit-plan-header-box">
+            <h2 className="edit-plan-title">Editar Plan</h2>
+            <div className="edit-plan-name">{planName}</div>
+          </div>
+          <div className="assign-user-box">
+            <label htmlFor="userSelect" className="assign-user-label">Asignar a Usuario:</label>
+            <select
+              id="userSelect"
+              className="assign-user-select"
+              value={selectedUser}
+              onChange={(e) => setSelectedUser(e.target.value)}
+              required
+            >
+              <option value="">Selecciona un usuario</option>
+              {users.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.username}
+                </option>
+              ))}
+            </select>
+          </div>
+        </>
+      ) : (
       <h2>{isEditMode ? 'Edit Plan' : 'Create Plan'}</h2>
+      )}
       <ToastContainer />
 
       {!planCreated ? (
@@ -226,31 +252,12 @@ const CreatePlan = ({ isEditMode = false }) => {
             />
           </div>
 
-          <div className="form-group mb-3">
-            <label htmlFor="userSelect">Assign to User:</label>
-            <select
-              id="userSelect"
-              className="form-control"
-              value={selectedUser}
-              onChange={(e) => setSelectedUser(e.target.value)}
-              required
-            >
-              <option value="">Select User</option>
-              {users.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.username}
-                </option>
-              ))}
-            </select>
-          </div>
-
           <button onClick={handleSubmit} className="btn btn-primary">
             {isEditMode ? 'Update Plan' : 'Create Plan'}
           </button>
         </>
       ) : (
         <>
-          <h2>Plan: {planName}</h2>
           {/* Ahora que tenemos un plan con ID, y existingIngredients (si en edit), 
               mostramos MealTable */}
           <MealTable

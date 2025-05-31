@@ -2,6 +2,9 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from . import views
 from rest_framework.routers import DefaultRouter
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 router = DefaultRouter()
 router.register(r'regularusers', views.RegularUserViewSet)
@@ -43,3 +46,14 @@ urlpatterns += [
     path('remove_trainer/', views.remove_trainer, name='remove_trainer'),
     path('trainer-details/', views.get_trainer_details, name='trainer-details'),
 ]
+
+class MyClientsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        trainer = request.user
+        if hasattr(trainer, 'trainer'):
+            clients = trainer.trainer.clients.all()
+            data = [{"id": u.id, "username": u.username, "first_name": u.first_name, "last_name": u.last_name} for u in clients]
+            return Response(data)
+        return Response([])
