@@ -427,7 +427,7 @@ class MealSerializer(serializers.ModelSerializer):
     
     def get_other(self, obj):
         return obj.other
-
+    
 class DailyDietSerializer(serializers.ModelSerializer):
     meals = serializers.PrimaryKeyRelatedField(queryset=Meal.objects.all(), many=True)
     calories = serializers.SerializerMethodField()

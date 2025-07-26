@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './MealTable.css';
 import IngredientModal from './IngredientModal';
 import axios from 'axios';
@@ -22,6 +22,7 @@ const ComparativeMealTable = ({ comparativePlans, tableId, userId, onSave }) => 
   const [ingredientTotalCount, setIngredientTotalCount] = useState(0);
   const [ingredientResults, setIngredientResults] = useState([]);
   const [nutritionTotals, setNutritionTotals] = useState({});
+  const cantidadInputRef = useRef(null);
 
   // Inicializa el estado local con los datos del backend solo si hay comparativePlans y tableId
   useEffect(() => {
@@ -111,6 +112,12 @@ const ComparativeMealTable = ({ comparativePlans, tableId, userId, onSave }) => 
       sugar: ingredient.sugar
     });
     setShowIngredientModal(false);
+    setTimeout(() => {
+      if (cantidadInputRef.current) {
+        cantidadInputRef.current.focus();
+        cantidadInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 200);
   };
 
   const handleIngredientSearch = (e) => {
@@ -336,6 +343,7 @@ const ComparativeMealTable = ({ comparativePlans, tableId, userId, onSave }) => 
                   placeholder="Cantidad"
                   value={ingredientQuantity}
                   onChange={e => setIngredientQuantity(e.target.value)}
+                  ref={cantidadInputRef}
                 />
                 <select
                   className="form-control mb-2"

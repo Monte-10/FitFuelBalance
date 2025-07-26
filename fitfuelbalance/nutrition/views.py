@@ -71,6 +71,7 @@ from rest_framework.decorators import action
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
+    pagination_class = StandardResultsSetPagination  # <-- Añadido para paginación robusta
     
     @action(detail=False, methods=['get'])
     def search(self, request):

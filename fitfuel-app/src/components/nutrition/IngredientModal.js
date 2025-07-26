@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import React, { useState, useEffect, useRef } from 'react';
+import { Button } from 'react-bootstrap';
+// Elimino cualquier import de iconos
 
 const IngredientModal = ({ show, onClose, onIngredientSelect, ingredients = [], searchValue = '', onSearch, page = 1, totalPages = 1, totalCount = 0, onPageChange, pageSize = 10, onPageSizeChange }) => {
   const [searchTerm, setSearchTerm] = useState(searchValue);
+  const bottomRef = useRef(null);
 
   useEffect(() => {
     setSearchTerm(searchValue);
@@ -15,7 +17,12 @@ const IngredientModal = ({ show, onClose, onIngredientSelect, ingredients = [], 
 
   const handleSelectIngredient = (ingredient) => {
     onIngredientSelect(ingredient);
-    onClose();  // Cerrar el modal después de seleccionar
+    setTimeout(() => {
+      if (bottomRef.current) {
+        bottomRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }
+    }, 100);
+    onClose && onClose(); // Por si acaso, aunque el modal padre lo gestiona
   };
 
   return (
@@ -27,29 +34,42 @@ const IngredientModal = ({ show, onClose, onIngredientSelect, ingredients = [], 
         value={searchTerm}
         onChange={handleInputChange}
       />
-      <ul className="list-group">
-        {ingredients.map((ingredient) => (
-          <li key={ingredient.id} className="list-group-item">
-            {ingredient.name}
-            <Button
-              variant="primary"
-              className="float-right"
-              onClick={() => handleSelectIngredient(ingredient)}
+      <ul className="list-group" style={{ marginBottom: 0 }}>
+        {ingredients.map((ingredient, idx) => {
+          console.log('ingredient', ingredient);
+          let name = ingredient.name;
+          if (typeof name !== 'string') {
+            name = '[ERROR: nombre no es string]';
+          }
+          return (
+            <li
+              key={ingredient.id || idx}
+              className="list-group-item d-flex justify-content-between align-items-center"
+              style={{ padding: '6px 10px', fontSize: 15, background: '#23272b', color: '#fff', border: '1px solid #333', borderRadius: 6, marginBottom: 4 }}
             >
-              Seleccionar
-            </Button>
-          </li>
-        ))}
+              <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name}</span>
+              <Button
+                variant="outline-success"
+                size="sm"
+                style={{ fontSize: 18, padding: '2px 7px', borderRadius: 16, minWidth: 0, width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 8, boxShadow: 'none' }}
+                onClick={() => handleSelectIngredient(ingredient)}
+                title="Seleccionar"
+              >
+                {'+'}
+              </Button>
+            </li>
+          );
+        })}
       </ul>
       <div className="pagination-controls" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16 }}>
-        <div>
-          <Button variant="secondary" onClick={() => onPageChange(page - 1)} disabled={page === 1}>Anterior</Button>
-          <span style={{ margin: '0 12px' }}>Página {page} de {totalPages} (Total: {totalCount})</span>
-          <Button variant="secondary" onClick={() => onPageChange(page + 1)} disabled={page >= totalPages}>Siguiente</Button>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <Button variant="secondary" size="sm" style={{ minWidth: 80 }} onClick={() => onPageChange(page - 1)} disabled={page === 1}>Anterior</Button>
+          <span style={{ margin: '0 8px', fontSize: 14 }}>Página {page} de {totalPages} <span style={{ color: '#888', fontSize: 13 }}>(Total: {totalCount})</span></span>
+          <Button variant="secondary" size="sm" style={{ minWidth: 80 }} onClick={() => onPageChange(page + 1)} disabled={page >= totalPages}>Siguiente</Button>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <label className="me-2">Mostrar:</label>
-          <select value={pageSize} onChange={onPageSizeChange} className="form-select" style={{ width: 70 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          <label className="me-2" style={{ fontSize: 14 }}>Mostrar:</label>
+          <select value={pageSize} onChange={onPageSizeChange} className="form-select" style={{ width: 70, fontSize: 14, padding: '2px 6px' }}>
             <option value={5}>5</option>
             <option value={10}>10</option>
             <option value={20}>20</option>
@@ -57,8 +77,8 @@ const IngredientModal = ({ show, onClose, onIngredientSelect, ingredients = [], 
           </select>
         </div>
       </div>
-      <div style={{ marginTop: 16, textAlign: 'right' }}>
-        <Button variant="secondary" onClick={onClose}>
+      <div ref={bottomRef} style={{ marginTop: 16, textAlign: 'right' }}>
+        <Button variant="secondary" size="sm" onClick={onClose}>
           Cerrar
         </Button>
       </div>
