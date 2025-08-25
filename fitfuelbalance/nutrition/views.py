@@ -718,13 +718,23 @@ class IsTrainerOrReadOnly(permissions.BasePermission):
         return request.user.is_authenticated
     def has_object_permission(self, request, view, obj):
         # Solo el entrenador (o superuser) puede editar
-        return request.method in permissions.SAFE_METHODS or getattr(request.user, 'is_trainer', False) or request.user.is_superuser
+        return request.method in permissions.SAFE_METHODS or request.user.is_trainer() or request.user.is_superuser
 
 class ComparativePlanTableViewSet(viewsets.ModelViewSet):
-    queryset = ComparativePlanTable.objects.all()
+    queryset = ComparativePlanTable.objects.all().order_by('-created_at')
     serializer_class = ComparativePlanTableSerializer
     permission_classes = [IsTrainerOrReadOnly]
     filterset_fields = ['user']
+   
+    def get_queryset(self):
+        qs = super().get_queryset()
+        user = getattr(self.request, 'user', None)
+        if not user or not user.is_authenticated:
+            return qs.none()
+        # Entrenadores y superusuarios ven todo; clientes solo lo suyo
+        if user.is_trainer() or user.is_superuser:
+            return qs
+        return qs.filter(user=user)
 
 class ComparativePlanViewSet(viewsets.ModelViewSet):
     queryset = ComparativePlan.objects.all()

@@ -520,8 +520,43 @@ class RegularUserMeasurementViewSet(viewsets.ModelViewSet):
             return self.queryset.filter(user__in=user.trainer.clients.all())
         return self.queryset.none()
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
+
+    def create(self, request, *args, **kwargs):
+        try:
+            print(f"=== CREATE MEASUREMENT DEBUG ===")
+            print(f"User: {request.user.id} ({request.user.username})")
+            print(f"Request data: {request.data}")
+            print(f"Request user type: {type(request.user)}")
+            print(f"User is_regular_user: {request.user.is_regular_user()}")
+            print(f"User is_trainer: {request.user.is_trainer()}")
+            
+            # Verificar que el usuario sea un RegularUser
+            if not request.user.is_regular_user():
+                return Response(
+                    {"error": "Solo los usuarios regulares pueden crear medidas"}, 
+                    status=status.HTTP_403_FORBIDDEN
+                )
+            
+            serializer = self.get_serializer(data=request.data)
+            print(f"Serializer created: {serializer}")
+            
+            if serializer.is_valid():
+                print(f"Serializer is valid")
+                measurement = serializer.save(user=request.user)
+                print(f"Measurement created successfully: {measurement.id}")
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                print(f"Serializer errors: {serializer.errors}")
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print(f"Error creating measurement: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(detail=False, methods=['get'], url_path='history/(?P<user_id>\d+)', permission_classes=[permissions.IsAuthenticated])
     def history(self, request, user_id=None):
@@ -532,6 +567,28 @@ class RegularUserMeasurementViewSet(viewsets.ModelViewSet):
         serializer = RegularUserMeasurementSerializer(measurements, many=True)
         return Response(serializer.data)
 
+    @action(detail=False, methods=['get'], url_path='latest/(?P<user_id>\d+)', permission_classes=[permissions.IsAuthenticated])
+    def latest(self, request, user_id=None):
+        """Obtiene la última medida registrada para cada campo del usuario"""
+        if not user_id:
+            return Response({"error": "User ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            # Obtener la última medida completa del usuario
+            latest_measurement = RegularUserMeasurement.objects.filter(
+                user_id=user_id
+            ).order_by('-date').first()
+            
+            if latest_measurement:
+                serializer = RegularUserMeasurementSerializer(latest_measurement)
+                return Response(serializer.data)
+            else:
+                return Response({}, status=status.HTTP_200_OK)
+                
+        except Exception as e:
+            print(f"Error getting latest measurement: {str(e)}")
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def regular_user_details(request, pk):
@@ -541,3 +598,6 @@ def regular_user_details(request, pk):
         return Response(serializer.data, status=status.HTTP_200_OK)
     except RegularUser.DoesNotExist:
         return Response({'error': 'RegularUser not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+# Eliminado: NotificationViewSet y create_notification - no implementados

@@ -27,13 +27,13 @@ const IngredientModal = ({ show, onClose, onIngredientSelect, ingredients = [], 
 
   return (
     <div>
-      <input
-        type="text"
-        className="form-control mb-3"
-        placeholder="Buscar ingrediente por nombre"
-        value={searchTerm}
+        <input
+          type="text"
+          className="form-control mb-3"
+          placeholder="Buscar ingrediente por nombre"
+          value={searchTerm}
         onChange={handleInputChange}
-      />
+        />
       <ul className="list-group" style={{ marginBottom: 0 }}>
         {ingredients.map((ingredient, idx) => {
           console.log('ingredient', ingredient);
@@ -60,7 +60,7 @@ const IngredientModal = ({ show, onClose, onIngredientSelect, ingredients = [], 
             </li>
           );
         })}
-      </ul>
+        </ul>
       <div className="pagination-controls" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16 }}>
         <div style={{ display: 'flex', gap: 8 }}>
           <Button variant="secondary" size="sm" style={{ minWidth: 80 }} onClick={() => onPageChange(page - 1)} disabled={page === 1}>Anterior</Button>

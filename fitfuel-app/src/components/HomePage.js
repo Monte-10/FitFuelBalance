@@ -86,10 +86,10 @@ function HomePage({ profile }) {
             ) : (
                 <Row className="row-centered">
                     <Col md={6}>
-                        <Link to="/assigned-options" className="home-option">
+                        <Link to="/nutrition/comparative-tables" className="home-option">
                             <Card className="option-card">
                                 <Card.Body>
-                                    <Card.Title>Dietas</Card.Title>
+                                    <Card.Title>Planes de Comida</Card.Title>
                                     <Card.Text>Ver opciones</Card.Text>
                                 </Card.Body>
                             </Card>

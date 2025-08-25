@@ -11,6 +11,8 @@ function ComparativePlanTableDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [deleting, setDeleting] = useState(false);
+  const [role, setRole] = useState(null);
+  const [isSuperuser, setIsSuperuser] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,6 +30,19 @@ function ComparativePlanTableDetail() {
     };
     fetchTable();
   }, [id]);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/user/profile/`, {
+          headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` }
+        });
+        setRole(res.data?.role || null);
+        setIsSuperuser(!!res.data?.is_superuser);
+      } catch (_) {}
+    };
+    fetchProfile();
+  }, []);
 
   const handleDelete = async () => {
     if (!window.confirm('¿Seguro que quieres eliminar esta tabla comparativa?')) return;
@@ -113,14 +128,91 @@ function ComparativePlanTableDetail() {
             </tbody>
           </table>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 36 }}>
-          <button className="btn btn-primary" style={{ flex: 1, marginRight: 16, fontSize: '1.2rem', padding: '16px 0', borderRadius: 10, fontWeight: 600 }} onClick={() => navigate(`/nutrition/comparative-table/${table.id}/edit`)}>
-            Editar Plan
-          </button>
-          <button className="btn btn-danger" style={{ minWidth: 160, fontSize: '1.2rem', padding: '16px 0', borderRadius: 10, fontWeight: 600 }} onClick={handleDelete} disabled={deleting}>
-            {deleting ? 'Eliminando...' : 'Eliminar Plan'}
-          </button>
-        </div>
+        {(role === 'trainer' || isSuperuser) && (
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 36 }}>
+            <button className="btn btn-primary" style={{ flex: 1, marginRight: 16, fontSize: '1.2rem', padding: '16px 0', borderRadius: 10, fontWeight: 600 }} onClick={() => navigate(`/nutrition/comparative-table/${table.id}/edit`)}>
+              Editar Plan
+            </button>
+            <button className="btn btn-danger" style={{ minWidth: 160, fontSize: '1.2rem', padding: '16px 0', borderRadius: 10, fontWeight: 600 }} onClick={handleDelete} disabled={deleting}>
+              {deleting ? 'Eliminando...' : 'Eliminar Plan'}
+            </button>
+          </div>
+        )}
+        {/* Tabla detallada de comidas para clientes */}
+        {role !== 'trainer' && !isSuperuser && table.comparative_plans && (
+          <div style={{ marginTop: 40 }}>
+            <h4 style={{ color: '#b6ffb6', fontWeight: 600, margin: '32px 0 18px 0', textShadow: '0 1px 4px #000' }}>Detalle de Comidas por Plan</h4>
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderRadius: 16, overflow: 'hidden', background: '#23272b', boxShadow: '0 2px 8px rgba(0,0,0,0.18)' }}>
+                <thead>
+                  <tr style={{ background: '#2ecc40' }}>
+                    <th style={{ color: '#fff', fontWeight: 700, padding: 12, fontSize: '1.1rem', border: 'none' }}>Comida</th>
+                    {table.comparative_plans.map((plan, planIdx) => (
+                      <th key={planIdx} style={{ color: '#fff', fontWeight: 700, padding: 12, fontSize: '1.1rem', border: 'none' }}>{plan.name}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {['Desayuno', 'Media Mañana', 'Comida', 'Merienda', 'Cena'].map((mealName, mealIdx) => (
+                    <tr key={mealIdx} style={{ borderBottom: '1px solid #333' }}>
+                      <td style={{ color: '#b6ffb6', fontWeight: 600, padding: 10, border: 'none', fontSize: '1.1rem' }}>{mealName}</td>
+                      {table.comparative_plans.map((plan, planIdx) => {
+                        const meal = plan.meals && plan.meals[mealIdx];
+                        const ingredients = meal && meal.ingredients ? meal.ingredients : [];
+                        return (
+                          <td key={planIdx} style={{ color: '#fff', padding: 10, border: 'none', verticalAlign: 'top' }}>
+                            {ingredients.length > 0 ? (
+                              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                                {ingredients.map(ingredient => {
+                                  const factor = Number(ingredient.quantity) / 100;
+                                  const ingredientName = ingredient.ingredient_name || ingredient.name || 'Ingrediente sin nombre';
+                                  return (
+                                    <li key={ingredient.id || ingredient.ingredient} style={{ 
+                                      marginBottom: 8, 
+                                      padding: 8, 
+                                      background: '#1e2124', 
+                                      borderRadius: 6,
+                                      border: '1px solid #343a40'
+                                    }}>
+                                      <div style={{ fontWeight: 600, color: '#e0e0e0', marginBottom: 4 }}>
+                                        {ingredientName}
+                                      </div>
+                                      <div style={{ fontSize: '0.9rem', color: '#bbb' }}>
+                                        <span style={{ marginRight: 12 }}>
+                                          <strong>Cantidad:</strong> {ingredient.quantity}g
+                                        </span>
+                                        <span style={{ marginRight: 12 }}>
+                                          <strong>Calorías:</strong> {((Number(ingredient.calories) || 0) * factor).toFixed(1)}
+                                        </span>
+                                        <span style={{ marginRight: 12 }}>
+                                          <strong>Proteínas:</strong> {((Number(ingredient.protein) || 0) * factor).toFixed(1)}g
+                                        </span>
+                                        <span style={{ marginRight: 12 }}>
+                                          <strong>Grasas:</strong> {((Number(ingredient.fat) || 0) * factor).toFixed(1)}g
+                                        </span>
+                                        <span>
+                                          <strong>Carbohidratos:</strong> {((Number(ingredient.carbohydrates) || 0) * factor).toFixed(1)}g
+                                        </span>
+                                      </div>
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            ) : (
+                              <p style={{ color: '#adb5bd', fontStyle: 'italic', margin: 0, textAlign: 'center' }}>
+                                Sin ingredientes
+                              </p>
+                            )}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

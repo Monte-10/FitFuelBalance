@@ -103,7 +103,7 @@ class TrainingRequestSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'is_accepted']
         
 class RegularUserMeasurementSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source='user.id')
     class Meta:
         model = RegularUserMeasurement
-        fields = '__all__'
+        fields = ['id', 'user', 'date', 'weight', 'height', 'neck', 'shoulder', 'chest', 'waist', 'hip', 'arm', 'glute', 'upper_leg', 'middle_leg', 'lower_leg']
+        read_only_fields = ['id', 'date', 'user']

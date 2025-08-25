@@ -65,9 +65,9 @@ import AssignedWeekTrainings from './components/sport/AssignedWeekTrainings';
 import AdaptOption from './components/nutrition/AdaptOption';
 import CreatePlan from './components/nutrition/CreatePlan';
 import ComparativePlanTable from './components/nutrition/ComparativePlanTable';
-import CreateComparativePlan from './components/nutrition/CreateComparativePlan';
 import ComparativePlanTableList from './components/nutrition/ComparativePlanTableList';
 import ComparativePlanTableDetail from './components/nutrition/ComparativePlanTableDetail';
+import NotificationBadge from './components/user/NotificationBadge';
 
 // <-- Nuevo
 import PlanList from './components/nutrition/PlanList';
@@ -135,44 +135,49 @@ function App() {
       <div className="App">
         <Navbar bg="dark" variant="dark" expand={false} className="custom-navbar">
           <Container fluid>
-            <Navbar.Toggle aria-controls="offcanvasNavbar" />
+            {profile?.role === "trainer" && (
+              <Navbar.Toggle aria-controls="offcanvasNavbar" />
+            )}
             <Navbar.Brand as={NavLink} to="/" className="navbar-title mx-auto">
               FitFuelBalance
             </Navbar.Brand>
 
             {authToken ? (
-              <Dropdown className="ms-auto">
-                <Dropdown.Toggle variant="secondary" id="dropdown-user">
-                  {profile?.username || "Usuario"}
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item as={NavLink} to="/profile">
-                    Ver Perfil
-                  </Dropdown.Item>
-                  {profile?.role === "trainer" ? (
-                    <>
-                      <Dropdown.Item as={NavLink} to="/clients">
-                        Mis Clientes
-                      </Dropdown.Item>
-                      <Dropdown.Item as={NavLink} to="/trainer-requests">
-                        Solicitudes Recibidas
-                      </Dropdown.Item>
-                    </>
-                  ) : (
-                    profile?.role === "regular_user" && (
+              <>
+                <Dropdown className="ms-auto">
+                  <Dropdown.Toggle variant="secondary" id="dropdown-user">
+                    {profile?.username || "Usuario"}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item as={NavLink} to="/profile">
+                      Ver Perfil
+                    </Dropdown.Item>
+                    {profile?.role === "trainer" ? (
                       <>
-                        <Dropdown.Item as={NavLink} to="/trainer-details">
-                          Mi Entrenador
+                        <Dropdown.Item as={NavLink} to="/clients">
+                          Mis Clientes
                         </Dropdown.Item>
-                        <Dropdown.Item as={NavLink} to="/trainer-list">
-                          Buscar Entrenadores
+                        <Dropdown.Item as={NavLink} to="/trainer-requests">
+                          Solicitudes Recibidas
                         </Dropdown.Item>
                       </>
-                    )
-                  )}
-                  <Dropdown.Item onClick={handleLogout}>Cerrar Sesión</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+                    ) : (
+                      profile?.role === "regular_user" && (
+                        <>
+                          <Dropdown.Item as={NavLink} to="/trainer-details">
+                            Mi Entrenador
+                          </Dropdown.Item>
+                          <Dropdown.Item as={NavLink} to="/trainer-list">
+                            Buscar Entrenadores
+                          </Dropdown.Item>
+                        </>
+                      )
+                    )}
+                    <Dropdown.Item onClick={handleLogout}>Cerrar Sesión</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+                <NotificationBadge />
+              </>
             ) : (
               <Nav className="flex-column mb-3 ms-auto">
                 <Nav.Item>
@@ -193,178 +198,175 @@ function App() {
               </Nav>
             )}
 
-            <Navbar.Offcanvas id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" placement="start">
-              <Offcanvas.Header closeButton>
-                <Offcanvas.Title id="offcanvasNavbarLabel">Menú</Offcanvas.Title>
-              </Offcanvas.Header>
-              <Offcanvas.Body>
-                <Accordion>
-                  <Accordion.Item eventKey="0">
-                    <Accordion.Header>Nutrición</Accordion.Header>
-                    <Accordion.Body>
-                      <Nav className="flex-column">
-                        <p className="mt-2 mb-1">
-                          <strong>Creación de Alimentos</strong>
-                        </p>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/create-food">
-                            Crear Alimento
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/create-ingredient">
-                            Crear Ingrediente
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/create-dish">
-                            Crear Plato
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/create-meal">
-                            Crear Comida
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/create-diet">
-                            Crear Dieta
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/upload-food">
-                            Subir Alimento
-                          </Nav.Link>
-                        </Nav.Item>
+            {profile?.role === "trainer" && (
+              <Navbar.Offcanvas id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" placement="start">
+                <Offcanvas.Header closeButton>
+                  <Offcanvas.Title id="offcanvasNavbarLabel">Menú</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                  <Accordion>
+                    <Accordion.Item eventKey="0">
+                      <Accordion.Header>Nutrición</Accordion.Header>
+                      <Accordion.Body>
+                        <Nav className="flex-column">
+                          <p className="mt-2 mb-1">
+                            <strong>Creación de Alimentos</strong>
+                          </p>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/create-food">
+                              Crear Alimento
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/create-ingredient">
+                              Crear Ingrediente
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/create-dish">
+                              Crear Plato
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/create-meal">
+                              Crear Comida
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/create-diet">
+                              Crear Dieta
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/upload-food">
+                              Subir Alimento
+                            </Nav.Link>
+                          </Nav.Item>
 
-                        <p className="mt-2 mb-1">
-                          <strong>Creación de Opciones</strong>
-                        </p>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/create-dayoption">
-                            Crear Opción Diaria
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/create-weekoption">
-                            Crear Opción Semanal
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/create-option">
-                            Crear Opción
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/assign-option">
-                            Asignar Opción
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/adapt-option">
-                            Adaptar Opción
-                          </Nav.Link>
-                        </Nav.Item>
+                          <p className="mt-2 mb-1">
+                            <strong>Creación de Opciones</strong>
+                          </p>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/create-dayoption">
+                              Crear Opción Diaria
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/create-weekoption">
+                              Crear Opción Semanal
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/create-option">
+                              Crear Opción
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/assign-option">
+                              Asignar Opción
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/adapt-option">
+                              Adaptar Opción
+                            </Nav.Link>
+                          </Nav.Item>
 
-                        <p className="mt-2 mb-1">
-                          <strong>Listado</strong>
-                        </p>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/list-food">
-                            Listar Alimentos
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/list-ingredient">
-                            Listar Ingredientes
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/list-dish">
-                            Listar Platos
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/list-meal">
-                            Listar Comidas
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/create-plan">
-                            Crear Plan
-                          </Nav.Link>
-                        </Nav.Item>
+                          <p className="mt-2 mb-1">
+                            <strong>Listado</strong>
+                          </p>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/list-food">
+                              Listar Alimentos
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/list-ingredient">
+                              Listar Ingredientes
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/list-dish">
+                              Listar Platos
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/list-meal">
+                              Listar Comidas
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/create-plan">
+                              Crear Plan
+                            </Nav.Link>
+                          </Nav.Item>
 
-                        {/* <-- Nuevo enlace para Listar Planes --> */}
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/plans">
-                            Listar Planes
-                          </Nav.Link>
-                        </Nav.Item>
-                        {/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */}
+                          {/* <-- Nuevo enlace para Listar Planes --> */}
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/plans">
+                              Listar Planes
+                            </Nav.Link>
+                          </Nav.Item>
+                          {/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */}
 
-                        <p className="mt-2 mb-1">
-                          <strong>Planes Comparativos</strong>
-                        </p>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/comparative-tables">
-                            Listar Tablas Comparativas
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/comparative-table">
-                            Ver Tabla Comparativa
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/nutrition/comparative-table/create">
-                            Crear Tabla Comparativa
-                          </Nav.Link>
-                        </Nav.Item>
-                      </Nav>
-                    </Accordion.Body>
-                  </Accordion.Item>
+                          <p className="mt-2 mb-1">
+                            <strong>Planes Comparativos</strong>
+                          </p>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/comparative-tables">
+                              Listar Tablas Comparativas
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/nutrition/comparative-table/create">
+                              Crear Tabla Comparativa
+                            </Nav.Link>
+                          </Nav.Item>
+                        </Nav>
+                      </Accordion.Body>
+                    </Accordion.Item>
 
-                  <Accordion.Item eventKey="1">
-                    <Accordion.Header>Deporte</Accordion.Header>
-                    <Accordion.Body>
-                      <Nav className="flex-column">
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/sport/create-exercise">
-                            Crear Ejercicio
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/sport/list-exercise">
-                            Lista de Ejercicios
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/sport/create-training">
-                            Crear Entrenamiento
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/sport/create-week-training">
-                            Crear Semana de Entrenamiento
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/sport/assign-week-training">
-                            Asignar Semana de Entrenamiento
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link as={NavLink} to="/sport/list-training">
-                            Listar Entrenamientos
-                          </Nav.Link>
-                        </Nav.Item>
-                      </Nav>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                </Accordion>
-              </Offcanvas.Body>
-            </Navbar.Offcanvas>
+                    <Accordion.Item eventKey="1">
+                      <Accordion.Header>Deporte</Accordion.Header>
+                      <Accordion.Body>
+                        <Nav className="flex-column">
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/sport/create-exercise">
+                              Crear Ejercicio
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/sport/list-exercise">
+                              Lista de Ejercicios
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/sport/create-training">
+                              Crear Entrenamiento
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/sport/create-week-training">
+                              Crear Semana de Entrenamiento
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/sport/assign-week-training">
+                              Asignar Semana de Entrenamiento
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link as={NavLink} to="/sport/list-training">
+                              Listar Entrenamientos
+                            </Nav.Link>
+                          </Nav.Item>
+                        </Nav>
+                      </Accordion.Body>
+                    </Accordion.Item>
+                  </Accordion>
+                </Offcanvas.Body>
+              </Navbar.Offcanvas>
+            )}
           </Container>
         </Navbar>
 
@@ -434,7 +436,9 @@ function App() {
                 <Route path="/assigned-week-trainings" element={<AssignedWeekTrainings />} />
                 <Route path="/nutrition/comparative-tables" element={<ComparativePlanTableList />} />
                 <Route path="/nutrition/comparative-table/:id" element={<ComparativePlanTableDetail />} />
-                <Route path="/nutrition/comparative-table/:id/edit" element={<ComparativePlanTable />} />
+                {profile?.role === 'trainer' && (
+                  <Route path="/nutrition/comparative-table/:id/edit" element={<ComparativePlanTable />} />
+                )}
                 <Route path="*" element={<Navigate replace to="/" />} />
               </>
             ) : (

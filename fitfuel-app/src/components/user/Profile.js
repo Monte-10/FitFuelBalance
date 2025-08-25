@@ -1,10 +1,405 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { Container, Row, Col, Form } from 'react-bootstrap';
+import { Container, Row, Col, Form, Card, Alert, Spinner, Badge } from 'react-bootstrap';
 import { Line, Bar, Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
 import './Profile.css';
 
+// Componente para el perfil básico
+const BasicProfile = ({ profile, onChange, onSubmit, isEditing, onToggleEdit }) => (
+    <Card className="profile-card">
+        <Card.Header className="d-flex justify-content-between align-items-center">
+            <h5 className="mb-0">
+                👤 Información Personal
+            </h5>
+            <button 
+                className="btn btn-outline-primary btn-sm"
+                onClick={onToggleEdit}
+            >
+                {isEditing ? '👁️' : '✏️'}
+            </button>
+        </Card.Header>
+        <Card.Body>
+            <Form onSubmit={onSubmit}>
+                <Row>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Biografía</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                rows={3}
+                                name="bio"
+                                value={profile.bio}
+                                onChange={onChange}
+                                disabled={!isEditing}
+                                placeholder="Cuéntanos sobre ti..."
+                            />
+                        </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                        <Row>
+                            <Col md={6}>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Edad</Form.Label>
+                                    <Form.Control
+                                        type="number"
+                                        name="age"
+                                        value={profile.age}
+                                        onChange={onChange}
+                                        disabled={!isEditing}
+                                        min="16"
+                                        max="100"
+                                    />
+                                </Form.Group>
+                            </Col>
+                            <Col md={6}>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Género</Form.Label>
+                                    <Form.Select
+                                        name="gender"
+                                        value={profile.gender}
+                                        onChange={onChange}
+                                        disabled={!isEditing}
+                                    >
+                                        <option value="male">Masculino</option>
+                                        <option value="female">Femenino</option>
+                                        <option value="other">Otro</option>
+                                    </Form.Select>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+                
+                <Row>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>
+                                📧 Email de Contacto
+                            </Form.Label>
+                            <Form.Control
+                                type="email"
+                                name="communication_email"
+                                value={profile.communication_email}
+                                onChange={onChange}
+                                disabled={!isEditing}
+                                placeholder="tu@email.com"
+                            />
+                        </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>
+                                📞 Teléfono
+                            </Form.Label>
+                            <Form.Control
+                                type="tel"
+                                name="phone"
+                                value={profile.phone}
+                                onChange={onChange}
+                                disabled={!isEditing}
+                                placeholder="+34 600 000 000"
+                            />
+                        </Form.Group>
+                    </Col>
+                </Row>
+
+                {isEditing && (
+                    <div className="text-center">
+                        <button type="submit" className="btn btn-success">
+                            💾 Guardar Cambios
+                        </button>
+                    </div>
+                )}
+            </Form>
+        </Card.Body>
+    </Card>
+);
+
+// Componente para el perfil de entrenador
+const TrainerProfile = ({ profile, specialties, onChange, onSubmit, isEditing, onToggleEdit }) => (
+    <Card className="profile-card">
+        <Card.Header className="d-flex justify-content-between align-items-center">
+            <h5 className="mb-0">
+                🏋️ Perfil de Entrenador
+            </h5>
+            <button 
+                className="btn btn-outline-primary btn-sm"
+                onClick={onToggleEdit}
+            >
+                {isEditing ? '👁️' : '✏️'}
+            </button>
+        </Card.Header>
+        <Card.Body>
+            <Form onSubmit={onSubmit}>
+                <Row>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Tipo de Entrenador</Form.Label>
+                            <Form.Select
+                                name="trainer_type"
+                                value={profile.trainer_type}
+                                onChange={onChange}
+                                disabled={!isEditing}
+                            >
+                                <option value="trainer">Entrenador</option>
+                                <option value="nutritionist">Nutricionista</option>
+                                <option value="both">Entrenador y Nutricionista</option>
+                            </Form.Select>
+                        </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Especialidades</Form.Label>
+                            <div className="specialties-grid">
+                                {specialties.map(specialty => (
+                                    <Form.Check
+                                        key={specialty.id}
+                                        type="checkbox"
+                                        id={`specialty-${specialty.id}`}
+                                        label={specialty.name}
+                                        value={specialty.id}
+                                        checked={profile.specialties.includes(specialty.id)}
+                                        onChange={onChange}
+                                        disabled={!isEditing}
+                                        className="specialty-checkbox"
+                                    />
+                                ))}
+                            </div>
+                        </Form.Group>
+                    </Col>
+                </Row>
+
+                {isEditing && (
+                    <div className="text-center">
+                        <button type="submit" className="btn btn-success">
+                            💾 Guardar Cambios
+                        </button>
+                    </div>
+                )}
+            </Form>
+        </Card.Body>
+    </Card>
+);
+
+// Componente para las medidas corporales
+const BodyMeasurements = ({ measurements, onSubmit, isEditing, onToggleEdit }) => {
+    const [formData, setFormData] = useState({});
+
+    // Actualizar formData cuando cambien las measurements
+    useEffect(() => {
+        setFormData(measurements || {});
+    }, [measurements]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        // Filtrar solo los campos que tienen valores
+        const filteredData = {};
+        Object.keys(formData).forEach(key => {
+            if (formData[key] !== '' && formData[key] !== null && formData[key] !== undefined) {
+                filteredData[key] = parseFloat(formData[key]);
+            }
+        });
+        
+        // Solo enviar si hay al menos una medida
+        if (Object.keys(filteredData).length > 0) {
+            onSubmit(filteredData);
+        } else {
+            alert('Por favor, ingresa al menos una medida antes de guardar.');
+        }
+    };
+
+    const measurementFields = [
+        { name: 'weight', label: 'Peso (kg)', icon: '⚖️' },
+        { name: 'height', label: 'Altura (cm)', icon: '📏' },
+        { name: 'neck', label: 'Cuello (cm)', icon: '📏' },
+        { name: 'shoulder', label: 'Hombro (cm)', icon: '📏' },
+        { name: 'chest', label: 'Pecho (cm)', icon: '📏' },
+        { name: 'waist', label: 'Cintura (cm)', icon: '📏' },
+        { name: 'hip', label: 'Cadera (cm)', icon: '📏' },
+        { name: 'arm', label: 'Brazo (cm)', icon: '📏' },
+        { name: 'glute', label: 'Glúteo (cm)', icon: '📏' },
+        { name: 'upper_leg', label: 'Pierna Superior (cm)', icon: '📏' },
+        { name: 'middle_leg', label: 'Pierna Media (cm)', icon: '📏' },
+        { name: 'lower_leg', label: 'Pierna Inferior (cm)', icon: '📏' }
+    ];
+
+    return (
+        <Card className="profile-card">
+            <Card.Header className="d-flex justify-content-between align-items-center">
+                <h5 className="mb-0">
+                    📏 Medidas Corporales
+                </h5>
+                <button 
+                    className="btn btn-outline-primary btn-sm"
+                    onClick={onToggleEdit}
+                >
+                    {isEditing ? '👁️ Ver' : '✏️ Editar'}
+                </button>
+            </Card.Header>
+            <Card.Body>
+                <div className="mb-3">
+                    <small className="text-muted">
+                        💡 Los valores mostrados son de tu última medición registrada
+                    </small>
+                </div>
+                
+                <Form onSubmit={handleSubmit}>
+                    <Row>
+                        {measurementFields.map((field, index) => (
+                            <Col key={field.name} md={6} lg={4}>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>
+                                        {field.icon} {field.label}
+                                    </Form.Label>
+                                    <Form.Control
+                                        type="number"
+                                        name={field.name}
+                                        value={formData[field.name] || ''}
+                                        onChange={handleChange}
+                                        disabled={!isEditing}
+                                        step="0.1"
+                                        min="0"
+                                        placeholder={formData[field.name] ? '' : 'Sin registrar'}
+                                    />
+                                    {formData[field.name] && (
+                                        <small className="text-success">
+                                            ✅ Última medida: {formData[field.name]} {field.name === 'weight' ? 'kg' : 'cm'}
+                                        </small>
+                                    )}
+                                </Form.Group>
+                            </Col>
+                        ))}
+                    </Row>
+
+                    {isEditing && (
+                        <div className="text-center">
+                            <button type="submit" className="btn btn-success">
+                                💾 Guardar Medidas
+                            </button>
+                        </div>
+                    )}
+                </Form>
+            </Card.Body>
+        </Card>
+    );
+};
+
+// Componente para el análisis de progreso
+const ProgressAnalysis = ({ measurements, selectedMeasurements, timeRange, chartType, onMeasurementChange, onTimeRangeChange, onChartTypeChange }) => {
+    const chartData = {
+        labels: measurements.map(m => new Date(m.date).toLocaleDateString()),
+        datasets: selectedMeasurements.map((measurement, index) => ({
+            label: measurement,
+            data: measurements.map(m => m[measurement]),
+            backgroundColor: `rgba(${(index * 50) % 255}, ${(index * 80) % 255}, ${(index * 110) % 255}, 0.6)`,
+            borderColor: `rgba(${(index * 50) % 255}, ${(index * 80) % 255}, ${(index * 110) % 255}, 1)`,
+            borderWidth: 2,
+            fill: false,
+            spanGaps: true,
+            tension: 0.4
+        }))
+    };
+
+    const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                labels: {
+                    color: '#f0f0f0'
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: '#f0f0f0' },
+                grid: { color: '#444' }
+            },
+            y: {
+                ticks: { color: '#f0f0f0' },
+                grid: { color: '#444' }
+            }
+        }
+    };
+
+    const renderChart = () => {
+        switch (chartType) {
+            case 'bar':
+                return <Bar data={chartData} options={chartOptions} />;
+            case 'pie':
+                return <Pie data={chartData} options={chartOptions} />;
+            default:
+                return <Line data={chartData} options={chartOptions} />;
+        }
+    };
+
+    return (
+        <Card className="profile-card">
+            <Card.Header>
+                <h5 className="mb-0">
+                    📊 Análisis de Progreso
+                </h5>
+            </Card.Header>
+            <Card.Body>
+                <Row className="mb-3">
+                    <Col md={4}>
+                        <Form.Group>
+                            <Form.Label>Rango de Tiempo</Form.Label>
+                            <Form.Select value={timeRange} onChange={onTimeRangeChange}>
+                                <option value="1week">1 Semana</option>
+                                <option value="1month">1 Mes</option>
+                                <option value="3months">3 Meses</option>
+                                <option value="6months">6 Meses</option>
+                                <option value="1year">1 Año</option>
+                            </Form.Select>
+                        </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                        <Form.Group>
+                            <Form.Label>Tipo de Gráfico</Form.Label>
+                            <Form.Select value={chartType} onChange={onChartTypeChange}>
+                                <option value="line">Línea</option>
+                                <option value="bar">Barras</option>
+                                <option value="pie">Circular</option>
+                            </Form.Select>
+                        </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                        <Form.Group>
+                            <Form.Label>Medidas a Mostrar</Form.Label>
+                            <div className="measurement-selector">
+                                {['weight', 'height', 'neck', 'chest', 'waist', 'hip'].map((measurement) => (
+                                    <Badge
+                                        key={measurement}
+                                        bg={selectedMeasurements.includes(measurement) ? "primary" : "secondary"}
+                                        className="me-1 mb-1 cursor-pointer"
+                                        onClick={() => onMeasurementChange(measurement)}
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        {measurement}
+                                    </Badge>
+                                ))}
+                            </div>
+                        </Form.Group>
+                    </Col>
+                </Row>
+
+                <div className="chart-container">
+                    {renderChart()}
+                </div>
+            </Card.Body>
+        </Card>
+    );
+};
+
+// Componente principal del Profile
 const Profile = () => {
     const [profile, setProfile] = useState({
         bio: '',
@@ -16,6 +411,7 @@ const Profile = () => {
         communication_email: '',
         phone: ''
     });
+    
     const [regularUser, setRegularUser] = useState({
         weight: '',
         height: '',
@@ -30,58 +426,69 @@ const Profile = () => {
         middle_leg: '',
         lower_leg: ''
     });
+    
     const [specialties, setSpecialties] = useState([]);
-    const [error, setError] = useState('');
     const [measurements, setMeasurements] = useState([]);
-    const [chartType, setChartType] = useState('line');
     const [selectedMeasurements, setSelectedMeasurements] = useState(['weight']);
     const [timeRange, setTimeRange] = useState('1month');
-    const [viewType, setViewType] = useState('chart');
-    const [role, setRole] = useState(''); // Estado para el rol del usuario
+    const [chartType, setChartType] = useState('line');
+    const [role, setRole] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+    
+    // Estados de edición
+    const [isEditingBasic, setIsEditingBasic] = useState(false);
+    const [isEditingTrainer, setIsEditingTrainer] = useState(false);
+    const [isEditingMeasurements, setIsEditingMeasurements] = useState(false);
 
     const apiUrl = process.env.REACT_APP_API_URL;
 
-    useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const response = await axios.get(`${apiUrl}/user/profile/`, {
-                    headers: {
-                        'Authorization': `Token ${localStorage.getItem('authToken')}`
-                    }
-                });
-                const { profile: profileData = {}, trainer = {}, regular_user = {}, role } = response.data;
+    // Fetch del perfil
+    const fetchProfile = useCallback(async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`${apiUrl}/user/profile/`, {
+                headers: {
+                    'Authorization': `Token ${localStorage.getItem('authToken')}`
+                }
+            });
+            
+            const { profile: profileData = {}, trainer = {}, regular_user = {}, role: userRole, id: userId } = response.data;
 
-                setProfile({
-                    bio: profileData.bio || '',
-                    age: profileData.age || '',
-                    gender: profileData.gender || 'male',
-                    image: profileData.image || null,
-                    specialties: trainer.specialties || [],
-                    trainer_type: trainer.trainer_type || 'trainer',
-                    communication_email: trainer.communication_email || regular_user.communication_email || '',
-                    phone: trainer.phone || regular_user.phone || ''
-                });
+            setProfile({
+                bio: profileData.bio || '',
+                age: profileData.age || '',
+                gender: profileData.gender || 'male',
+                image: profileData.image || null,
+                specialties: trainer.specialties || [],
+                trainer_type: trainer.trainer_type || 'trainer',
+                communication_email: trainer.communication_email || regular_user.communication_email || '',
+                phone: trainer.phone || regular_user.phone || ''
+            });
 
-                setRegularUser({
-                    weight: regular_user.weight || '',
-                    height: regular_user.height || '',
-                    neck: regular_user.neck || '',
-                    shoulder: regular_user.shoulder || '',
-                    chest: regular_user.chest || '',
-                    waist: regular_user.waist || '',
-                    hip: regular_user.hip || '',
-                    arm: regular_user.arm || '',
-                    glute: regular_user.glute || '',
-                    upper_leg: regular_user.upper_leg || '',
-                    middle_leg: regular_user.middle_leg || '',
-                    lower_leg: regular_user.lower_leg || ''
-                });
+            setRegularUser({
+                weight: regular_user.weight || '',
+                height: regular_user.height || '',
+                neck: regular_user.neck || '',
+                shoulder: regular_user.shoulder || '',
+                chest: regular_user.chest || '',
+                waist: regular_user.waist || '',
+                hip: regular_user.hip || '',
+                arm: regular_user.arm || '',
+                glute: regular_user.glute || '',
+                upper_leg: regular_user.upper_leg || '',
+                middle_leg: regular_user.middle_leg || '',
+                lower_leg: regular_user.lower_leg || ''
+            });
 
-                setRole(role); // Establecemos el rol del usuario
+            setRole(userRole);
 
-                if (role === 'regular_user') {
+            if (userRole === 'regular_user') {
+                try {
+                    // Obtener el historial de medidas
                     const measurementsResponse = await axios.get(
-                        `${apiUrl}/user/measurements/history/${response.data.id}/`,
+                        `${apiUrl}/user/measurements/history/${userId}/`,
                         {
                             headers: {
                                 'Authorization': `Token ${localStorage.getItem('authToken')}`
@@ -89,95 +496,94 @@ const Profile = () => {
                         }
                     );
                     setMeasurements(Array.isArray(measurementsResponse.data) ? measurementsResponse.data : []);
-                }
-
-            } catch (error) {
-                setError("Error al cargar el perfil");
-                console.error("Error al cargar el perfil:", error.response?.data || error.message);
-            }
-        };
-
-        const fetchSpecialties = async () => {
-            try {
-                const response = await axios.get(`${apiUrl}/user/specialties/`, {
-                    headers: {
-                        'Authorization': `Token ${localStorage.getItem('authToken')}`
+                    
+                    // Obtener la última medida para mostrar en el formulario
+                    const latestMeasurementResponse = await axios.get(
+                        `${apiUrl}/user/measurements/latest/${userId}/`,
+                        {
+                            headers: {
+                                'Authorization': `Token ${localStorage.getItem('authToken')}`
+                            }
+                        }
+                    );
+                    
+                    if (latestMeasurementResponse.data && Object.keys(latestMeasurementResponse.data).length > 0) {
+                        const latestData = latestMeasurementResponse.data;
+                        setRegularUser(prev => ({
+                            ...prev,
+                            weight: latestData.weight || prev.weight,
+                            height: latestData.height || prev.height,
+                            neck: latestData.neck || prev.neck,
+                            shoulder: latestData.shoulder || prev.shoulder,
+                            chest: latestData.chest || prev.chest,
+                            waist: latestData.waist || prev.waist,
+                            hip: latestData.hip || prev.hip,
+                            arm: latestData.arm || prev.arm,
+                            glute: latestData.glute || prev.glute,
+                            upper_leg: latestData.upper_leg || prev.upper_leg,
+                            middle_leg: latestData.middle_leg || prev.middle_leg,
+                            lower_leg: latestData.lower_leg || prev.lower_leg
+                        }));
                     }
-                });
-                setSpecialties(response.data.results);
-            } catch (error) {
-                setError("Error al cargar especialidades");
-                console.error("Error al cargar especialidades:", error.response?.data || error.message);
+                } catch (measurementError) {
+                    console.log('No hay historial de medidas disponible');
+                    setMeasurements([]);
+                }
             }
-        };
 
-        fetchProfile();
-        fetchSpecialties();
+        } catch (error) {
+            setError("Error al cargar el perfil");
+            console.error("Error al cargar el perfil:", error.response?.data || error.message);
+        } finally {
+            setLoading(false);
+        }
+    }, [apiUrl]);
+
+    // Fetch de especialidades
+    const fetchSpecialties = useCallback(async () => {
+        try {
+            const response = await axios.get(`${apiUrl}/user/specialties/`, {
+                headers: {
+                    'Authorization': `Token ${localStorage.getItem('authToken')}`
+                }
+            });
+            setSpecialties(response.data.results || response.data);
+        } catch (error) {
+            console.error("Error al cargar especialidades:", error.response?.data || error.message);
+        }
     }, [apiUrl]);
 
     useEffect(() => {
-        if (measurements.length > 0) {
-            const latestMeasurement = measurements[measurements.length - 1];
-            setRegularUser({
-                weight: latestMeasurement.weight || '',
-                height: latestMeasurement.height || '',
-                neck: latestMeasurement.neck || '',
-                shoulder: latestMeasurement.shoulder || '',
-                chest: latestMeasurement.chest || '',
-                waist: latestMeasurement.waist || '',
-                hip: latestMeasurement.hip || '',
-                arm: latestMeasurement.arm || '',
-                glute: latestMeasurement.glute || '',
-                upper_leg: latestMeasurement.upper_leg || '',
-                middle_leg: latestMeasurement.middle_leg || '',
-                lower_leg: latestMeasurement.lower_leg || ''
-            });
-        }
-    }, [measurements]);
+        fetchProfile();
+        fetchSpecialties();
+    }, [fetchProfile, fetchSpecialties]);
 
-    const handleChange = (e) => {
+    // Handlers
+    const handleProfileChange = useCallback((e) => {
         const { name, value } = e.target;
-        setProfile(prevProfile => ({ ...prevProfile, [name]: value }));
-    };
+        setProfile(prev => ({ ...prev, [name]: value }));
+    }, []);
 
-    const handleRegularUserChange = (e) => {
-        const { name, value } = e.target;
-        setRegularUser(prevRegularUser => ({ ...prevRegularUser, [name]: value }));
-    };
-
-    const handleSpecialtyChange = (e) => {
+    const handleSpecialtyChange = useCallback((e) => {
         const { value, checked } = e.target;
-        setProfile(prevProfile => {
+        setProfile(prev => {
             const newSpecialties = checked
-                ? [...prevProfile.specialties, parseInt(value)]
-                : prevProfile.specialties.filter(specialty => specialty !== parseInt(value));
-            return { ...prevProfile, specialties: newSpecialties };
+                ? [...prev.specialties, parseInt(value)]
+                : prev.specialties.filter(specialty => specialty !== parseInt(value));
+            return { ...prev, specialties: newSpecialties };
         });
-    };
+    }, []);
 
-    const handleImageChange = (e) => {
-        setProfile(prevProfile => ({ ...prevProfile, image: e.target.files[0] }));
-    };
-
-    const handleSubmitProfile = async (e) => {
+    const handleSubmitProfile = useCallback(async (e) => {
         e.preventDefault();
-
-        const formData = new FormData();
-        formData.append('bio', profile.bio);
-        formData.append('age', profile.age);
-        formData.append('gender', profile.gender);
-        formData.append('communication_email', profile.communication_email);
-        formData.append('phone', profile.phone);
-        if (profile.image instanceof File) {
-            formData.append('image', profile.image);
-        }
-
-        if (role === 'trainer') {
-            formData.append('trainer_type', profile.trainer_type);
-            formData.append('specialties', JSON.stringify(profile.specialties));
-        }
-
         try {
+            const formData = new FormData();
+            formData.append('bio', profile.bio);
+            formData.append('age', profile.age);
+            formData.append('gender', profile.gender);
+            formData.append('communication_email', profile.communication_email);
+            formData.append('phone', profile.phone);
+
             const response = await axios.put(`${apiUrl}/user/profile/`, formData, {
                 headers: {
                     'Authorization': `Token ${localStorage.getItem('authToken')}`,
@@ -185,518 +591,242 @@ const Profile = () => {
                 }
             });
 
-            setProfile({
-                bio: response.data.profile.bio || '',
-                age: response.data.profile.age || '',
-                gender: response.data.profile.gender || 'male',
-                image: response.data.profile.image || null,
-                specialties: response.data.trainer?.specialties || [],
-                trainer_type: response.data.trainer?.trainer_type || 'trainer',
-                communication_email: response.data.trainer?.communication_email || response.data.regular_user?.communication_email || '',
-                phone: response.data.trainer?.phone || response.data.regular_user?.phone || ''
-            });
+            setProfile(prev => ({
+                ...prev,
+                bio: response.data.profile?.bio || prev.bio,
+                age: response.data.profile?.age || prev.age,
+                gender: response.data.profile?.gender || prev.gender,
+                communication_email: response.data.trainer?.communication_email || response.data.regular_user?.communication_email || prev.communication_email,
+                phone: response.data.trainer?.phone || response.data.regular_user?.phone || prev.phone
+            }));
+
+            setSuccess('Perfil actualizado correctamente');
+            setIsEditingBasic(false);
+            setTimeout(() => setSuccess(''), 3000);
 
         } catch (error) {
-            setError(
-                `Error al actualizar el perfil: ${
-                    error.response ? JSON.stringify(error.response.data) : error.message
-                }`
-            );
-            console.error("Error al actualizar el perfil:", error.response?.data || error.message);
+            setError(`Error al actualizar el perfil: ${error.response?.data?.detail || error.message}`);
+            setTimeout(() => setError(''), 5000);
         }
-    };
+    }, [apiUrl, profile]);
 
-    const handleSubmitMeasurements = async (e) => {
+    const handleSubmitTrainer = useCallback(async (e) => {
         e.preventDefault();
-
         try {
-            await axios.post(`${apiUrl}/user/measurements/`, regularUser, {
+            const formData = new FormData();
+            formData.append('specialties', JSON.stringify(profile.specialties));
+            formData.append('trainer_type', profile.trainer_type);
+            formData.append('communication_email', profile.communication_email);
+            formData.append('phone', profile.phone);
+
+            const response = await axios.put(`${apiUrl}/user/profile/`, formData, {
+                headers: {
+                    'Authorization': `Token ${localStorage.getItem('authToken')}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            setProfile(prev => ({
+                ...prev,
+                specialties: response.data.trainer?.specialties || prev.specialties,
+                trainer_type: response.data.trainer?.trainer_type || prev.trainer_type,
+                communication_email: response.data.trainer?.communication_email || prev.communication_email,
+                phone: response.data.trainer?.phone || prev.phone
+            }));
+
+            setSuccess('Perfil de entrenador actualizado correctamente');
+            setIsEditingTrainer(false);
+            setTimeout(() => setSuccess(''), 3000);
+
+        } catch (error) {
+            setError(`Error al actualizar el perfil de entrenador: ${error.response?.data?.detail || error.message}`);
+            setTimeout(() => setError(''), 5000);
+        }
+    }, [apiUrl, profile]);
+
+    const handleSubmitMeasurements = useCallback(async (measurementData) => {
+        try {
+            console.log('Enviando medidas:', measurementData);
+            
+            // Enviar solo los datos de las medidas, el backend asignará el usuario automáticamente
+            const response = await axios.post(`${apiUrl}/user/measurements/`, measurementData, {
                 headers: {
                     'Authorization': `Token ${localStorage.getItem('authToken')}`,
                     'Content-Type': 'application/json'
                 }
             });
 
-            const measurementsResponse = await axios.get(`${apiUrl}/user/measurements/`, {
-                headers: {
-                    'Authorization': `Token ${localStorage.getItem('authToken')}`
-                }
-            });
-            setMeasurements(Array.isArray(measurementsResponse.data) ? measurementsResponse.data : []);
+            console.log('Medidas guardadas:', response.data);
+            
+            // Actualizar las medidas locales directamente
+            setMeasurements(prev => [...prev, response.data]);
+            
+            // Actualizar también el estado del usuario regular con los nuevos valores
+            setRegularUser(prev => ({
+                ...prev,
+                ...measurementData
+            }));
+            
+            setSuccess('Medidas guardadas correctamente');
+            setIsEditingMeasurements(false);
+            setTimeout(() => setSuccess(''), 3000);
 
         } catch (error) {
-            setError(
-                `Error al guardar las medidas: ${
-                    error.response ? JSON.stringify(error.response.data) : error.message
-                }`
-            );
-            console.error("Error al guardar las medidas:", error.response?.data || error.message);
+            console.error('Error al guardar medidas:', error.response?.data || error);
+            setError(`Error al guardar las medidas: ${error.response?.data?.detail || error.response?.data?.message || error.message}`);
+            setTimeout(() => setError(''), 5000);
         }
-    };
+    }, [apiUrl]);
 
-    const filterMeasurementsByTimeRange = () => {
-        const now = new Date();
-        let startDate;
-
-        switch (timeRange) {
-            case '1week':
-                startDate = new Date(now.setDate(now.getDate() - 7));
-                break;
-            case '1month':
-                startDate = new Date(now.setMonth(now.getMonth() - 1));
-                break;
-            case '3months':
-                startDate = new Date(now.setMonth(now.getMonth() - 3));
-                break;
-            case '6months':
-                startDate = new Date(now.setMonth(now.getMonth() - 6));
-                break;
-            case '9months':
-                startDate = new Date(now.setMonth(now.getMonth() - 9));
-                break;
-            case '1year':
-                startDate = new Date(now.setFullYear(now.getFullYear() - 1));
-                break;
-            case '2years':
-                startDate = new Date(now.setFullYear(now.getFullYear() - 2));
-                break;
-            default:
-                startDate = new Date(now.setMonth(now.getMonth() - 1));
-        }
-
-        return Array.isArray(measurements)
-            ? measurements.filter(measurement => new Date(measurement.date) >= startDate)
-            : [];
-    };
-
-    const getChartData = () => {
-        const filteredMeasurements = filterMeasurementsByTimeRange();
-        const labels = filteredMeasurements.map(m => new Date(m.date).toLocaleDateString());
-
-        const datasets = selectedMeasurements.map((measurement, index) => ({
-            label: measurement,
-            data: filteredMeasurements.map(m => m[measurement]),
-            backgroundColor: `rgba(${(index * 50) % 255}, ${(index * 80) % 255}, ${(index * 110) % 255}, 0.6)`,
-            borderColor: `rgba(${(index * 50) % 255}, ${(index * 80) % 255}, ${(index * 110) % 255}, 1)`,
-            borderWidth: 1,
-            fill: false,
-            spanGaps: true
-        }));
-
-        return {
-            labels,
-            datasets
-        };
-    };
-
-    const renderChart = () => {
-        const data = getChartData();
-
-        switch (chartType) {
-            case 'bar':
-                return <Bar data={data} />;
-            case 'pie':
-                return <Pie data={data} />;
-            default:
-                return <Line data={data} />;
-        }
-    };
-
-    const renderTable = () => {
-        const filteredMeasurements = filterMeasurementsByTimeRange();
-
-        return (
-            <table className="table table-striped mt-4">
-                <thead>
-                    <tr>
-                        <th>Fecha</th>
-                        {selectedMeasurements.map((measurement, index) => (
-                            <th key={index}>{measurement}</th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredMeasurements.map((measurement, index) => (
-                        <tr key={index}>
-                            <td>{new Date(measurement.date).toLocaleDateString()}</td>
-                            {selectedMeasurements.map((key, i) => (
-                                <td key={i}>{measurement[key]}</td>
-                            ))}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+    // Funciones para el análisis de progreso
+    const handleMeasurementChange = useCallback((measurement) => {
+        setSelectedMeasurements(prev => 
+            prev.includes(measurement) 
+                ? prev.filter(m => m !== measurement)
+                : [...prev, measurement]
         );
-    };
+    }, []);
 
-    const handleChartTypeChange = (e) => {
-        setChartType(e.target.value);
-    };
-
-    const handleMeasurementChange = (e) => {
-        const { value, checked } = e.target;
-        setSelectedMeasurements(prev =>
-            checked ? [...prev, value] : prev.filter(m => m !== value)
-        );
-    };
-
-    const handleTimeRangeChange = (e) => {
+    const handleTimeRangeChange = useCallback((e) => {
         setTimeRange(e.target.value);
+    }, []);
+
+    const handleChartTypeChange = useCallback((e) => {
+        setChartType(e.target.value);
+    }, []);
+
+    // Renderizado condicional de componentes
+    const renderTabContent = (tabKey) => {
+        switch (tabKey) {
+            case 'basic':
+                return (
+                    <BasicProfile
+                        profile={profile}
+                        onChange={handleProfileChange}
+                        onSubmit={handleSubmitProfile}
+                        isEditing={isEditingBasic}
+                        onToggleEdit={() => setIsEditingBasic(!isEditingBasic)}
+                    />
+                );
+            case 'trainer':
+                if (role === 'trainer') {
+                    return (
+                        <TrainerProfile
+                            profile={profile}
+                            specialties={specialties}
+                            onChange={handleSpecialtyChange}
+                            onSubmit={handleSubmitTrainer}
+                            isEditing={isEditingTrainer}
+                            onToggleEdit={() => setIsEditingTrainer(!isEditingTrainer)}
+                        />
+                    );
+                }
+                return null;
+            case 'measurements':
+                if (role === 'regular_user') {
+                    return (
+                        <BodyMeasurements
+                            measurements={regularUser}
+                            onSubmit={handleSubmitMeasurements}
+                            isEditing={isEditingMeasurements}
+                            onToggleEdit={() => setIsEditingMeasurements(!isEditingMeasurements)}
+                        />
+                    );
+                }
+                return null;
+            case 'progress':
+                if (role === 'regular_user') {
+                    return (
+                        <ProgressAnalysis
+                            measurements={measurements}
+                            selectedMeasurements={selectedMeasurements}
+                            timeRange={timeRange}
+                            chartType={chartType}
+                            onMeasurementChange={handleMeasurementChange}
+                            onTimeRangeChange={handleTimeRangeChange}
+                            onChartTypeChange={handleChartTypeChange}
+                        />
+                    );
+                }
+                return null;
+            default:
+                return null;
+        }
     };
 
-    const handleViewTypeChange = (e) => {
-        setViewType(e.target.value);
+    const [activeTab, setActiveTab] = useState('basic');
+
+    const handleTabChange = (tab) => {
+        setActiveTab(tab);
     };
 
     return (
-        <div className="container-profile mt-4">
-            <h2 className="title-profile">Perfil</h2>
-            {error && <p className="text-danger">{error}</p>}
-            <form onSubmit={handleSubmitProfile}>
-                <div className="mb-3">
-                    <label htmlFor="bio" className="form-label">Biografía</label>
-                    <textarea
-                        id="bio"
-                        name="bio"
-                        className="form-control"
-                        value={profile.bio}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="age" className="form-label">Edad</label>
-                    <input
-                        type="number"
-                        id="age"
-                        name="age"
-                        className="form-control"
-                        value={profile.age}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="gender" className="form-label">Género</label>
-                    <select
-                        id="gender"
-                        name="gender"
-                        className="form-select"
-                        value={profile.gender}
-                        onChange={handleChange}
-                    >
-                        <option value="male">Masculino</option>
-                        <option value="female">Femenino</option>
-                        <option value="other">Otro</option>
-                    </select>
-                </div>
-                {role === 'trainer' && (
-                    <>
-                        <div className="mb-3">
-                            <label htmlFor="trainer_type" className="form-label">Tipo de Entrenador</label>
-                            <select
-                                id="trainer_type"
-                                name="trainer_type"
-                                className="form-select"
-                                value={profile.trainer_type}
-                                onChange={handleChange}
-                            >
-                                <option value="trainer">Entrenador</option>
-                                <option value="nutritionist">Nutricionista</option>
-                                <option value="both">Entrenador y Nutricionista</option>
-                            </select>
-                        </div>
-                        <div className="mb-3">
-                            <label className="form-label">Especialidades</label>
-                            {specialties.map(specialty => (
-                                <div key={specialty.id} className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        id={`specialty-${specialty.id}`}
-                                        value={specialty.id}
-                                        checked={profile.specialties.includes(specialty.id)}
-                                        onChange={handleSpecialtyChange}
-                                    />
-                                    <label className="form-check-label" htmlFor={`specialty-${specialty.id}`}>
-                                        {specialty.name}
-                                    </label>
-                                </div>
-                            ))}
-                        </div>
-                    </>
-                )}
-                <Row>
-                    <Col md={6}>
-                        <div className="mb-3">
-                            <label htmlFor="communication_email" className="form-label">Correo Electrónico</label>
-                            <input
-                                type="email"
-                                id="communication_email"
-                                name="communication_email"
-                                className="form-control"
-                                value={profile.communication_email}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </Col>
-                    <Col md={6}>
-                        <div className="mb-3">
-                            <label htmlFor="phone" className="form-label">Teléfono</label>
-                            <input
-                                type="text"
-                                id="phone"
-                                name="phone"
-                                className="form-control"
-                                value={profile.phone}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </Col>
-                </Row>
-                <button type="submit" className="btn btn-primary">Guardar Cambios del Perfil</button>
-            </form>
-            {role === 'regular_user' && (
-                <>
-                    <form onSubmit={handleSubmitMeasurements}>
-                        <Container>
-                            <Row>
-                                <Col md={6}>
-                                    <div className="mb-3">
-                                        <label htmlFor="weight" className="form-label">Peso</label>
-                                        <input
-                                            type="number"
-                                            id="weight"
-                                            name="weight"
-                                            className="form-control"
-                                            value={regularUser.weight}
-                                            onChange={handleRegularUserChange}
-                                        />
-                                    </div>
-                                </Col>
-                                <Col md={6}>
-                                    <div className="mb-3">
-                                        <label htmlFor="height" className="form-label">Altura</label>
-                                        <input
-                                            type="number"
-                                            id="height"
-                                            name="height"
-                                            className="form-control"
-                                            value={regularUser.height}
-                                            onChange={handleRegularUserChange}
-                                        />
-                                    </div>
-                                </Col>
-                            </Row>
-                            {/* Resto de campos de medidas */}
-                            <Row>
-                                <Col md={6}>
-                                    <div className="mb-3">
-                                        <label htmlFor="neck" className="form-label">Cuello</label>
-                                        <input
-                                            type="number"
-                                            id="neck"
-                                            name="neck"
-                                            className="form-control"
-                                            value={regularUser.neck}
-                                            onChange={handleRegularUserChange}
-                                        />
-                                    </div>
-                                </Col>
-                                <Col md={6}>
-                                    <div className="mb-3">
-                                        <label htmlFor="shoulder" className="form-label">Hombro</label>
-                                        <input
-                                            type="number"
-                                            id="shoulder"
-                                            name="shoulder"
-                                            className="form-control"
-                                            value={regularUser.shoulder}
-                                            onChange={handleRegularUserChange}
-                                        />
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col md={6}>
-                                    <div className="mb-3">
-                                        <label htmlFor="chest" className="form-label">Pecho</label>
-                                        <input
-                                            type="number"
-                                            id="chest"
-                                            name="chest"
-                                            className="form-control"
-                                            value={regularUser.chest}
-                                            onChange={handleRegularUserChange}
-                                        />
-                                    </div>
-                                </Col>
-                                <Col md={6}>
-                                    <div className="mb-3">
-                                        <label htmlFor="waist" className="form-label">Cintura</label>
-                                        <input
-                                            type="number"
-                                            id="waist"
-                                            name="waist"
-                                            className="form-control"
-                                            value={regularUser.waist}
-                                            onChange={handleRegularUserChange}
-                                        />
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col md={6}>
-                                    <div className="mb-3">
-                                        <label htmlFor="hip" className="form-label">Cadera</label>
-                                        <input
-                                            type="number"
-                                            id="hip"
-                                            name="hip"
-                                            className="form-control"
-                                            value={regularUser.hip}
-                                            onChange={handleRegularUserChange}
-                                        />
-                                    </div>
-                                </Col>
-                                <Col md={6}>
-                                    <div className="mb-3">
-                                        <label htmlFor="arm" className="form-label">Brazo</label>
-                                        <input
-                                            type="number"
-                                            id="arm"
-                                            name="arm"
-                                            className="form-control"
-                                            value={regularUser.arm}
-                                            onChange={handleRegularUserChange}
-                                        />
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col md={6}>
-                                    <div className="mb-3">
-                                        <label htmlFor="glute" className="form-label">Glúteo</label>
-                                        <input
-                                            type="number"
-                                            id="glute"
-                                            name="glute"
-                                            className="form-control"
-                                            value={regularUser.glute}
-                                            onChange={handleRegularUserChange}
-                                        />
-                                    </div>
-                                </Col>
-                                <Col md={6}>
-                                    <div className="mb-3">
-                                        <label htmlFor="upper_leg" className="form-label">Pierna Superior</label>
-                                        <input
-                                            type="number"
-                                            id="upper_leg"
-                                            name="upper_leg"
-                                            className="form-control"
-                                            value={regularUser.upper_leg}
-                                            onChange={handleRegularUserChange}
-                                        />
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col md={6}>
-                                    <div className="mb-3">
-                                        <label htmlFor="middle_leg" className="form-label">Pierna Media</label>
-                                        <input
-                                            type="number"
-                                            id="middle_leg"
-                                            name="middle_leg"
-                                            className="form-control"
-                                            value={regularUser.middle_leg}
-                                            onChange={handleRegularUserChange}
-                                        />
-                                    </div>
-                                </Col>
-                                <Col md={6}>
-                                    <div className="mb-3">
-                                        <label htmlFor="lower_leg" className="form-label">Pierna Inferior</label>
-                                        <input
-                                            type="number"
-                                            id="lower_leg"
-                                            name="lower_leg"
-                                            className="form-control"
-                                            value={regularUser.lower_leg}
-                                            onChange={handleRegularUserChange}
-                                        />
-                                    </div>
-                                </Col>
-                            </Row>
-                            <button type="submit" className="btn btn-primary">Guardar Medidas</button>
-                        </Container>
-                    </form>
-                    <div className="measurement-filters-container mt-4 p-3 rounded border">
-                        <h4>Filtros de Mediciones</h4>
-                        <Row>
-                            <Col md={6}>
-                                <Form.Group controlId="viewTypeSelect">
-                                    <Form.Label>Tipo de Vista</Form.Label>
-                                    <Form.Control as="select" value={viewType} onChange={handleViewTypeChange}>
-                                        <option value="chart">Gráfico</option>
-                                        <option value="table">Tabla</option>
-                                    </Form.Control>
-                                </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                                <Form.Group controlId="chartTypeSelect">
-                                    <Form.Label>Tipo de Gráfico</Form.Label>
-                                    <Form.Control as="select" value={chartType} onChange={handleChartTypeChange}>
-                                        <option value="line">Línea</option>
-                                        <option value="bar">Barras</option>
-                                        <option value="pie">Circular</option>
-                                    </Form.Control>
-                                </Form.Group>
-                            </Col>
-                        </Row>
+        <Container className="profile-container">
+            <div className="profile-header text-center mb-4">
+                <h1 className="profile-title">
+                    👤 Mi Perfil
+                </h1>
+                <p className="profile-subtitle">
+                    Gestiona tu información personal y sigue tu progreso
+                </p>
+            </div>
 
-                        <Row className="mt-3">
-                            <Col md={6}>
-                                <Form.Group controlId="timeRangeSelect">
-                                    <Form.Label>Rango de Tiempo</Form.Label>
-                                    <Form.Control as="select" value={timeRange} onChange={handleTimeRangeChange}>
-                                        <option value="1week">1 Semana</option>
-                                        <option value="1month">1 Mes</option>
-                                        <option value="3months">3 Meses</option>
-                                        <option value="6months">6 Meses</option>
-                                        <option value="9months">9 Meses</option>
-                                        <option value="1year">1 Año</option>
-                                        <option value="2years">2 Años</option>
-                                    </Form.Control>
-                                </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                                <Form.Group controlId="measurementSelect">
-                                    <Form.Label>Seleccionar Mediciones</Form.Label>
-                                    <div className="d-flex flex-wrap">
-                                        {[
-                                            'weight', 'height', 'neck', 'shoulder', 'chest',
-                                            'waist', 'hip', 'arm', 'glute', 'upper_leg',
-                                            'middle_leg', 'lower_leg'
-                                        ].map((measurement) => (
-                                            <Form.Check
-                                                key={measurement}
-                                                type="checkbox"
-                                                label={measurement}
-                                                value={measurement}
-                                                checked={selectedMeasurements.includes(measurement)}
-                                                onChange={handleMeasurementChange}
-                                                className="me-3 mb-2"
-                                            />
-                                        ))}
-                                    </div>
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                    </div>
-                    {viewType === 'chart' ? renderChart() : renderTable()}
-                </>
+            {error && (
+                <Alert variant="danger" dismissible onClose={() => setError('')}>
+                    {error}
+                </Alert>
             )}
-        </div>
+
+            {success && (
+                <Alert variant="success" dismissible onClose={() => setSuccess('')}>
+                    {success}
+                </Alert>
+            )}
+
+            {/* Navegación de tabs personalizada */}
+            <div className="profile-tabs mb-4">
+                <div className="nav nav-tabs">
+                    <button
+                        className={`nav-link ${activeTab === 'basic' ? 'active' : ''}`}
+                        onClick={() => handleTabChange('basic')}
+                    >
+                        👤 Básico
+                    </button>
+                    
+                    {role === 'trainer' && (
+                        <button
+                            className={`nav-link ${activeTab === 'trainer' ? 'active' : ''}`}
+                            onClick={() => handleTabChange('trainer')}
+                        >
+                            🏋️ Entrenador
+                        </button>
+                    )}
+                    
+                    {role === 'regular_user' && (
+                        <button
+                            className={`nav-link ${activeTab === 'measurements' ? 'active' : ''}`}
+                            onClick={() => handleTabChange('measurements')}
+                        >
+                            📏 Medidas
+                        </button>
+                    )}
+                    
+                    {role === 'regular_user' && (
+                        <button
+                            className={`nav-link ${activeTab === 'progress' ? 'active' : ''}`}
+                            onClick={() => handleTabChange('progress')}
+                        >
+                            📊 Progreso
+                        </button>
+                    )}
+                </div>
+            </div>
+
+            {/* Contenido de tabs */}
+            <div className="tab-content">
+                {renderTabContent(activeTab)}
+            </div>
+        </Container>
     );
 };
 

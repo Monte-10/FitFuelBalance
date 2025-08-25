@@ -25,6 +25,7 @@ urlpatterns = [
     path('profile/', views.ProfileView.as_view({'get': 'list', 'put': 'update'}), name='profile'),
     path('profile-info/', views.profile_view, name='profile_view'),
     path('measurements/history/<int:user_id>/', views.RegularUserMeasurementViewSet.as_view({'get': 'history'}), name='measurement-history'),
+    path('measurements/latest/<int:user_id>/', views.RegularUserMeasurementViewSet.as_view({'get': 'latest'}), name='measurement-latest'),
     path('regularusers/<int:pk>/details/', views.regular_user_details, name='regularuser-details'),
 ]
 
