@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Badge, Dropdown, ListGroup } from 'react-bootstrap';
 import './NotificationBadge.css';
 
@@ -7,6 +7,8 @@ const NotificationBadge = () => {
     const [unreadCount, setUnreadCount] = useState(0);
     const [loading, setLoading] = useState(false);
     const [userRole, setUserRole] = useState('');
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef(null);
 
     useEffect(() => {
         // Obtener el rol del usuario desde localStorage o context
@@ -52,6 +54,17 @@ const NotificationBadge = () => {
         }
     }, [userRole]);
 
+    // Auto-marcar como leídas después de 5 segundos de estar abierto
+    useEffect(() => {
+        let timer;
+        if (isOpen && unreadCount > 0) {
+            timer = setTimeout(() => {
+                markAllAsRead();
+            }, 5000);
+        }
+        return () => clearTimeout(timer);
+    }, [isOpen, unreadCount]);
+
     // Si es entrenador, no mostrar nada
     if (userRole === 'trainer') {
         return null;
@@ -61,7 +74,7 @@ const NotificationBadge = () => {
         try {
             setLoading(true);
             // Simular llamada a API
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 300));
             
             setNotifications(prev => 
                 prev.map(n => 
@@ -81,7 +94,7 @@ const NotificationBadge = () => {
         try {
             setLoading(true);
             // Simular llamada a API
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 300));
             
             setNotifications(prev => 
                 prev.map(n => ({ ...n, is_read: true }))
@@ -92,6 +105,24 @@ const NotificationBadge = () => {
             console.error('Error marking all notifications as read:', error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleDropdownToggle = (isOpen) => {
+        setIsOpen(isOpen);
+        // Si se abre y hay notificaciones no leídas, marcarlas como leídas después de 3 segundos
+        if (isOpen && unreadCount > 0) {
+            setTimeout(() => {
+                markAllAsRead();
+            }, 3000);
+        }
+    };
+
+    const handleNotificationHover = (notificationId) => {
+        // Marcar como leída al hacer hover si no está leída
+        const notification = notifications.find(n => n.id === notificationId);
+        if (notification && !notification.is_read) {
+            markAsRead(notificationId);
         }
     };
 
@@ -107,7 +138,12 @@ const NotificationBadge = () => {
     };
 
     return (
-        <Dropdown className="notification-dropdown" align="end">
+        <Dropdown 
+            className="notification-dropdown" 
+            align="end" 
+            onToggle={handleDropdownToggle}
+            ref={dropdownRef}
+        >
             <Dropdown.Toggle variant="link" className="notification-toggle">
                 <span className="notification-icon">🔔</span>
                 {unreadCount > 0 && (
@@ -123,14 +159,21 @@ const NotificationBadge = () => {
 
             <Dropdown.Menu className="notification-menu">
                 <div className="notification-header">
-                    <h6 className="mb-0">Notificaciones</h6>
+                    <h6 className="mb-0">
+                        🔔 Notificaciones
+                        {unreadCount > 0 && (
+                            <span className="unread-indicator">
+                                ({unreadCount} nueva{unreadCount > 1 ? 's' : ''})
+                            </span>
+                        )}
+                    </h6>
                     {unreadCount > 0 && (
                         <button
-                            className="btn btn-link btn-sm text-decoration-none"
+                            className="btn btn-link btn-sm text-decoration-none mark-all-read-btn"
                             onClick={markAllAsRead}
                             disabled={loading}
                         >
-                            Marcar todas como leídas
+                            {loading ? '⏳' : '✓ Marcar todas'}
                         </button>
                     )}
                 </div>
@@ -146,9 +189,13 @@ const NotificationBadge = () => {
                                 <ListGroup.Item 
                                     key={notification.id}
                                     className={`notification-item ${!notification.is_read ? 'unread' : ''}`}
+                                    onMouseEnter={() => handleNotificationHover(notification.id)}
                                 >
                                     <div className="notification-content">
                                         <div className="notification-title">
+                                            {!notification.is_read && (
+                                                <span className="unread-dot">●</span>
+                                            )}
                                             {notification.title}
                                         </div>
                                         <div className="notification-message">
@@ -166,7 +213,7 @@ const NotificationBadge = () => {
                                             disabled={loading}
                                             title="Marcar como leída"
                                         >
-                                            ✓
+                                            {loading ? '⏳' : '✓'}
                                         </button>
                                     )}
                                 </ListGroup.Item>

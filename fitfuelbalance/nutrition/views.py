@@ -20,6 +20,13 @@ from rest_framework.decorators import api_view, permission_classes
 from user.models import *
 from .pagination import StandardResultsSetPagination
 from rest_framework import permissions
+from django.utils.dateparse import parse_date
+from django.db import transaction
+from decimal import Decimal, ROUND_HALF_UP
+import logging
+
+# Configura el logger
+logger = logging.getLogger(__name__)
 
 def create_food(request):
     if request.method == 'POST':
@@ -396,9 +403,6 @@ def assigned_options(request):
     serializer = AssignedOptionSerializer(assigned_options, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-from decimal import Decimal, ROUND_HALF_UP
-from django.db import transaction
-
 import logging
 
 # Configura el logger
@@ -735,6 +739,230 @@ class ComparativePlanTableViewSet(viewsets.ModelViewSet):
         if user.is_trainer() or user.is_superuser:
             return qs
         return qs.filter(user=user)
+
+    @action(detail=True, methods=['get'], url_path='export-pdf')
+    def export_pdf(self, request, pk=None):
+        """Exporta el plan de comida a PDF"""
+        try:
+            # Verificar permisos
+            table = self.get_object()
+            user = request.user
+            
+            # Solo el entrenador que creó el plan o el cliente asignado pueden exportar
+            if not (user.is_trainer() or user.is_superuser or 
+                   (hasattr(user, 'regularuser') and user.regularuser == table.user)):
+                return Response({'error': 'No tienes permisos para exportar este plan'}, status=403)
+            
+            # Importar aquí para evitar problemas de importación
+            try:
+                from reportlab.lib.pagesizes import A4, landscape
+                from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+                from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+                from reportlab.lib.units import inch
+                from reportlab.lib import colors
+                from reportlab.lib.enums import TA_CENTER
+                from io import BytesIO
+            except ImportError as e:
+                return Response({'error': f'Error de importación: {str(e)}'}, status=500)
+            
+            # Generar PDF directamente aquí
+            try:
+                # Obtener datos del plan
+                plans = ComparativePlan.objects.filter(table=table).order_by('order')
+                
+                # Crear buffer para el PDF
+                buffer = BytesIO()
+                
+                # Crear documento en orientación horizontal
+                doc = SimpleDocTemplate(buffer, pagesize=landscape(A4))
+                story = []
+                
+                # Estilos
+                styles = getSampleStyleSheet()
+                title_style = ParagraphStyle(
+                    'CustomTitle',
+                    parent=styles['Heading1'],
+                    fontSize=18,
+                    spaceAfter=20,
+                    alignment=TA_CENTER,
+                    textColor=colors.darkgreen
+                )
+                
+                subtitle_style = ParagraphStyle(
+                    'CustomSubtitle',
+                    parent=styles['Heading2'],
+                    fontSize=14,
+                    spaceAfter=15,
+                    alignment=TA_CENTER,
+                    textColor=colors.darkblue
+                )
+                
+                # Título principal
+                title = Paragraph(f"Plan de Comida: {table.name}", title_style)
+                story.append(title)
+                
+                # Información del usuario
+                if table.user:
+                    # Corregir el acceso al username
+                    try:
+                        if hasattr(table.user, 'user'):
+                            username = table.user.user.username
+                        else:
+                            username = str(table.user)
+                    except:
+                        username = str(table.user)
+                    
+                    user_info = Paragraph(f"Cliente: {username}", subtitle_style)
+                    story.append(user_info)
+                
+                # Fecha de creación
+                creation_date = Paragraph(f"Fecha de creación: {table.created_at.strftime('%d/%m/%Y')}", subtitle_style)
+                story.append(creation_date)
+                
+                story.append(Spacer(1, 20))
+                
+                # Crear tabla de comidas
+                # Obtener solo las comidas únicas por número (1-5) para evitar duplicaciones
+                meal_numbers = [1, 2, 3, 4, 5]  # Desayuno, Media Mañana, Comida, Merienda, Cena
+                
+                # Encabezados
+                headers = ['Comida']
+                for plan in plans:
+                    headers.append(f'{plan.name}')
+                
+                # Datos
+                table_data = [headers]
+                
+                # Nombres de las comidas
+                meal_names = ['Desayuno', 'Media Mañana', 'Comida', 'Merienda', 'Cena']
+                
+                for meal_idx, meal_number in enumerate(meal_numbers):
+                    row = [meal_names[meal_idx]]
+                    
+                    for plan in plans:
+                        try:
+                            plan_meal = ComparativeMeal.objects.get(plan=plan, meal_number=meal_number)
+                            ingredients = ComparativeMealIngredient.objects.filter(meal=plan_meal)
+                            
+                            if ingredients.exists():
+                                ingredient_text = []
+                                for ing in ingredients:
+                                    ingredient_text.append(f"• {ing.ingredient.name} ({ing.quantity} {ing.unit})")
+                                
+                                row.append('\n'.join(ingredient_text))
+                            else:
+                                row.append('Sin ingredientes')
+                                
+                        except ComparativeMeal.DoesNotExist:
+                            row.append('No disponible')
+                    
+                    table_data.append(row)
+                
+                # Crear tabla
+                meals_table = Table(table_data, colWidths=[1.5*inch] + [2.5*inch] * len(plans))
+                
+                # Estilo de la tabla
+                style = TableStyle([
+                    ('BACKGROUND', (0, 0), (-1, 0), colors.darkgreen),
+                    ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                    ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                    ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                    ('FONTSIZE', (0, 0), (-1, 0), 12),
+                    ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                    ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                    ('GRID', (0, 0), (-1, -1), 1, colors.black),
+                    ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+                    ('FONTSIZE', (0, 1), (-1, -1), 9),
+                    ('LEFTPADDING', (0, 0), (-1, -1), 6),
+                    ('RIGHTPADDING', (0, 0), (-1, -1), 6),
+                    ('TOPPADDING', (0, 0), (-1, -1), 6),
+                    ('BOTTOMPADDING', (0, 1), (-1, -1), 6),
+                ])
+                
+                meals_table.setStyle(style)
+                story.append(meals_table)
+                
+                story.append(Spacer(1, 20))
+                
+                # Crear tabla de macros
+                headers_macros = ['Plan', 'Calorías', 'Proteínas (g)', 'Grasas (g)', 'Carbohidratos (g)']
+                table_data_macros = [headers_macros]
+                
+                for plan in plans:
+                    total_calories = 0
+                    total_protein = 0
+                    total_fat = 0
+                    total_carbs = 0
+                    
+                    meals = ComparativeMeal.objects.filter(plan=plan)
+                    for meal in meals:
+                        ingredients = ComparativeMealIngredient.objects.filter(meal=meal)
+                        for ingredient in ingredients:
+                            # Acceder a los valores nutricionales a través de la relación con Ingredient
+                            if hasattr(ingredient, 'ingredient') and ingredient.ingredient:
+                                # Calcular factor basado en la cantidad
+                                factor = float(ingredient.quantity) / 100.0
+                                
+                                if ingredient.ingredient.calories:
+                                    total_calories += ingredient.ingredient.calories * factor
+                                if ingredient.ingredient.protein:
+                                    total_protein += ingredient.ingredient.protein * factor
+                                if ingredient.ingredient.fat:
+                                    total_fat += ingredient.ingredient.fat * factor
+                                if ingredient.ingredient.carbohydrates:
+                                    total_carbs += ingredient.ingredient.carbohydrates * factor
+                    
+                    row = [
+                        plan.name,
+                        f"{total_calories:.1f}",
+                        f"{total_protein:.1f}",
+                        f"{total_fat:.1f}",
+                        f"{total_carbs:.1f}"
+                    ]
+                    table_data_macros.append(row)
+                
+                # Crear tabla de macros
+                macros_table = Table(table_data_macros, colWidths=[1.5*inch, 1.2*inch, 1.2*inch, 1.2*inch, 1.2*inch])
+                
+                # Estilo de la tabla de macros
+                style_macros = TableStyle([
+                    ('BACKGROUND', (0, 0), (-1, 0), colors.darkblue),
+                    ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                    ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                    ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                    ('FONTSIZE', (0, 0), (-1, 0), 11),
+                    ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                    ('BACKGROUND', (0, 1), (-1, -1), colors.lightblue),
+                    ('GRID', (0, 0), (-1, -1), 1, colors.black),
+                    ('FONTSIZE', (0, 1), (-1, -1), 10),
+                    ('LEFTPADDING', (0, 0), (-1, -1), 6),
+                    ('RIGHTPADDING', (0, 0), (-1, -1), 6),
+                    ('TOPPADDING', (0, 0), (-1, -1), 6),
+                    ('BOTTOMPADDING', (0, 1), (-1, -1), 6),
+                ])
+                
+                macros_table.setStyle(style_macros)
+                story.append(macros_table)
+                
+                # Construir PDF
+                doc.build(story)
+                
+                # Obtener valor del buffer
+                pdf_content = buffer.getvalue()
+                buffer.close()
+                
+                # Crear respuesta HTTP con el PDF
+                response = HttpResponse(pdf_content, content_type='application/pdf')
+                response['Content-Disposition'] = f'attachment; filename="plan_comida_{table.name}_{table.created_at.strftime("%Y%m%d")}.pdf"'
+                return response
+                
+            except Exception as e:
+                print(f"Error generando PDF: {e}")
+                return Response({'error': f'Error generando el PDF: {str(e)}'}, status=500)
+                
+        except Exception as e:
+            print(f"Error en export_pdf: {e}")
+            return Response({'error': f'Error exportando el plan: {str(e)}'}, status=500)
 
 class ComparativePlanViewSet(viewsets.ModelViewSet):
     queryset = ComparativePlan.objects.all()

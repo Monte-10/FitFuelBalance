@@ -210,52 +210,102 @@ const CreatePlan = ({ isEditMode = false }) => {
           </div>
         </>
       ) : (
-      <h2>{isEditMode ? 'Edit Plan' : 'Create Plan'}</h2>
+        <div className="create-plan-header">
+          <h2 className="create-plan-title">
+            {isEditMode ? '✏️ Editar Plan' : '📋 Crear Nuevo Plan'}
+          </h2>
+          <p className="create-plan-subtitle">
+            {isEditMode ? 'Modifica los detalles del plan existente' : 'Crea un nuevo plan de nutrición personalizado'}
+          </p>
+        </div>
       )}
+      
       <ToastContainer />
 
       {!planCreated ? (
-        <>
-          <div className="form-group mb-3">
-            <label htmlFor="planName">Plan Name:</label>
-            <input
-              type="text"
-              className="form-control"
-              id="planName"
-              value={planName}
-              onChange={(e) => setPlanName(e.target.value)}
-              required
-            />
+        <div className="create-plan-form">
+          <div className="form-section">
+            <h3 className="form-section-title">📝 Información Básica</h3>
+            
+            <div className="form-group">
+              <label htmlFor="planName" className="form-label">
+                <span className="label-icon">🏷️</span>
+                Nombre del Plan
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="planName"
+                value={planName}
+                onChange={(e) => setPlanName(e.target.value)}
+                placeholder="Ej: Plan de Verano, Dieta de Mantenimiento..."
+                required
+              />
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor="startDate" className="form-label">
+                  <span className="label-icon">📅</span>
+                  Fecha de Inicio
+                </label>
+                <input
+                  type="date"
+                  className="form-control"
+                  id="startDate"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="endDate" className="form-label">
+                  <span className="label-icon">📅</span>
+                  Fecha de Fin
+                </label>
+                <input
+                  type="date"
+                  className="form-control"
+                  id="endDate"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="userSelect" className="form-label">
+                <span className="label-icon">👤</span>
+                Usuario Asignado
+              </label>
+              <select
+                id="userSelect"
+                className="form-control"
+                value={selectedUser}
+                onChange={(e) => setSelectedUser(e.target.value)}
+                required
+              >
+                <option value="">Selecciona un usuario para asignar este plan</option>
+                {users.map((user) => (
+                  <option key={user.id} value={user.id}>
+                    👤 {user.username}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
-          <div className="form-group mb-3">
-            <label htmlFor="startDate">Start Date:</label>
-            <input
-              type="date"
-              className="form-control"
-              id="startDate"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              required
-            />
+          <div className="form-actions">
+            <button onClick={handleSubmit} className="btn btn-primary btn-create-plan">
+              <span className="btn-icon">
+                {isEditMode ? '💾' : '🚀'}
+              </span>
+              {isEditMode ? 'Actualizar Plan' : 'Crear Plan'}
+            </button>
           </div>
-
-          <div className="form-group mb-3">
-            <label htmlFor="endDate">End Date:</label>
-            <input
-              type="date"
-              className="form-control"
-              id="endDate"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              required
-            />
-          </div>
-
-          <button onClick={handleSubmit} className="btn btn-primary">
-            {isEditMode ? 'Update Plan' : 'Create Plan'}
-          </button>
-        </>
+        </div>
       ) : (
         <>
           {/* Ahora que tenemos un plan con ID, y existingIngredients (si en edit), 

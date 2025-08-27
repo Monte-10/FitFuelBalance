@@ -1,124 +1,187 @@
-.meal-table-container {
+.create-plan-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header del formulario */
+.create-plan-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 30px;
+  background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(32, 201, 151, 0.1) 100%);
+  border-radius: 20px;
+  border: 2px solid rgba(40, 167, 69, 0.2);
+}
+
+.create-plan-title {
+  color: #28a745;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.create-plan-subtitle {
+  color: #6c757d;
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Formulario principal */
+.create-plan-form {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.form-section {
+  margin-bottom: 40px;
+}
+
+.form-section-title {
+  color: #28a745;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 25px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid rgba(40, 167, 69, 0.3);
+}
+
+/* Grupos de formulario */
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-label {
+  display: block;
+  color: #495057;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.label-icon {
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+/* Campos de formulario */
+.form-control {
+  width: 100%;
+  padding: 15px 18px;
+  font-size: 1rem;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  background-color: #fff;
+  color: #495057;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #28a745;
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+  transform: translateY(-1px);
+}
+
+.form-control::placeholder {
+  color: #adb5bd;
+  opacity: 0.8;
+}
+
+/* Select personalizado */
+.form-control select {
+  cursor: pointer;
+}
+
+/* Botón de acción */
+.form-actions {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 2px solid rgba(40, 167, 69, 0.1);
+}
+
+.btn-create-plan {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  border: none;
+  color: white;
+  padding: 16px 40px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+  min-width: 200px;
+}
+
+.btn-create-plan:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+  background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
+}
+
+.btn-icon {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .create-plan-container {
+    padding: 15px;
+  }
+  
+  .create-plan-header {
+    padding: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .create-plan-title {
+    font-size: 2rem;
+  }
+  
+  .create-plan-form {
+    padding: 25px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .btn-create-plan {
+    padding: 14px 30px;
+    font-size: 1rem;
+    min-width: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .create-plan-title {
+    font-size: 1.8rem;
+  }
+  
+  .create-plan-form {
     padding: 20px;
   }
   
-  .ingredient-list {
-    list-style: none;
-    padding: 0;
+  .form-control {
+    padding: 12px 15px;
+    font-size: 0.95rem;
   }
-  
-  .ingredient-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 0;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .ingredient-item button {
-    margin-left: 10px;
-  }
-  
-  .table th, .table td {
-    text-align: center;
-    vertical-align: middle;
-  }
-  
-  .btn-block {
-    width: 100%;
-  }
-  
-  .edit-plan-header-box {
-    background: rgba(30, 30, 30, 0.85);
-    border-radius: 18px;
-    box-shadow: 0 6px 24px rgba(0,0,0,0.18);
-    padding: 32px 24px 18px 24px;
-    margin: 0 auto 32px auto;
-    max-width: 500px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-  }
-  
-  .edit-plan-header-box::before {
-    content: '';
-    position: absolute;
-    left: 30px;
-    top: 18px;
-    width: 32px;
-    height: 32px;
-    background: linear-gradient(135deg, #27ae60 60%, #219150 100%);
-    border-radius: 50%;
-    opacity: 0.18;
-  }
-  
-  .edit-plan-header-box::after {
-    content: '';
-    position: absolute;
-    right: 30px;
-    bottom: 18px;
-    width: 24px;
-    height: 24px;
-    background: linear-gradient(135deg, #27ae60 60%, #219150 100%);
-    border-radius: 50%;
-    opacity: 0.13;
-  }
-  
-  .edit-plan-title {
-    color: #fff;
-    text-shadow: 2px 2px 8px #000;
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-top: 0;
-    margin-bottom: 8px;
-    text-align: center;
-    z-index: 1;
-  }
-  
-  .edit-plan-name {
-    color: #27ae60;
-    font-size: 1.6rem;
-    font-weight: 600;
-    text-align: center;
-    margin-bottom: 0;
-    letter-spacing: 1px;
-    z-index: 1;
-  }
-  
-  .assign-user-box {
-    background: rgba(35, 39, 43, 0.97);
-    border-radius: 14px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-    padding: 18px 24px 12px 24px;
-    margin: 0 auto 32px auto;
-    max-width: 420px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .assign-user-label {
-    color: #fff;
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-bottom: 8px;
-    letter-spacing: 0.5px;
-  }
-  
-  .assign-user-select {
-    background: #181a1b;
-    color: #fff;
-    border: 1.5px solid #27ae60;
-    border-radius: 8px;
-    padding: 10px 16px;
-    font-size: 1.1rem;
-    width: 100%;
-    margin-bottom: 0;
-    transition: border 0.2s;
-  }
-  .assign-user-select:focus {
-    border: 1.5px solid #219150;
-    outline: none;
-  }
+}
   

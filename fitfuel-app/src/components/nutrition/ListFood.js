@@ -60,48 +60,53 @@ function ListFood() {
         <div className="container-listfood">
             <h1 className="mb-4">Lista de Alimentos</h1>
 
-            <table className="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Calorías</th>
-                        <th>Proteínas</th>
-                        <th>Carbohidratos</th>
-                        <th>Grasas</th>
-                        <th>Azúcar</th>
-                        <th>Fibra</th>
-                        <th>Grasas Saturadas</th>
-                        <th>Editar</th>
-                        <th>Eliminar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {Array.isArray(foods) && foods.length > 0 ? (
-                        foods.map((food) => (
-                            <tr key={food.id} onClick={() => navigate(`/nutrition/foods/${food.id}`)} style={{ cursor: 'pointer' }}>
-                                <td>{food.name}</td>
-                                <td>{food.calories.toFixed(2)}</td>
-                                <td>{food.protein.toFixed(2)}</td>
-                                <td>{food.carbohydrates.toFixed(2)}</td>
-                                <td>{food.fat.toFixed(2)}</td>
-                                <td>{food.sugar.toFixed(2)}</td>
-                                <td>{food.fiber.toFixed(2)}</td>
-                                <td>{food.saturated_fat.toFixed(2)}</td>
-                                <td>
-                                    <Link to={`/nutrition/edit-food/${food.id}`} className="btn btn-primary me-2" onClick={(e) => e.stopPropagation()}>Editar</Link>
-                                </td>
-                                <td>
-                                    <button onClick={(e) => { e.stopPropagation(); handleDeleteFood(food.id); }} className="btn btn-danger">Eliminar</button>
-                                </td>
-                            </tr>
-                        ))
-                    ) : (
+            <div className="table-responsive">
+                <table className="table table-striped table-hover">
+                    <thead>
                         <tr>
-                            <td colSpan="10" className="text-center">No se encontraron alimentos que coincidan con los filtros seleccionados.</td>
+                            <th>Nombre</th>
+                            <th>Calorías</th>
+                            <th>Proteínas</th>
+                            <th>Carbohidratos</th>
+                            <th>Grasas</th>
+                            <th>Azúcar</th>
+                            <th>Fibra</th>
+                            <th>Grasas Saturadas</th>
+                            <th>Acciones</th>
                         </tr>
-                    )}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {Array.isArray(foods) && foods.length > 0 ? (
+                            foods.map((food) => (
+                                <tr key={food.id} onClick={() => navigate(`/nutrition/foods/${food.id}`)} style={{ cursor: 'pointer' }}>
+                                    <td className="food-name">{food.name}</td>
+                                    <td>{food.calories?.toFixed(2) || '0.00'}</td>
+                                    <td>{food.protein?.toFixed(2) || '0.00'}</td>
+                                    <td>{food.carbohydrates?.toFixed(2) || '0.00'}</td>
+                                    <td>{food.fat?.toFixed(2) || '0.00'}</td>
+                                    <td>{food.sugar?.toFixed(2) || '0.00'}</td>
+                                    <td>{food.fiber?.toFixed(2) || '0.00'}</td>
+                                    <td>{food.saturated_fat?.toFixed(2) || '0.00'}</td>
+                                    <td className="actions-column">
+                                        <div className="action-buttons">
+                                            <Link to={`/nutrition/edit-food/${food.id}`} className="btn btn-primary btn-sm me-2" onClick={(e) => e.stopPropagation()}>
+                                                ✏️
+                                            </Link>
+                                            <button onClick={(e) => { e.stopPropagation(); handleDeleteFood(food.id); }} className="btn btn-danger btn-sm">
+                                                🗑️
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="9" className="text-center">No se encontraron alimentos que coincidan con los filtros seleccionados.</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
 
             <div className="pagination-listfood">
                 <button

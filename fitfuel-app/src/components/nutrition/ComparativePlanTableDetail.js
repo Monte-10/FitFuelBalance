@@ -39,6 +39,7 @@ function ComparativePlanTableDetail() {
         });
         setRole(res.data?.role || null);
         setIsSuperuser(!!res.data?.is_superuser);
+        
       } catch (_) {}
     };
     fetchProfile();
@@ -56,6 +57,28 @@ function ComparativePlanTableDetail() {
       setError('Error al eliminar la tabla');
     }
     setDeleting(false);
+  };
+
+  const handleExportPDF = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/nutrition/comparative-tables/${id}/export-pdf/`, {
+        headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` },
+        responseType: 'blob'
+      });
+      
+      // Crear URL del blob y descargar
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `plan_comida_${table.name}_${new Date().toISOString().split('T')[0]}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Error exportando PDF:', err);
+      setError('Error al exportar el PDF');
+    }
   };
 
   // Calcula resumen de macros por plan
@@ -94,6 +117,39 @@ function ComparativePlanTableDetail() {
         marginBottom: 32
       }}>
         <h2 style={{ color: '#fff', fontWeight: 700, fontSize: '2.5rem', textAlign: 'center', textShadow: '0 2px 8px #000' }}>{table.name}</h2>
+        
+        {/* Botón de Exportar PDF - Visible para TODOS */}
+        <div style={{ textAlign: 'center', margin: '20px 0' }}>
+          <button 
+            onClick={handleExportPDF}
+            style={{
+              background: 'linear-gradient(135deg, #28a745 0%, #20c997 100%)',
+              color: 'white',
+              border: 'none',
+              padding: '12px 24px',
+              borderRadius: '25px',
+              fontSize: '1.1rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              boxShadow: '0 4px 15px rgba(40, 167, 69, 0.3)',
+              transition: 'all 0.3s ease',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.transform = 'translateY(-2px)';
+              e.target.style.boxShadow = '0 6px 20px rgba(40, 167, 69, 0.4)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = 'translateY(0)';
+              e.target.style.boxShadow = '0 4px 15px rgba(40, 167, 69, 0.3)';
+            }}
+          >
+            📄 Exportar a PDF
+          </button>
+        </div>
+        
         <div style={{ color: '#e0e0e0', fontSize: '1.1rem', margin: '16px 0 8px 0', textAlign: 'left' }}>
           <b>Usuario asignado:</b> {table.user_username || table.user || '-'}<br />
           <b>Fecha de creación:</b> {table.created_at ? new Date(table.created_at).toLocaleDateString() : '-'}

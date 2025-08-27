@@ -1,4 +1,4 @@
-/* NotificationBadge.css - Colores verdes consistentes */
+/* NotificationBadge.css - Colores verdes consistentes y mejor visibilidad */
 
 .notification-dropdown {
     position: relative;
@@ -36,17 +36,21 @@
     align-items: center;
     justify-content: center;
     animation: pulse 2s infinite;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.4);
 }
 
 @keyframes pulse {
     0% {
         transform: scale(1);
+        box-shadow: 0 2px 8px rgba(220, 53, 69, 0.4);
     }
     50% {
         transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.6);
     }
     100% {
         transform: scale(1);
+        box-shadow: 0 2px 8px rgba(220, 53, 69, 0.4);
     }
 }
 
@@ -79,6 +83,19 @@
     color: #ecf0f1;
     margin: 0;
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.unread-indicator {
+    color: #28a745;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: rgba(40, 167, 69, 0.2);
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(40, 167, 69, 0.3);
 }
 
 .notification-header .btn-link {
@@ -91,6 +108,18 @@
     color: #20c997;
     background: rgba(40, 167, 69, 0.1);
     border-radius: 5px;
+}
+
+.mark-all-read-btn {
+    color: #28a745 !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.mark-all-read-btn:hover {
+    color: #20c997 !important;
+    background: rgba(40, 167, 69, 0.15) !important;
+    transform: translateY(-1px);
 }
 
 .notification-list {
@@ -125,6 +154,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+    position: relative;
 }
 
 .notification-item:last-child {
@@ -133,15 +163,34 @@
 
 .notification-item:hover {
     background: rgba(255, 255, 255, 0.05);
+    transform: translateX(2px);
 }
 
 .notification-item.unread {
-    background: rgba(40, 167, 69, 0.1);
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.15) 0%, rgba(40, 167, 69, 0.05) 100%);
     border-left: 4px solid #28a745;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
 }
 
 .notification-item.unread:hover {
-    background: rgba(40, 167, 69, 0.15);
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.2) 0%, rgba(40, 167, 69, 0.1) 100%);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.notification-item.unread::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(40, 167, 69, 0.05) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.notification-item.unread:hover::before {
+    opacity: 1;
 }
 
 .notification-content {
@@ -154,6 +203,21 @@
     font-weight: 600;
     font-size: 0.95rem;
     margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.unread-dot {
+    color: #28a745;
+    font-size: 1.2rem;
+    animation: blink 2s infinite;
+    text-shadow: 0 0 8px rgba(40, 167, 69, 0.6);
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.5; }
 }
 
 .notification-message {
@@ -176,16 +240,26 @@
     background: none;
     border: none;
     transition: all 0.3s ease;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .mark-read-btn:hover {
     color: #20c997;
+    background: rgba(40, 167, 69, 0.1);
     transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
 }
 
 .mark-read-btn:disabled {
     color: #7f8c8d;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 .no-notifications {
@@ -254,4 +328,26 @@
         opacity: 1;
         transform: translateX(0);
     }
+}
+
+/* Efectos especiales para notificaciones no leídas */
+.notification-item.unread .notification-title {
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.notification-item.unread .notification-message {
+    color: #d5dbdb;
+}
+
+/* Indicador de estado de carga */
+.notification-item.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* Transición suave al marcar como leída */
+.notification-item.reading {
+    background: rgba(40, 167, 69, 0.2);
+    transform: scale(0.98);
 }

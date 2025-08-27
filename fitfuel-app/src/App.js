@@ -135,7 +135,7 @@ function App() {
       <div className="App">
         <Navbar bg="dark" variant="dark" expand={false} className="custom-navbar">
           <Container fluid>
-            {profile?.role === "trainer" && (
+            {authToken && profile?.role === "trainer" && (
               <Navbar.Toggle aria-controls="offcanvasNavbar" />
             )}
             <Navbar.Brand as={NavLink} to="/" className="navbar-title mx-auto">
@@ -145,10 +145,10 @@ function App() {
             {authToken ? (
               <>
                 <Dropdown className="ms-auto">
-                  <Dropdown.Toggle variant="secondary" id="dropdown-user">
+                  <Dropdown.Toggle variant="secondary" id="dropdown-user" className="auth-button">
                     {profile?.username || "Usuario"}
                   </Dropdown.Toggle>
-                  <Dropdown.Menu>
+                  <Dropdown.Menu className="custom-dropdown-menu">
                     <Dropdown.Item as={NavLink} to="/profile">
                       Ver Perfil
                     </Dropdown.Item>
@@ -179,26 +179,126 @@ function App() {
                 <NotificationBadge />
               </>
             ) : (
-              <Nav className="flex-column mb-3 ms-auto">
-                <Nav.Item>
-                  <Nav.Link as={NavLink} to="/login">
-                    Iniciar Sesión
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link as={NavLink} to="/signup/regularuser">
-                    Registrarse como Usuario
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link as={NavLink} to="/signup/trainer">
-                    Registrarse como Entrenador
-                  </Nav.Link>
-                </Nav.Item>
-              </Nav>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                marginLeft: 'auto'
+              }}>
+                {/* Botón Iniciar Sesión */}
+                <button 
+                  onClick={() => window.location.href = '/login'}
+                  style={{
+                    height: '44px',
+                    width: '140px',
+                    borderRadius: '25px',
+                    border: '2px solid #28a745',
+                    backgroundColor: 'transparent',
+                    color: '#28a745',
+                    fontSize: '1rem',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.backgroundColor = '#28a745';
+                    e.target.style.color = 'white';
+                    e.target.style.transform = 'translateY(-2px)';
+                    e.target.style.boxShadow = '0 4px 15px rgba(40, 167, 69, 0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.backgroundColor = 'transparent';
+                    e.target.style.color = '#28a745';
+                    e.target.style.transform = 'translateY(0)';
+                    e.target.style.boxShadow = 'none';
+                  }}
+                >
+                  Iniciar Sesión
+                </button>
+
+                {/* Botón Registrarse */}
+                <Dropdown>
+                  <Dropdown.Toggle 
+                    style={{
+                      height: '44px',
+                      width: '140px',
+                      borderRadius: '25px',
+                      border: 'none',
+                      backgroundColor: '#28a745',
+                      color: 'white',
+                      fontSize: '1rem',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = '#20c997';
+                      e.target.style.transform = 'translateY(-2px)';
+                      e.target.style.boxShadow = '0 6px 20px rgba(40, 167, 69, 0.4)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = '#28a745';
+                      e.target.style.transform = 'translateY(0)';
+                      e.target.style.boxShadow = 'none';
+                    }}
+                  >
+                    Registrarse
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu 
+                    style={{
+                      background: '#2c3e50',
+                      border: '1px solid #34495e',
+                      borderRadius: '15px',
+                      marginTop: '8px',
+                      boxShadow: '0 8px 25px rgba(0,0,0,0.3)',
+                      minWidth: '200px'
+                    }}
+                  >
+                    <Dropdown.Item 
+                      as={NavLink} 
+                      to="/signup/regularuser"
+                      style={{
+                        color: '#ecf0f1',
+                        padding: '12px 20px',
+                        transition: 'all 0.2s ease',
+                        borderBottom: '1px solid #34495e'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.background = '#34495e';
+                        e.target.style.color = '#2ecc71';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.background = '#2c3e50';
+                        e.target.style.color = '#ecf0f1';
+                      }}
+                    >
+                      👤 Como Usuario
+                    </Dropdown.Item>
+                    <Dropdown.Item 
+                      as={NavLink} 
+                      to="/signup/trainer"
+                      style={{
+                        color: '#ecf0f1',
+                        padding: '12px 20px',
+                        transition: 'all 0.2s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.background = '#34495e';
+                        e.target.style.color = '#2ecc71';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.background = '#2c3e50';
+                        e.target.style.color = '#ecf0f1';
+                      }}
+                    >
+                      💪 Como Entrenador
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </div>
             )}
 
-            {profile?.role === "trainer" && (
+            {authToken && profile?.role === "trainer" && (
               <Navbar.Offcanvas id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" placement="start">
                 <Offcanvas.Header closeButton>
                   <Offcanvas.Title id="offcanvasNavbarLabel">Menú</Offcanvas.Title>

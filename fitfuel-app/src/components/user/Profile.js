@@ -446,41 +446,41 @@ const Profile = () => {
 
     // Fetch del perfil
     const fetchProfile = useCallback(async () => {
-        try {
+            try {
             setLoading(true);
-            const response = await axios.get(`${apiUrl}/user/profile/`, {
-                headers: {
-                    'Authorization': `Token ${localStorage.getItem('authToken')}`
-                }
-            });
+                const response = await axios.get(`${apiUrl}/user/profile/`, {
+                    headers: {
+                        'Authorization': `Token ${localStorage.getItem('authToken')}`
+                    }
+                });
             
             const { profile: profileData = {}, trainer = {}, regular_user = {}, role: userRole, id: userId } = response.data;
 
-            setProfile({
-                bio: profileData.bio || '',
-                age: profileData.age || '',
-                gender: profileData.gender || 'male',
-                image: profileData.image || null,
-                specialties: trainer.specialties || [],
-                trainer_type: trainer.trainer_type || 'trainer',
-                communication_email: trainer.communication_email || regular_user.communication_email || '',
-                phone: trainer.phone || regular_user.phone || ''
-            });
+                setProfile({
+                    bio: profileData.bio || '',
+                    age: profileData.age || '',
+                    gender: profileData.gender || 'male',
+                    image: profileData.image || null,
+                    specialties: trainer.specialties || [],
+                    trainer_type: trainer.trainer_type || 'trainer',
+                    communication_email: trainer.communication_email || regular_user.communication_email || '',
+                    phone: trainer.phone || regular_user.phone || ''
+                });
 
-            setRegularUser({
-                weight: regular_user.weight || '',
-                height: regular_user.height || '',
-                neck: regular_user.neck || '',
-                shoulder: regular_user.shoulder || '',
-                chest: regular_user.chest || '',
-                waist: regular_user.waist || '',
-                hip: regular_user.hip || '',
-                arm: regular_user.arm || '',
-                glute: regular_user.glute || '',
-                upper_leg: regular_user.upper_leg || '',
-                middle_leg: regular_user.middle_leg || '',
-                lower_leg: regular_user.lower_leg || ''
-            });
+                setRegularUser({
+                    weight: regular_user.weight || '',
+                    height: regular_user.height || '',
+                    neck: regular_user.neck || '',
+                    shoulder: regular_user.shoulder || '',
+                    chest: regular_user.chest || '',
+                    waist: regular_user.waist || '',
+                    hip: regular_user.hip || '',
+                    arm: regular_user.arm || '',
+                    glute: regular_user.glute || '',
+                    upper_leg: regular_user.upper_leg || '',
+                    middle_leg: regular_user.middle_leg || '',
+                    lower_leg: regular_user.lower_leg || ''
+                });
 
             setRole(userRole);
 
@@ -529,28 +529,28 @@ const Profile = () => {
                     console.log('No hay historial de medidas disponible');
                     setMeasurements([]);
                 }
-            }
+                }
 
-        } catch (error) {
-            setError("Error al cargar el perfil");
-            console.error("Error al cargar el perfil:", error.response?.data || error.message);
+            } catch (error) {
+                setError("Error al cargar el perfil");
+                console.error("Error al cargar el perfil:", error.response?.data || error.message);
         } finally {
             setLoading(false);
-        }
+            }
     }, [apiUrl]);
 
     // Fetch de especialidades
     const fetchSpecialties = useCallback(async () => {
-        try {
-            const response = await axios.get(`${apiUrl}/user/specialties/`, {
-                headers: {
-                    'Authorization': `Token ${localStorage.getItem('authToken')}`
-                }
-            });
+            try {
+                const response = await axios.get(`${apiUrl}/user/specialties/`, {
+                    headers: {
+                        'Authorization': `Token ${localStorage.getItem('authToken')}`
+                    }
+                });
             setSpecialties(response.data.results || response.data);
-        } catch (error) {
-            console.error("Error al cargar especialidades:", error.response?.data || error.message);
-        }
+            } catch (error) {
+                console.error("Error al cargar especialidades:", error.response?.data || error.message);
+            }
     }, [apiUrl]);
 
     useEffect(() => {
@@ -577,12 +577,12 @@ const Profile = () => {
     const handleSubmitProfile = useCallback(async (e) => {
         e.preventDefault();
         try {
-            const formData = new FormData();
-            formData.append('bio', profile.bio);
-            formData.append('age', profile.age);
-            formData.append('gender', profile.gender);
-            formData.append('communication_email', profile.communication_email);
-            formData.append('phone', profile.phone);
+        const formData = new FormData();
+        formData.append('bio', profile.bio);
+        formData.append('age', profile.age);
+        formData.append('gender', profile.gender);
+        formData.append('communication_email', profile.communication_email);
+        formData.append('phone', profile.phone);
 
             const response = await axios.put(`${apiUrl}/user/profile/`, formData, {
                 headers: {
@@ -769,7 +769,7 @@ const Profile = () => {
                 <p className="profile-subtitle">
                     Gestiona tu información personal y sigue tu progreso
                 </p>
-            </div>
+                </div>
 
             {error && (
                 <Alert variant="danger" dismissible onClose={() => setError('')}>
@@ -793,7 +793,7 @@ const Profile = () => {
                         👤 Básico
                     </button>
                     
-                    {role === 'trainer' && (
+                {role === 'trainer' && (
                         <button
                             className={`nav-link ${activeTab === 'trainer' ? 'active' : ''}`}
                             onClick={() => handleTabChange('trainer')}
@@ -802,7 +802,7 @@ const Profile = () => {
                         </button>
                     )}
                     
-                    {role === 'regular_user' && (
+            {role === 'regular_user' && (
                         <button
                             className={`nav-link ${activeTab === 'measurements' ? 'active' : ''}`}
                             onClick={() => handleTabChange('measurements')}
@@ -818,8 +818,8 @@ const Profile = () => {
                         >
                             📊 Progreso
                         </button>
-                    )}
-                </div>
+            )}
+        </div>
             </div>
 
             {/* Contenido de tabs */}

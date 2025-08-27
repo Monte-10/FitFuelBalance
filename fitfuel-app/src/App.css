@@ -111,3 +111,27 @@ a:hover {
 .home-page > * {
   z-index: 2;
 }
+
+/* Estilos personalizados para el navbar */
+.custom-navbar {
+  box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+  backdrop-filter: blur(10px);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
+}
+
+.navbar-title {
+  font-weight: 700;
+  font-size: 1.8rem;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  .navbar-title {
+    font-size: 1.5rem;
+  }
+}
