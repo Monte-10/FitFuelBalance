@@ -66,6 +66,7 @@ import AdaptOption from './components/nutrition/AdaptOption';
 import CreatePlan from './components/nutrition/CreatePlan';
 import ComparativePlanTable from './components/nutrition/ComparativePlanTable';
 import ComparativePlanTableList from './components/nutrition/ComparativePlanTableList';
+import CreateComparativePlan from './components/nutrition/CreateComparativePlan';
 import ComparativePlanTableDetail from './components/nutrition/ComparativePlanTableDetail';
 import NotificationBadge from './components/user/NotificationBadge';
 
@@ -535,6 +536,7 @@ function App() {
                 <Route path="/assigned-options" element={<AssignedOptions />} />
                 <Route path="/assigned-week-trainings" element={<AssignedWeekTrainings />} />
                 <Route path="/nutrition/comparative-tables" element={<ComparativePlanTableList />} />
+                <Route path="/nutrition/comparative-table/create" element={<CreateComparativePlan />} />
                 <Route path="/nutrition/comparative-table/:id" element={<ComparativePlanTableDetail />} />
                 {profile?.role === 'trainer' && (
                   <Route path="/nutrition/comparative-table/:id/edit" element={<ComparativePlanTable />} />

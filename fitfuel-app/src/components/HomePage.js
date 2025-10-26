@@ -24,7 +24,8 @@ function HomePage({ profile }) {
                 <li><Link to="/nutrition/create-food">Crear Alimento</Link></li>
                 <li><Link to="/nutrition/create-ingredient">Crear Ingrediente</Link></li>
                 <li><Link to="/nutrition/upload-food">Subir Alimento</Link></li>
-                <li><Link to="/nutrition/create-plan">Crear Plan</Link></li>
+                <li><Link to="/nutrition/comparative-table/create">Crear Tabla Comparativa</Link></li>
+                <li><Link to="/nutrition/create-plan">Crear Plan (opcional)</Link></li>
             </ul>
         </>
     );
@@ -35,7 +36,7 @@ function HomePage({ profile }) {
             <ul>
                 <li><Link to="/nutrition/list-food">Listar Alimentos</Link></li>
                 <li><Link to="/nutrition/list-ingredient">Listar Ingredientes</Link></li>
-                <li><Link to="/nutrition/comparative-tables">Listar Tablas Comparativas</Link></li>
+                <li><Link to="/nutrition/comparative-tables"><strong>Listar Tablas Comparativas</strong></Link></li>
             </ul>
         </>
     );

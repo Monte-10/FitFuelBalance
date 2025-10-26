@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import IngredientModal from './IngredientModal';
 import './MealTable.css';
 
@@ -26,6 +26,53 @@ const MealTable = ({
   const [nutritionTotals, setNutritionTotals] = useState({});
   const [users, setUsers] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState(selectedUser || '');
+
+  // Estado para manejar la búsqueda y paginación de ingredientes
+  const [ingredientResults, setIngredientResults] = useState([]);
+  const [ingredientSearch, setIngredientSearch] = useState('');
+  const [ingredientPage, setIngredientPage] = useState(1);
+  const [ingredientPageSize, setIngredientPageSize] = useState(10);
+  const [ingredientTotalPages, setIngredientTotalPages] = useState(1);
+  const [ingredientTotalCount, setIngredientTotalCount] = useState(0);
+
+  const fetchIngredients = async (search = '', page = 1, pageSize = 10) => {
+    try {
+      let url = `${apiUrl}/nutrition/ingredients/?page=${page}&page_size=${pageSize}`;
+      if (search) url += `&search=${search}`;
+      const res = await fetch(url, {
+        headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` }
+      });
+      const data = await res.json();
+      setIngredientResults(data.results || []);
+      setIngredientTotalCount(data.count || 0);
+      setIngredientTotalPages(Math.max(1, Math.ceil((data.count || 0) / pageSize)));
+    } catch (err) {
+      console.error('Error fetching ingredients:', err);
+    }
+  };
+
+  // Cuando abrimos el modal o cambian página/tamaño, recargamos ingredientes
+  useEffect(() => {
+    if (showModal) {
+      fetchIngredients(ingredientSearch, ingredientPage, ingredientPageSize);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showModal, ingredientPage, ingredientPageSize]);
+
+  const handleIngredientSearch = (e) => {
+    setIngredientSearch(e.target.value);
+    setIngredientPage(1);
+    fetchIngredients(e.target.value, 1, ingredientPageSize);
+  };
+
+  const handleIngredientPageChange = (newPage) => {
+    setIngredientPage(newPage);
+  };
+
+  const handleIngredientPageSizeChange = (e) => {
+    setIngredientPageSize(Number(e.target.value));
+    setIngredientPage(1);
+  };
 
   const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -86,6 +133,10 @@ const MealTable = ({
   // Abre el modal para elegir ingrediente
   const openModal = (day, meal) => {
     setShowModal({ day, meal });
+    // Reiniciar búsqueda y paginación
+    setIngredientSearch('');
+    setIngredientPage(1);
+    fetchIngredients('', 1, ingredientPageSize);
   };
 
   // Maneja la selección de un ingrediente en el modal
@@ -345,6 +396,15 @@ const MealTable = ({
           show={!!showModal}
           onClose={() => setShowModal(false)}
           onIngredientSelect={handleIngredientSelect}
+          ingredients={ingredientResults}
+          searchValue={ingredientSearch}
+          onSearch={handleIngredientSearch}
+          page={ingredientPage}
+          totalPages={ingredientTotalPages}
+          totalCount={ingredientTotalCount}
+          onPageChange={handleIngredientPageChange}
+          pageSize={ingredientPageSize}
+          onPageSizeChange={handleIngredientPageSizeChange}
         />
       )}
     </div>

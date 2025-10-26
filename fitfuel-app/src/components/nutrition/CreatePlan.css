@@ -9,9 +9,10 @@
   text-align: center;
   margin-bottom: 40px;
   padding: 30px;
-  background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(32, 201, 151, 0.1) 100%);
+  background: linear-gradient(135deg, rgba(40, 167, 69, 0.2) 0%, rgba(32, 201, 151, 0.2) 100%);
   border-radius: 20px;
-  border: 2px solid rgba(40, 167, 69, 0.2);
+  border: 2px solid rgba(40, 167, 69, 0.4);
+  backdrop-filter: blur(10px);
 }
 
 .create-plan-title {
@@ -23,7 +24,7 @@
 }
 
 .create-plan-subtitle {
-  color: #6c757d;
+  color: #f0f0f0;
   font-size: 1.1rem;
   margin: 0;
   font-weight: 500;
@@ -31,12 +32,12 @@
 
 /* Formulario principal */
 .create-plan-form {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(35, 39, 43, 0.8);
   border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(40, 167, 69, 0.3);
 }
 
 .form-section {
@@ -65,7 +66,7 @@
 
 .form-label {
   display: block;
-  color: #495057;
+  color: #f0f0f0;
   font-weight: 600;
   margin-bottom: 8px;
   font-size: 1rem;
@@ -81,12 +82,12 @@
   width: 100%;
   padding: 15px 18px;
   font-size: 1rem;
-  border: 2px solid #e9ecef;
+  border: 2px solid #444;
   border-radius: 12px;
-  background-color: #fff;
-  color: #495057;
+  background-color: #23272b;
+  color: #fff;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .form-control:focus {
@@ -97,7 +98,7 @@
 }
 
 .form-control::placeholder {
-  color: #adb5bd;
+  color: #888;
   opacity: 0.8;
 }
 
@@ -170,6 +171,66 @@
   }
 }
 
+/* Estilos para modo de edición */
+.edit-plan-header-box {
+  background: linear-gradient(135deg, rgba(40, 167, 69, 0.2) 0%, rgba(32, 201, 151, 0.2) 100%);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
+  border: 2px solid rgba(40, 167, 69, 0.4);
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+
+.edit-plan-title {
+  color: #28a745;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.edit-plan-name {
+  color: #f0f0f0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.assign-user-box {
+  background: rgba(35, 39, 43, 0.8);
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 30px;
+  border: 1px solid rgba(40, 167, 69, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.assign-user-label {
+  color: #f0f0f0;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  display: block;
+}
+
+.assign-user-select {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 1rem;
+  border: 2px solid #444;
+  border-radius: 10px;
+  background-color: #23272b;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.assign-user-select:focus {
+  outline: none;
+  border-color: #28a745;
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+}
+
 @media (max-width: 480px) {
   .create-plan-title {
     font-size: 1.8rem;
@@ -182,6 +243,18 @@
   .form-control {
     padding: 12px 15px;
     font-size: 0.95rem;
+  }
+  
+  .edit-plan-title {
+    font-size: 1.8rem;
+  }
+  
+  .edit-plan-header-box {
+    padding: 20px;
+  }
+  
+  .assign-user-box {
+    padding: 20px;
   }
 }
   
